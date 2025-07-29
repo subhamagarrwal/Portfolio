@@ -16,6 +16,7 @@ export const useTimeTheme = (): UseTimeThemeReturn => {
 
   const getTimeBasedTheme = (): TimeTheme => {
     const hour = new Date().getHours();
+    console.log('Current hour:', hour);
     
     if (hour >= 6 && hour < 11) return 'morning';
     if (hour >= 11 && hour < 16) return 'afternoon';
@@ -28,12 +29,17 @@ export const useTimeTheme = (): UseTimeThemeReturn => {
     const savedMode = localStorage.getItem('portfolio-manual-mode');
     const savedTheme = localStorage.getItem('portfolio-manual-theme') as TimeTheme;
     
+    console.log('Loading preferences:', { savedMode, savedTheme });
+    
     if (savedMode === 'true' && savedTheme) {
       setIsManualMode(true);
       setManualTheme(savedTheme);
       setTheme(savedTheme);
+      console.log('Using manual theme:', savedTheme);
     } else {
-      setTheme(getTimeBasedTheme());
+      const autoTheme = getTimeBasedTheme();
+      setTheme(autoTheme);
+      console.log('Using auto theme:', autoTheme);
     }
   }, []);
 

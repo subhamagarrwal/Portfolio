@@ -89,10 +89,14 @@ export default {
 					border: 'hsl(var(--night-card-border))'
 				}
 			},
-			borderRadius: {
-				lg: 'var(--radius)',
-				md: 'calc(var(--radius) - 2px)',
-				sm: 'calc(var(--radius) - 4px)'
+			fontFamily: {
+				sans: ['Inter', 'system-ui', 'sans-serif'],
+			},
+			backgroundImage: {
+				'morning': 'linear-gradient(135deg, hsl(39 100% 96%), hsl(45 100% 85%))',
+				'afternoon': 'linear-gradient(135deg, hsl(200 100% 85%), hsl(45 100% 75%))',
+				'evening': 'linear-gradient(135deg, hsl(280 80% 60%), hsl(25 90% 65%))',
+				'night': 'linear-gradient(135deg, hsl(280 100% 5%), hsl(320 100% 10%))',
 			},
 			keyframes: {
 				'accordion-down': {
