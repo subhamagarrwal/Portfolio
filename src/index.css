@@ -6,38 +6,38 @@
 
 @layer base {
   :root {
-    /* Morning Theme (6 AM - 11 AM) - Light warm gradient with pastels */
-    --morning-bg-start: 39 100% 96%;
-    --morning-bg-end: 45 100% 85%;
-    --morning-accent: 39 100% 70%;
-    --morning-text: 39 20% 20%;
-    --morning-card: 0 0% 100%;
-    --morning-card-border: 39 30% 90%;
+    /* Day Theme (6 AM - 12 PM) - Light summer colors */
+    --day-bg-start: 45 100% 94%;     /* Light cream */
+    --day-bg-end: 55 100% 88%;       /* Soft yellow */
+    --day-accent: 35 100% 60%;       /* Warm orange */
+    --day-text: 25 30% 25%;          /* Dark brown */
+    --day-card: 0 0% 100%;           /* Pure white */
+    --day-card-border: 35 40% 85%;   /* Light peach border */
 
-    /* Afternoon Theme (11 AM - 4 PM) - Bright blue + gold */
-    --afternoon-bg-start: 200 100% 85%;
-    --afternoon-bg-end: 45 100% 75%;
-    --afternoon-accent: 200 80% 50%;
-    --afternoon-text: 200 30% 15%;
-    --afternoon-card: 0 0% 100%;
-    --afternoon-card-border: 200 30% 90%;
+    /* Afternoon Theme (12 PM - 6 PM) - Intense summer colors */
+    --afternoon-bg-start: 195 100% 75%;  /* Bright cyan */
+    --afternoon-bg-end: 25 100% 70%;     /* Intense orange */
+    --afternoon-accent: 15 100% 55%;     /* Vibrant red-orange */
+    --afternoon-text: 15 40% 15%;        /* Deep brown */
+    --afternoon-card: 0 0% 98%;          /* Off-white */
+    --afternoon-card-border: 15 50% 80%; /* Orange border */
 
-    /* Evening Theme (4 PM - 8 PM) - Purple-orange sunset */
-    --evening-bg-start: 280 80% 60%;
-    --evening-bg-end: 25 90% 65%;
-    --evening-accent: 280 70% 70%;
-    --evening-text: 280 15% 95%;
-    --evening-card: 280 10% 95%;
-    --evening-card-border: 280 20% 85%;
+    /* Evening Theme (6 PM - 10 PM) - Fading to night */
+    --evening-bg-start: 260 60% 45%;     /* Deep purple */
+    --evening-bg-end: 20 70% 50%;        /* Warm orange sunset */
+    --evening-accent: 280 80% 65%;       /* Light purple */
+    --evening-text: 280 20% 90%;         /* Light purple-gray */
+    --evening-card: 270 25% 15%;         /* Dark purple card */
+    --evening-card-border: 280 40% 30%;  /* Purple border */
 
-    /* Night Theme (8 PM - 6 AM) - Dark synthwave with neon */
-    --night-bg-start: 280 100% 5%;
-    --night-bg-end: 320 100% 10%;
-    --night-accent: 315 100% 60%;
-    --night-secondary: 180 100% 50%;
-    --night-text: 280 10% 95%;
-    --night-card: 280 20% 10%;
-    --night-card-border: 315 50% 30%;
+    /* Night Theme (10 PM - 6 AM) - Purple/violet theme */
+    --night-bg-start: 270 100% 8%;       /* Deep violet */
+    --night-bg-end: 290 100% 12%;        /* Rich purple */
+    --night-accent: 285 100% 70%;        /* Bright magenta */
+    --night-secondary: 270 100% 60%;     /* Purple secondary */
+    --night-text: 280 20% 92%;           /* Light purple-white */
+    --night-card: 275 50% 10%;           /* Dark violet card */
+    --night-card-border: 285 60% 25%;    /* Purple border */
 
     /* Default theme variables */
     --background: 0 0% 100%;
@@ -118,8 +118,8 @@
 }
 
 /* Time-based background classes */
-.bg-morning {
-  background: linear-gradient(135deg, hsl(var(--morning-bg-start)), hsl(var(--morning-bg-end)));
+.bg-day {
+  background: linear-gradient(135deg, hsl(var(--day-bg-start)), hsl(var(--day-bg-end)));
   transition: background 2s ease-in-out;
 }
 

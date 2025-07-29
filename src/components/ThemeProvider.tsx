@@ -5,18 +5,18 @@ interface ThemeProviderProps {
 }
 
 export const ThemeProvider = ({ children }: ThemeProviderProps) => {
-  const { theme } = useTimeTheme();
+  const { backgroundTheme } = useTimeTheme();
 
   // This ensures all theme classes are included in the build
   const themeClasses = {
-    morning: 'bg-morning text-morning-text',
+    day: 'bg-day text-day-text',
     afternoon: 'bg-afternoon text-afternoon-text', 
     evening: 'bg-evening text-evening-text',
     night: 'bg-night text-night-text'
   };
 
   return (
-    <div className={`min-h-screen transition-all duration-2000 ${themeClasses[theme]}`}>
+    <div className={`min-h-screen transition-all duration-2000 ${themeClasses[backgroundTheme]}`}>
       {children}
     </div>
   );

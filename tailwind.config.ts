@@ -63,11 +63,11 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				},
 				// Time-based theme colors
-				morning: {
-					accent: 'hsl(var(--morning-accent))',
-					text: 'hsl(var(--morning-text))',
-					card: 'hsl(var(--morning-card))',
-					border: 'hsl(var(--morning-card-border))'
+				day: {
+					accent: 'hsl(var(--day-accent))',
+					text: 'hsl(var(--day-text))',
+					card: 'hsl(var(--day-card))',
+					border: 'hsl(var(--day-card-border))'
 				},
 				afternoon: {
 					accent: 'hsl(var(--afternoon-accent))',
@@ -93,10 +93,10 @@ export default {
 				sans: ['Inter', 'system-ui', 'sans-serif'],
 			},
 			backgroundImage: {
-				'morning': 'linear-gradient(135deg, hsl(39 100% 96%), hsl(45 100% 85%))',
-				'afternoon': 'linear-gradient(135deg, hsl(200 100% 85%), hsl(45 100% 75%))',
-				'evening': 'linear-gradient(135deg, hsl(280 80% 60%), hsl(25 90% 65%))',
-				'night': 'linear-gradient(135deg, hsl(280 100% 5%), hsl(320 100% 10%))',
+				'day': 'linear-gradient(135deg, hsl(45 100% 94%), hsl(55 100% 88%))',
+				'afternoon': 'linear-gradient(135deg, hsl(195 100% 75%), hsl(25 100% 70%))',
+				'evening': 'linear-gradient(135deg, hsl(260 60% 45%), hsl(20 70% 50%))',
+				'night': 'linear-gradient(135deg, hsl(270 100% 8%), hsl(290 100% 12%))',
 			},
 			keyframes: {
 				'accordion-down': {

@@ -1,40 +1,64 @@
+import { useState, useEffect } from 'react';
 import { Sun, Moon, Cloud, Star } from 'lucide-react';
 import { useTimeTheme, TimeTheme } from '@/hooks/useTimeTheme';
 
 export const ThemeToggle = () => {
-  const { theme, isManualMode, toggleManualMode, setManualTheme } = useTimeTheme();
-  
-  const handleToggle = () => {
-    console.log('Theme toggle clicked. Current state:', { theme, isManualMode });
+  const { theme, effectiveTheme, backgroundTheme, isDarkModeOverride, toggleDarkMode } = useTimeTheme();
+  const [isToggling, setIsToggling] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  // Ensure component is mounted (for SSR compatibility)
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Handle dark mode toggle
+  const handleToggle = async () => {
+    setIsToggling(true);
+    console.log('Theme toggle clicked. Current state:', { theme, effectiveTheme, backgroundTheme, isDarkModeOverride });
     
-    if (isManualMode) {
-      // Cycle between day and night themes when in manual mode
-      const isDayTheme = theme === 'morning' || theme === 'afternoon';
-      const newTheme = isDayTheme ? 'night' : 'morning';
-      console.log('Manual mode: switching to', newTheme);
-      setManualTheme(newTheme);
-    } else {
-      // Enable manual mode and set to opposite of current theme
-      const isDayTheme = theme === 'morning' || theme === 'afternoon';
-      const newTheme = isDayTheme ? 'night' : 'morning';
-      console.log('Enabling manual mode with theme:', newTheme);
-      setManualTheme(newTheme);
-      toggleManualMode();
+    try {
+      toggleDarkMode();
+    } catch (error) {
+      console.error('Error toggling theme:', error);
+    } finally {
+      // Add a small delay for smooth animation
+      setTimeout(() => setIsToggling(false), 500);
     }
   };
 
-  const isNightMode = theme === 'night' || theme === 'evening';
+  // Handle keyboard events
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      handleToggle();
+    }
+  };
+
+  // Don't render until mounted (prevents hydration issues)
+  if (!mounted) {
+    return null;
+  }
+
+  const isNightMode = effectiveTheme === 'night' || effectiveTheme === 'evening';
 
   return (
     <div className="fixed top-6 right-6 z-50">
-      <div 
+      <button 
         onClick={handleToggle}
+        onKeyDown={handleKeyDown}
+        disabled={isToggling}
+        aria-label={`Switch to ${isDarkModeOverride ? 'light' : 'dark'} mode`}
+        aria-pressed={isDarkModeOverride}
         className={`
           relative w-24 h-12 rounded-full cursor-pointer transition-all duration-500 ease-in-out overflow-hidden
+          focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
+          disabled:cursor-not-allowed disabled:opacity-70
           ${isNightMode 
             ? 'bg-gradient-to-r from-slate-800 to-slate-900 shadow-lg shadow-purple-500/30' 
             : 'bg-gradient-to-r from-sky-300 to-sky-400 shadow-lg shadow-orange-300/30'
           }
+          ${isToggling ? 'scale-95' : 'hover:scale-105'}
         `}
       >
         {/* Toggle Circle */}
@@ -44,11 +68,12 @@ export const ThemeToggle = () => {
             ? 'translate-x-12 bg-slate-700 shadow-lg' 
             : 'translate-x-1 bg-yellow-400 shadow-lg'
           }
+          ${isToggling ? 'animate-pulse' : ''}
         `}>
           {isNightMode ? (
-            <Moon className="w-5 h-5 text-yellow-100" />
+            <Moon className={`w-5 h-5 text-yellow-100 ${isToggling ? 'animate-spin' : ''}`} />
           ) : (
-            <Sun className="w-5 h-5 text-yellow-800" />
+            <Sun className={`w-5 h-5 text-yellow-800 ${isToggling ? 'animate-spin' : ''}`} />
           )}
         </div>
 
@@ -70,7 +95,7 @@ export const ThemeToggle = () => {
             </>
           )}
         </div>
-      </div>
+      </button>
       
       {/* Mode Label */}
       <div className={`
@@ -78,14 +103,17 @@ export const ThemeToggle = () => {
         ${isNightMode ? 'text-white/70' : 'text-gray-600'}
       `}>
         {isNightMode ? 'Dark mode' : 'Light mode'}
+        {isToggling && (
+          <span className="ml-1 inline-block animate-pulse">⚡</span>
+        )}
       </div>
       
-      {isManualMode && (
+      {isDarkModeOverride && (
         <div className={`
           text-xs text-center opacity-50 transition-colors duration-300
           ${isNightMode ? 'text-white/50' : 'text-gray-500'}
         `}>
-          Manual
+          Dark Mode Override
         </div>
       )}
     </div>

@@ -3,8 +3,8 @@ import { Button } from '@/components/ui/button';
 import { ArrowDown, Github, Linkedin, Mail } from 'lucide-react';
 
 export const HeroSection = () => {
-  const { theme } = useTimeTheme();
-  const isNightMode = theme === 'night' || theme === 'evening';
+  const { effectiveTheme } = useTimeTheme();
+  const isNightMode = effectiveTheme === 'night' || effectiveTheme === 'evening';
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -24,7 +24,7 @@ export const HeroSection = () => {
             text-5xl md:text-7xl font-bold mb-6 transition-colors duration-300
             ${isNightMode 
               ? 'text-night-text' 
-              : `text-${theme}-text`
+              : `text-${effectiveTheme}-text`
             }
           `}>
             Your Name
@@ -33,7 +33,7 @@ export const HeroSection = () => {
             text-xl md:text-2xl mb-8 transition-colors duration-300
             ${isNightMode 
               ? 'text-night-text/80' 
-              : `text-${theme}-text/80`
+              : `text-${effectiveTheme}-text/80`
             }
           `}>
             Full Stack Developer & Creative Technologist
@@ -42,7 +42,7 @@ export const HeroSection = () => {
             text-lg max-w-2xl mx-auto mb-12 transition-colors duration-300
             ${isNightMode 
               ? 'text-night-text/70' 
-              : `text-${theme}-text/70`
+              : `text-${effectiveTheme}-text/70`
             }
           `}>
             Passionate about creating innovative web applications that solve real-world problems. 
@@ -57,7 +57,7 @@ export const HeroSection = () => {
               px-8 py-3 rounded-full font-semibold transition-all duration-300
               ${isNightMode 
                 ? 'bg-night-accent hover:bg-night-accent/80 text-white synthwave-glow' 
-                : `bg-${theme}-accent hover:bg-${theme}-accent/80 text-white`
+                : `bg-${effectiveTheme}-accent hover:bg-${effectiveTheme}-accent/80 text-white`
               }
             `}
           >
@@ -70,7 +70,7 @@ export const HeroSection = () => {
               px-8 py-3 rounded-full font-semibold transition-all duration-300
               ${isNightMode 
                 ? 'border-night-border text-night-text hover:bg-night-card' 
-                : `border-${theme}-border text-${theme}-text hover:bg-${theme}-card`
+                : `border-${effectiveTheme}-border text-${effectiveTheme}-text hover:bg-${effectiveTheme}-card`
               }
             `}
           >
@@ -87,7 +87,7 @@ export const HeroSection = () => {
               p-3 rounded-full transition-all duration-300
               ${isNightMode 
                 ? 'text-night-text hover:text-night-accent hover:bg-night-card' 
-                : `text-${theme}-text hover:text-${theme}-accent hover:bg-${theme}-card`
+                : `text-${effectiveTheme}-text hover:text-${effectiveTheme}-accent hover:bg-${effectiveTheme}-card`
               }
             `}
           >
@@ -101,7 +101,7 @@ export const HeroSection = () => {
               p-3 rounded-full transition-all duration-300
               ${isNightMode 
                 ? 'text-night-text hover:text-night-accent hover:bg-night-card' 
-                : `text-${theme}-text hover:text-${theme}-accent hover:bg-${theme}-card`
+                : `text-${effectiveTheme}-text hover:text-${effectiveTheme}-accent hover:bg-${effectiveTheme}-card`
               }
             `}
           >
@@ -113,7 +113,7 @@ export const HeroSection = () => {
               p-3 rounded-full transition-all duration-300
               ${isNightMode 
                 ? 'text-night-text hover:text-night-accent hover:bg-night-card' 
-                : `text-${theme}-text hover:text-${theme}-accent hover:bg-${theme}-card`
+                : `text-${effectiveTheme}-text hover:text-${effectiveTheme}-accent hover:bg-${effectiveTheme}-card`
               }
             `}
           >
@@ -127,7 +127,7 @@ export const HeroSection = () => {
               w-8 h-8 mx-auto cursor-pointer transition-colors duration-300
               ${isNightMode 
                 ? 'text-night-accent' 
-                : `text-${theme}-accent`
+                : `text-${effectiveTheme}-accent`
               }
             `}
             onClick={() => scrollToSection('about')}

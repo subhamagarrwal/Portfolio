@@ -12,7 +12,7 @@ const navItems = [
 ];
 
 export const Navigation = () => {
-  const { theme } = useTimeTheme();
+  const { effectiveTheme } = useTimeTheme();
   const [activeSection, setActiveSection] = useState('home');
 
   useEffect(() => {
@@ -40,7 +40,7 @@ export const Navigation = () => {
     }
   };
 
-  const isNightMode = theme === 'night' || theme === 'evening';
+  const isNightMode = effectiveTheme === 'night' || effectiveTheme === 'evening';
 
   return (
     <nav className={`
@@ -61,10 +61,10 @@ export const Navigation = () => {
                   ${activeSection === item.id
                     ? isNightMode
                       ? 'text-night-accent synthwave-text-glow'
-                      : `text-${theme}-accent`
+                      : `text-${effectiveTheme}-accent`
                     : isNightMode
                       ? 'text-night-text hover:text-night-accent'
-                      : `text-${theme}-text hover:text-${theme}-accent`
+                      : `text-${effectiveTheme}-text hover:text-${effectiveTheme}-accent`
                   }
                 `}
               >
@@ -74,7 +74,7 @@ export const Navigation = () => {
                     absolute bottom-0 left-0 right-0 h-0.5 rounded-full
                     ${isNightMode 
                       ? 'bg-night-accent synthwave-glow' 
-                      : `bg-${theme}-accent`
+                      : `bg-${effectiveTheme}-accent`
                     }
                   `} />
                 )}
