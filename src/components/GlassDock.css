@@ -1,0 +1,139 @@
+/* Glass Dock Styles - Apple-inspired glassmorphism */
+
+.glass-dock {
+  /* Enhanced backdrop blur for better glass effect */
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  
+  /* Smooth animations */
+  transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+.glass-dock-item {
+  /* Smooth scaling animation */
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.glass-dock-item:hover {
+  /* Mac-like bounce effect */
+  animation: dock-bounce 0.3s ease-out;
+}
+
+@keyframes dock-bounce {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1.1); }
+}
+
+/* Responsive breakpoints */
+@media (max-width: 768px) {
+  .glass-dock {
+    transform: translateX(-50%) scale(0.92);
+    bottom: 1rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .glass-dock {
+    transform: translateX(-50%) scale(0.85);
+    bottom: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .glass-dock {
+    transform: translateX(-50%) scale(0.75);
+    bottom: 0.5rem;
+  }
+  
+  .glass-dock-item {
+    margin: 0 0.5px;
+  }
+}
+
+@media (max-width: 420px) {
+  .glass-dock {
+    transform: translateX(-50%) scale(0.68);
+  }
+}
+
+@media (max-width: 380px) {
+  .glass-dock {
+    transform: translateX(-50%) scale(0.62);
+  }
+}
+
+@media (max-width: 360px) {
+  .glass-dock {
+    transform: translateX(-50%) scale(0.58);
+  }
+}
+
+/* Enhanced glass reflection effect */
+.glass-reflection {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.25) 0%,
+    rgba(255, 255, 255, 0.1) 25%,
+    transparent 50%
+  );
+}
+
+/* Volume indicator pulse */
+.volume-active {
+  animation: volume-pulse 2s infinite;
+}
+
+@keyframes volume-pulse {
+  0%, 100% { 
+    opacity: 1; 
+    transform: scale(1); 
+  }
+  50% { 
+    opacity: 0.7; 
+    transform: scale(1.1); 
+  }
+}
+
+/* Smooth tooltip animations */
+.tooltip-enter {
+  animation: tooltip-slide-up 0.2s ease-out;
+}
+
+@keyframes tooltip-slide-up {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* Focus states for accessibility */
+.glass-dock-item:focus {
+  outline: 2px solid rgba(59, 130, 246, 0.5);
+  outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .glass-dock {
+    border: 2px solid currentColor;
+    background: rgba(0, 0, 0, 0.8) !important;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .glass-dock-item,
+  .glass-dock-item:hover {
+    animation: none;
+    transition: none;
+  }
+  
+  .volume-active {
+    animation: none;
+  }
+}
