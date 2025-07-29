@@ -3,8 +3,8 @@ import { Button } from '@/components/ui/button';
 import { ArrowDown, Github, Linkedin, Mail } from 'lucide-react';
 
 export const HeroSection = () => {
-  const { effectiveTheme } = useTimeTheme();
-  const isNightMode = effectiveTheme === 'night' || effectiveTheme === 'evening';
+  const { effectiveTheme, isDarkModeOverride } = useTimeTheme();
+  const isNightMode = isDarkModeOverride || (!isDarkModeOverride && (effectiveTheme === 'night' || effectiveTheme === 'evening'));
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);

@@ -29,18 +29,18 @@ export const useTimeTheme = (): UseTimeThemeReturn => {
     return 'night';                                   // 10 PM - 6 AM: Purple/violet theme
   };
 
-  // Calculate the effective theme (considering dark mode override)
-  const getEffectiveTheme = (): TimeTheme => {
-    if (isDarkModeOverride) {
-      return 'night'; // Always return night theme when dark mode is overridden
-    }
-    return theme;
-  };
-
   // Calculate the background theme (what background should be shown)
   const getBackgroundTheme = (): TimeTheme => {
     if (isDarkModeOverride) {
       return 'night'; // Force night background when dark mode override is active
+    }
+    return theme; // Use natural time-based theme otherwise
+  };
+
+  // Calculate the effective theme (for components to use for styling)
+  const getEffectiveTheme = (): TimeTheme => {
+    if (isDarkModeOverride) {
+      return 'night'; // Force night theme for styling when dark mode override is active
     }
     return theme; // Use natural time-based theme otherwise
   };
@@ -115,6 +115,13 @@ export const useTimeTheme = (): UseTimeThemeReturn => {
     setIsDarkModeOverride(newDarkMode);
     localStorage.setItem('portfolio-dark-mode-override', newDarkMode.toString());
     console.log('Dark mode override toggled:', newDarkMode);
+    
+    // If we're turning off dark mode override, update to current time-based theme
+    if (!newDarkMode) {
+      const currentTimeTheme = getTimeBasedTheme();
+      setTheme(currentTimeTheme);
+      console.log('Updated to time-based theme:', currentTimeTheme);
+    }
   };
 
   return {

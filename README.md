@@ -1,22 +1,16 @@
-# Welcome to your Lovable project
+# Portfolio Website
 
 ## Project info
 
-**URL**: https://lovable.dev/projects/56c62140-0116-40ab-9674-e93f50500ed6
+**URL**: TBA
 
-## How can I edit this code?
-
-There are several ways of editing your application.
-
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/56c62140-0116-40ab-9674-e93f50500ed6) and start prompting.
+Simply visit the [Lovable Project]
 
 Changes made via Lovable will be committed automatically to this repo.
 
 **Use your preferred IDE**
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+If you want to understand the code better, you can use your favorite IDE to explore the codebase.
 
 The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
 
@@ -59,6 +53,7 @@ This project is built with:
 - React
 - shadcn-ui
 - Tailwind CSS
+- Lucide-React for icons
 
 ## How can I deploy this project?
 

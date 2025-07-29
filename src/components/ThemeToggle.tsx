@@ -40,8 +40,6 @@ export const ThemeToggle = () => {
     return null;
   }
 
-  const isNightMode = effectiveTheme === 'night' || effectiveTheme === 'evening';
-
   return (
     <div className="fixed top-6 right-6 z-50">
       <button 
@@ -54,7 +52,7 @@ export const ThemeToggle = () => {
           relative w-24 h-12 rounded-full cursor-pointer transition-all duration-500 ease-in-out overflow-hidden
           focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
           disabled:cursor-not-allowed disabled:opacity-70
-          ${isNightMode 
+          ${isDarkModeOverride 
             ? 'bg-gradient-to-r from-slate-800 to-slate-900 shadow-lg shadow-purple-500/30' 
             : 'bg-gradient-to-r from-sky-300 to-sky-400 shadow-lg shadow-orange-300/30'
           }
@@ -64,13 +62,13 @@ export const ThemeToggle = () => {
         {/* Toggle Circle */}
         <div className={`
           absolute top-1 w-10 h-10 rounded-full transition-all duration-500 ease-in-out flex items-center justify-center
-          ${isNightMode 
+          ${isDarkModeOverride 
             ? 'translate-x-12 bg-slate-700 shadow-lg' 
             : 'translate-x-1 bg-yellow-400 shadow-lg'
           }
           ${isToggling ? 'animate-pulse' : ''}
         `}>
-          {isNightMode ? (
+          {isDarkModeOverride ? (
             <Moon className={`w-5 h-5 text-yellow-100 ${isToggling ? 'animate-spin' : ''}`} />
           ) : (
             <Sun className={`w-5 h-5 text-yellow-800 ${isToggling ? 'animate-spin' : ''}`} />
@@ -79,7 +77,7 @@ export const ThemeToggle = () => {
 
         {/* Background Decorations */}
         <div className="absolute inset-0 overflow-hidden">
-          {isNightMode ? (
+          {isDarkModeOverride ? (
             <>
               {/* Stars */}
               <Star className="absolute top-2 left-2 w-2 h-2 text-yellow-200 animate-pulse" />
@@ -100,9 +98,9 @@ export const ThemeToggle = () => {
       {/* Mode Label */}
       <div className={`
         mt-2 text-xs text-center transition-colors duration-300
-        ${isNightMode ? 'text-white/70' : 'text-gray-600'}
+        ${isDarkModeOverride ? 'text-white/70' : 'text-gray-600'}
       `}>
-        {isNightMode ? 'Dark mode' : 'Light mode'}
+        {isDarkModeOverride ? 'Dark mode' : 'Light mode'}
         {isToggling && (
           <span className="ml-1 inline-block animate-pulse">⚡</span>
         )}
@@ -111,7 +109,7 @@ export const ThemeToggle = () => {
       {isDarkModeOverride && (
         <div className={`
           text-xs text-center opacity-50 transition-colors duration-300
-          ${isNightMode ? 'text-white/50' : 'text-gray-500'}
+          ${isDarkModeOverride ? 'text-white/50' : 'text-gray-500'}
         `}>
           Dark Mode Override
         </div>

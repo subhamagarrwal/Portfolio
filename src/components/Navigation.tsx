@@ -12,7 +12,7 @@ const navItems = [
 ];
 
 export const Navigation = () => {
-  const { effectiveTheme } = useTimeTheme();
+  const { effectiveTheme, isDarkModeOverride } = useTimeTheme();
   const [activeSection, setActiveSection] = useState('home');
 
   useEffect(() => {
@@ -40,7 +40,7 @@ export const Navigation = () => {
     }
   };
 
-  const isNightMode = effectiveTheme === 'night' || effectiveTheme === 'evening';
+  const isNightMode = isDarkModeOverride || (!isDarkModeOverride && (effectiveTheme === 'night' || effectiveTheme === 'evening'));
 
   return (
     <nav className={`
