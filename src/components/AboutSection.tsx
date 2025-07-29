@@ -2,17 +2,17 @@ import { useTimeTheme } from '@/hooks/useTimeTheme';
 import { Card } from '@/components/ui/card';
 
 export const AboutSection = () => {
-  const { theme } = useTimeTheme();
-  const isNightMode = theme === 'night' || theme === 'evening';
+  const { theme, effectiveTheme, isDarkModeOverride } = useTimeTheme();
+  const isVisualDarkMode = isDarkModeOverride;
 
   return (
     <section id="about" className="py-20 px-6">
       <div className="container mx-auto max-w-4xl">
         <h2 className={`
           text-4xl font-bold text-center mb-12 transition-colors duration-300
-          ${isNightMode 
+          ${isVisualDarkMode 
             ? 'text-night-text synthwave-text-glow' 
-            : `text-${theme}-text`
+            : `text-${effectiveTheme}-text`
           }
         `}>
           About Me
@@ -20,17 +20,17 @@ export const AboutSection = () => {
 
         <Card className={`
           p-8 transition-all duration-300
-          ${isNightMode 
+          ${isVisualDarkMode 
             ? 'bg-night-card/80 border-night-border synthwave-glow' 
-            : `bg-${theme}-card border-${theme}-border`
+            : `bg-${effectiveTheme}-card border-${effectiveTheme}-border`
           }
         `}>
           <div className="space-y-6">
             <p className={`
               text-lg leading-relaxed transition-colors duration-300
-              ${isNightMode 
+              ${isVisualDarkMode 
                 ? 'text-night-text/90' 
-                : `text-${theme}-text/90`
+                : `text-${effectiveTheme}-text/90`
               }
             `}>
               I'm a passionate full-stack developer with a love for creating innovative web applications 
@@ -40,9 +40,9 @@ export const AboutSection = () => {
 
             <p className={`
               text-lg leading-relaxed transition-colors duration-300
-              ${isNightMode 
+              ${isVisualDarkMode 
                 ? 'text-night-text/90' 
-                : `text-${theme}-text/90`
+                : `text-${effectiveTheme}-text/90`
               }
             `}>
               My journey in tech began with curiosity about how websites work, which evolved into 
@@ -52,9 +52,9 @@ export const AboutSection = () => {
 
             <p className={`
               text-lg leading-relaxed transition-colors duration-300
-              ${isNightMode 
+              ${isVisualDarkMode 
                 ? 'text-night-text/90' 
-                : `text-${theme}-text/90`
+                : `text-${effectiveTheme}-text/90`
               }
             `}>
               Beyond coding, I'm actively involved in the tech community as a DevRel Lead at IEEE-VIT, 
@@ -65,25 +65,25 @@ export const AboutSection = () => {
             <div className="grid md:grid-cols-3 gap-6 mt-8">
               <div className={`
                 text-center p-4 rounded-lg transition-all duration-300
-                ${isNightMode 
+                ${isVisualDarkMode 
                   ? 'bg-night-card/40 border border-night-border' 
-                  : `bg-${theme}-card/40 border border-${theme}-border`
+                  : `bg-${effectiveTheme}-card/40 border border-${effectiveTheme}-border`
                 }
               `}>
                 <div className={`
                   text-2xl font-bold mb-2 transition-colors duration-300
-                  ${isNightMode 
+                  ${isVisualDarkMode 
                     ? 'text-night-accent' 
-                    : `text-${theme}-accent`
+                    : `text-${effectiveTheme}-accent`
                   }
                 `}>
                   10+
                 </div>
                 <div className={`
                   text-sm transition-colors duration-300
-                  ${isNightMode 
+                  ${isVisualDarkMode 
                     ? 'text-night-text/70' 
-                    : `text-${theme}-text/70`
+                    : `text-${effectiveTheme}-text/70`
                   }
                 `}>
                   Projects Completed
@@ -92,25 +92,25 @@ export const AboutSection = () => {
 
               <div className={`
                 text-center p-4 rounded-lg transition-all duration-300
-                ${isNightMode 
+                ${isVisualDarkMode 
                   ? 'bg-night-card/40 border border-night-border' 
-                  : `bg-${theme}-card/40 border border-${theme}-border`
+                  : `bg-${effectiveTheme}-card/40 border border-${effectiveTheme}-border`
                 }
               `}>
                 <div className={`
                   text-2xl font-bold mb-2 transition-colors duration-300
-                  ${isNightMode 
+                  ${isVisualDarkMode 
                     ? 'text-night-accent' 
-                    : `text-${theme}-accent`
+                    : `text-${effectiveTheme}-accent`
                   }
                 `}>
                   2+
                 </div>
                 <div className={`
                   text-sm transition-colors duration-300
-                  ${isNightMode 
+                  ${isVisualDarkMode 
                     ? 'text-night-text/70' 
-                    : `text-${theme}-text/70`
+                    : `text-${effectiveTheme}-text/70`
                   }
                 `}>
                   Years Experience
@@ -119,25 +119,25 @@ export const AboutSection = () => {
 
               <div className={`
                 text-center p-4 rounded-lg transition-all duration-300
-                ${isNightMode 
+                ${isVisualDarkMode 
                   ? 'bg-night-card/40 border border-night-border' 
-                  : `bg-${theme}-card/40 border border-${theme}-border`
+                  : `bg-${effectiveTheme}-card/40 border border-${effectiveTheme}-border`
                 }
               `}>
                 <div className={`
                   text-2xl font-bold mb-2 transition-colors duration-300
-                  ${isNightMode 
+                  ${isVisualDarkMode 
                     ? 'text-night-accent' 
-                    : `text-${theme}-accent`
+                    : `text-${effectiveTheme}-accent`
                   }
                 `}>
                   50+
                 </div>
                 <div className={`
                   text-sm transition-colors duration-300
-                  ${isNightMode 
+                  ${isVisualDarkMode 
                     ? 'text-night-text/70' 
-                    : `text-${theme}-text/70`
+                    : `text-${effectiveTheme}-text/70`
                   }
                 `}>
                   Students Mentored

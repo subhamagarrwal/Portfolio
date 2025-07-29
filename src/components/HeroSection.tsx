@@ -4,7 +4,10 @@ import { ArrowDown, Github, Linkedin, Mail } from 'lucide-react';
 
 export const HeroSection = () => {
   const { effectiveTheme, isDarkModeOverride } = useTimeTheme();
-  const isNightMode = isDarkModeOverride || (!isDarkModeOverride && (effectiveTheme === 'night' || effectiveTheme === 'evening'));
+  
+  // For visual effects like glow, only use dark mode override
+  // For color themes, use the effective theme
+  const isVisualDarkMode = isDarkModeOverride;
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -18,11 +21,11 @@ export const HeroSection = () => {
       <div className="text-center max-w-4xl mx-auto">
         <div className={`
           mb-8 transition-all duration-1000
-          ${isNightMode ? 'synthwave-text-glow' : ''}
+          ${isVisualDarkMode ? 'synthwave-text-glow' : ''}
         `}>
           <h1 className={`
             text-5xl md:text-7xl font-bold mb-6 transition-colors duration-300
-            ${isNightMode 
+            ${isVisualDarkMode 
               ? 'text-night-text' 
               : `text-${effectiveTheme}-text`
             }
@@ -31,7 +34,7 @@ export const HeroSection = () => {
           </h1>
           <p className={`
             text-xl md:text-2xl mb-8 transition-colors duration-300
-            ${isNightMode 
+            ${isVisualDarkMode 
               ? 'text-night-text/80' 
               : `text-${effectiveTheme}-text/80`
             }
@@ -40,7 +43,7 @@ export const HeroSection = () => {
           </p>
           <p className={`
             text-lg max-w-2xl mx-auto mb-12 transition-colors duration-300
-            ${isNightMode 
+            ${isVisualDarkMode 
               ? 'text-night-text/70' 
               : `text-${effectiveTheme}-text/70`
             }
@@ -55,7 +58,7 @@ export const HeroSection = () => {
             onClick={() => scrollToSection('projects')}
             className={`
               px-8 py-3 rounded-full font-semibold transition-all duration-300
-              ${isNightMode 
+              ${isVisualDarkMode 
                 ? 'bg-night-accent hover:bg-night-accent/80 text-white synthwave-glow' 
                 : `bg-${effectiveTheme}-accent hover:bg-${effectiveTheme}-accent/80 text-white`
               }
@@ -68,7 +71,7 @@ export const HeroSection = () => {
             variant="outline"
             className={`
               px-8 py-3 rounded-full font-semibold transition-all duration-300
-              ${isNightMode 
+              ${isVisualDarkMode 
                 ? 'border-night-border text-night-text hover:bg-night-card' 
                 : `border-${effectiveTheme}-border text-${effectiveTheme}-text hover:bg-${effectiveTheme}-card`
               }
@@ -85,7 +88,7 @@ export const HeroSection = () => {
             rel="noopener noreferrer"
             className={`
               p-3 rounded-full transition-all duration-300
-              ${isNightMode 
+              ${isVisualDarkMode 
                 ? 'text-night-text hover:text-night-accent hover:bg-night-card' 
                 : `text-${effectiveTheme}-text hover:text-${effectiveTheme}-accent hover:bg-${effectiveTheme}-card`
               }
@@ -99,7 +102,7 @@ export const HeroSection = () => {
             rel="noopener noreferrer"
             className={`
               p-3 rounded-full transition-all duration-300
-              ${isNightMode 
+              ${isVisualDarkMode 
                 ? 'text-night-text hover:text-night-accent hover:bg-night-card' 
                 : `text-${effectiveTheme}-text hover:text-${effectiveTheme}-accent hover:bg-${effectiveTheme}-card`
               }
@@ -111,7 +114,7 @@ export const HeroSection = () => {
             href="mailto:your.email@example.com"
             className={`
               p-3 rounded-full transition-all duration-300
-              ${isNightMode 
+              ${isVisualDarkMode 
                 ? 'text-night-text hover:text-night-accent hover:bg-night-card' 
                 : `text-${effectiveTheme}-text hover:text-${effectiveTheme}-accent hover:bg-${effectiveTheme}-card`
               }
@@ -125,7 +128,7 @@ export const HeroSection = () => {
           <ArrowDown 
             className={`
               w-8 h-8 mx-auto cursor-pointer transition-colors duration-300
-              ${isNightMode 
+              ${isVisualDarkMode 
                 ? 'text-night-accent' 
                 : `text-${effectiveTheme}-accent`
               }

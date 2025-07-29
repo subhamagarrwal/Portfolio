@@ -40,12 +40,13 @@ export const Navigation = () => {
     }
   };
 
-  const isNightMode = isDarkModeOverride || (!isDarkModeOverride && (effectiveTheme === 'night' || effectiveTheme === 'evening'));
+  // For visual effects like glow and dark styling, only use dark mode override
+  const isVisualDarkMode = isDarkModeOverride;
 
   return (
     <nav className={`
       fixed top-0 left-0 right-0 z-40 backdrop-blur-md transition-all duration-300
-      ${isNightMode 
+      ${isVisualDarkMode 
         ? 'bg-night-card/70 border-b border-night-border' 
         : 'bg-white/70 border-b border-morning-border'
       }
@@ -59,10 +60,10 @@ export const Navigation = () => {
                 className={`
                   px-3 py-2 rounded-lg font-medium transition-all duration-300 relative
                   ${activeSection === item.id
-                    ? isNightMode
+                    ? isVisualDarkMode
                       ? 'text-night-accent synthwave-text-glow'
                       : `text-${effectiveTheme}-accent`
-                    : isNightMode
+                    : isVisualDarkMode
                       ? 'text-night-text hover:text-night-accent'
                       : `text-${effectiveTheme}-text hover:text-${effectiveTheme}-accent`
                   }
@@ -72,7 +73,7 @@ export const Navigation = () => {
                 {activeSection === item.id && (
                   <div className={`
                     absolute bottom-0 left-0 right-0 h-0.5 rounded-full
-                    ${isNightMode 
+                    ${isVisualDarkMode 
                       ? 'bg-night-accent synthwave-glow' 
                       : `bg-${effectiveTheme}-accent`
                     }

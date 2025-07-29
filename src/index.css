@@ -6,13 +6,13 @@
 
 @layer base {
   :root {
-    /* Day Theme (6 AM - 12 PM) - Light summer colors */
-    --day-bg-start: 45 100% 94%;     /* Light cream */
-    --day-bg-end: 55 100% 88%;       /* Soft yellow */
-    --day-accent: 35 100% 60%;       /* Warm orange */
-    --day-text: 25 30% 25%;          /* Dark brown */
+    /* Day Theme (6 AM - 12 PM) - Light blue colors */
+    --day-bg-start: 200 100% 94%;    /* Light blue */
+    --day-bg-end: 210 100% 88%;      /* Soft blue */
+    --day-accent: 220 100% 60%;      /* Blue accent */
+    --day-text: 220 30% 25%;         /* Dark blue */
     --day-card: 0 0% 100%;           /* Pure white */
-    --day-card-border: 35 40% 85%;   /* Light peach border */
+    --day-card-border: 210 40% 85%;  /* Light blue border */
 
     /* Afternoon Theme (12 PM - 6 PM) - Intense summer colors */
     --afternoon-bg-start: 195 100% 75%;  /* Bright cyan */

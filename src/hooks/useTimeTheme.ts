@@ -34,7 +34,7 @@ export const useTimeTheme = (): UseTimeThemeReturn => {
     if (isDarkModeOverride) {
       return 'night'; // Force night background when dark mode override is active
     }
-    return theme; // Use natural time-based theme otherwise
+    return 'day'; // Always use day (blue) background when dark mode override is off
   };
 
   // Calculate the effective theme (for components to use for styling)
@@ -42,7 +42,7 @@ export const useTimeTheme = (): UseTimeThemeReturn => {
     if (isDarkModeOverride) {
       return 'night'; // Force night theme for styling when dark mode override is active
     }
-    return theme; // Use natural time-based theme otherwise
+    return 'day'; // Always use day (blue) theme for styling when dark mode override is off
   };
 
   const effectiveTheme = getEffectiveTheme();
