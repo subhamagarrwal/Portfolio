@@ -61,6 +61,32 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				// Time-based theme colors
+				morning: {
+					accent: 'hsl(var(--morning-accent))',
+					text: 'hsl(var(--morning-text))',
+					card: 'hsl(var(--morning-card))',
+					border: 'hsl(var(--morning-card-border))'
+				},
+				afternoon: {
+					accent: 'hsl(var(--afternoon-accent))',
+					text: 'hsl(var(--afternoon-text))',
+					card: 'hsl(var(--afternoon-card))',
+					border: 'hsl(var(--afternoon-card-border))'
+				},
+				evening: {
+					accent: 'hsl(var(--evening-accent))',
+					text: 'hsl(var(--evening-text))',
+					card: 'hsl(var(--evening-card))',
+					border: 'hsl(var(--evening-card-border))'
+				},
+				night: {
+					accent: 'hsl(var(--night-accent))',
+					secondary: 'hsl(var(--night-secondary))',
+					text: 'hsl(var(--night-text))',
+					card: 'hsl(var(--night-card))',
+					border: 'hsl(var(--night-card-border))'
 				}
 			},
 			borderRadius: {

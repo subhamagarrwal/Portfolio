@@ -1,0 +1,91 @@
+{
+  "personal": {
+    "name": "Your Name",
+    "title": "Full Stack Developer",
+    "email": "your.email@example.com",
+    "github": "https://github.com/yourusername",
+    "linkedin": "https://linkedin.com/in/yourusername"
+  },
+  "projects": [
+    {
+      "id": "taskquest",
+      "title": "TaskQuest",
+      "description": "A gamified task management application that transforms productivity into an engaging RPG-like experience with levels, achievements, and rewards.",
+      "techStack": ["React", "Node.js", "MongoDB", "Express", "Socket.io"],
+      "github": "https://github.com/yourusername/taskquest",
+      "demo": "https://taskquest-demo.netlify.app",
+      "image": "/project-taskquest.jpg",
+      "featured": true
+    },
+    {
+      "id": "fintellect",
+      "title": "FinTellect",
+      "description": "An intelligent personal finance management platform with AI-powered insights, budget tracking, and investment recommendations.",
+      "techStack": ["Next.js", "TypeScript", "PostgreSQL", "Prisma", "OpenAI API"],
+      "github": "https://github.com/yourusername/fintellect",
+      "demo": "https://fintellect-app.vercel.app",
+      "image": "/project-fintellect.jpg",
+      "featured": true
+    },
+    {
+      "id": "fitfusion",
+      "title": "FitFusion",
+      "description": "A comprehensive fitness tracking app with workout planning, nutrition monitoring, and social features for fitness enthusiasts.",
+      "techStack": ["React Native", "Firebase", "Redux", "Node.js", "Express"],
+      "github": "https://github.com/yourusername/fitfusion",
+      "demo": "https://fitfusion-mobile.expo.dev",
+      "image": "/project-fitfusion.jpg",
+      "featured": true
+    }
+  ],
+  "experience": [
+    {
+      "id": "xlancr",
+      "company": "Xlancr",
+      "position": "Software Development Intern",
+      "duration": "Jun 2024 - Aug 2024",
+      "location": "Remote",
+      "description": "Contributed to full-stack development projects with focus on modern web technologies and user experience optimization.",
+      "achievements": [
+        "Developed responsive web applications using React and TypeScript",
+        "Implemented RESTful APIs and database integration solutions",
+        "Collaborated with cross-functional teams in an agile environment",
+        "Optimized application performance resulting in 30% faster load times",
+        "Participated in code reviews and maintained high code quality standards"
+      ]
+    }
+  ],
+  "skills": {
+    "languages": ["JavaScript", "TypeScript", "Python", "Java", "C++", "HTML/CSS"],
+    "frameworks": ["React", "Next.js", "Node.js", "Express", "React Native", "Vue.js"],
+    "tools": ["Git", "Docker", "AWS", "MongoDB", "PostgreSQL", "Firebase", "Figma"]
+  },
+  "extracurriculars": [
+    {
+      "id": "ieee-devrel",
+      "organization": "IEEE-VIT",
+      "position": "DevRel Lead",
+      "duration": "2023 - Present",
+      "description": "Leading developer relations initiatives, organizing technical workshops, and fostering community engagement among 500+ student developers.",
+      "achievements": [
+        "Organized 15+ technical workshops and hackathons",
+        "Increased community engagement by 40%",
+        "Mentored 50+ junior developers",
+        "Built partnerships with tech companies for student opportunities"
+      ]
+    },
+    {
+      "id": "ic-etite",
+      "organization": "ic-ETITE'24",
+      "position": "Volunteer",
+      "duration": "2024",
+      "description": "Contributed to the organization and execution of a major technical conference, handling logistics and participant coordination.",
+      "achievements": [
+        "Coordinated logistics for 200+ conference attendees",
+        "Managed registration and participant communication systems",
+        "Supported technical setup for workshops and presentations",
+        "Facilitated networking sessions between industry professionals and students"
+      ]
+    }
+  ]
+}
