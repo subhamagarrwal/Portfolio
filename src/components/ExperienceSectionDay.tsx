@@ -5,15 +5,14 @@ import { Button } from '@/components/ui/button';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import portfolioData from '@/data/portfolio.json';
 
-export const ExperienceSection = () => {
-  const { getTextClass, isDayOrAfternoon, getTimeBasedClass } = useTimeTheme();
+export const ExperienceSectionDay = () => {
+  const { getTextClass, isDayOrAfternoon } = useTimeTheme();
   const { experience } = portfolioData;
   const [expandedItems, setExpandedItems] = useState<{ [key: string]: boolean }>({});
   
   // Get the appropriate text theme class
   const textClass = getTextClass();
   const isLightMode = isDayOrAfternoon();
-  const timeBasedClass = getTimeBasedClass();
 
   const toggleExpanded = (id: string) => {
     setExpandedItems(prev => ({
@@ -23,10 +22,10 @@ export const ExperienceSection = () => {
   };
 
   return (
-    <section id="experience" className={`py-20 px-6 ${timeBasedClass}`}>
+    <section id="experience" className="py-20 px-6">
       <div className="container mx-auto max-w-4xl">
         <h2 className={`
-          text-4xl font-bold text-center mb-12 transition-colors duration-300 synthwave-text-glow ${textClass}
+          text-4xl font-bold text-center mb-12 transition-colors duration-300 ${textClass}
           ${isLightMode ? 'liquid-glass-text-container' : ''}
         `}>
           Professional Experience
@@ -37,7 +36,7 @@ export const ExperienceSection = () => {
             <Card
               key={exp.id}
               className={`
-                transition-all duration-500 hover:scale-[1.02] synthwave-glow
+                transition-all duration-500 hover:scale-[1.02]
                 ${isLightMode
                     ? 'bg-white/25 border-white/40 liquid-glass-card'
                     : 'bg-white/15 border-white/25 liquid-glass-card'

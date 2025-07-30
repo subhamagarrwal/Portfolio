@@ -4,23 +4,21 @@ import { Button } from '@/components/ui/button';
 import { Github, ExternalLink } from 'lucide-react';
 import portfolioData from '@/data/portfolio.json';
 
-export const ProjectsSection = () => {
+export const ProjectsSectionDay = () => {
   const { 
     getTextClass, 
-    isDayOrAfternoon,
-    getTimeBasedClass
+    isDayOrAfternoon
   } = useTimeTheme();
   
   const { projects } = portfolioData;
   const textClass = getTextClass();
   const isLightMode = isDayOrAfternoon();
-  const timeBasedClass = getTimeBasedClass();
 
   return (
-    <section id="projects" className={`py-20 px-6 ${timeBasedClass}`}>
+    <section id="projects" className="py-20 px-6">
       <div className="container mx-auto max-w-6xl">
         <h2 className={`
-          text-4xl font-bold text-center mb-12 transition-colors duration-300 synthwave-text-glow ${textClass}
+          text-4xl font-bold text-center mb-12 transition-colors duration-300 ${textClass}
         `}>
           Featured Projects
         </h2>
@@ -30,7 +28,7 @@ export const ProjectsSection = () => {
             <Card
               key={project.id}
               className={`
-                overflow-hidden transition-all duration-500 hover:scale-105 synthwave-glow
+                overflow-hidden transition-all duration-500 hover:scale-105
                 ${isLightMode
                     ? 'bg-white/25 border-white/40 liquid-glass-card'
                     : 'bg-white/15 border-white/25 liquid-glass-card'
@@ -73,7 +71,7 @@ export const ProjectsSection = () => {
                     <span
                       key={tech}
                       className={`
-                        px-2 py-1 text-xs rounded-full transition-all duration-300 synthwave-glow
+                        px-2 py-1 text-xs rounded-full transition-all duration-300
                         ${isLightMode 
                           ? 'bg-blue-500/20 text-blue-800 border border-blue-300/30' 
                           : 'bg-purple-500/20 text-purple-300 border border-purple-500/30'
@@ -94,7 +92,7 @@ export const ProjectsSection = () => {
                       flex-1 transition-all duration-300
                       ${isLightMode 
                         ? 'border-blue-400 text-black hover:bg-blue-500/20' 
-                        : 'liquid-glass-button border-white/40 text-white hover:bg-white/10'
+                        : 'border-purple-500 text-white hover:bg-purple-500/20'
                       }
                     `}
                   >
@@ -133,7 +131,7 @@ export const ProjectsSection = () => {
               px-8 py-3 transition-all duration-300 ${textClass}
               ${isLightMode 
                 ? 'border-blue-400 hover:bg-blue-500/20' 
-                : 'liquid-glass-button border-white/40 hover:bg-white/10'
+                : 'border-purple-500 hover:bg-purple-500/20'
               }
             `}
           >

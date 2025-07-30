@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
 
 export type TimeTheme = 'day' | 'afternoon' | 'evening' | 'night';
 
@@ -8,14 +8,15 @@ interface TimeThemeContextType {
   isDarkModeOverride: boolean;
   effectiveTheme: TimeTheme;
   backgroundTheme: TimeTheme;
+  currentHour: number;
   toggleManualMode: () => void;
   setManualTheme: (theme: TimeTheme) => void;
   toggleDarkMode: () => void;
   isAutoMode: boolean;
   getTextClass: () => string;
   shouldShowComets: () => boolean;
-  shouldShowGlow: () => boolean;
   isDayOrAfternoon: () => boolean;
+  getTimeBasedClass: () => string;
 }
 
 const TimeThemeContext = createContext<TimeThemeContextType | undefined>(undefined);
@@ -29,14 +30,27 @@ export const TimeThemeProvider: React.FC<TimeThemeProviderProps> = ({ children }
   const [isManualMode, setIsManualMode] = useState(false);
   const [manualTheme, setManualTheme] = useState<TimeTheme>('night');
   const [isDarkModeOverride, setIsDarkModeOverride] = useState(false);
+  const [currentHour, setCurrentHour] = useState<number>(new Date().getHours());
+  const [manualTimeOverride, setManualTimeOverride] = useState<number | null>(null);
 
-  const getTimeBasedTheme = (): TimeTheme => {
-    const hour = new Date().getHours();
+  const getTimeBasedTheme = useCallback((): TimeTheme => {
+    // Use manual time override if available (from time slider)
+    const hour = manualTimeOverride !== null ? manualTimeOverride : new Date().getHours();
     
-    if (hour >= 6 && hour < 12) return 'day';        // 6 AM - 12 PM
-    if (hour >= 12 && hour < 18) return 'afternoon'; // 12 PM - 6 PM
-    if (hour >= 18 && hour < 22) return 'evening';   // 6 PM - 10 PM
-    return 'night';                                   // 10 PM - 6 AM
+    if (hour >= 6 && hour < 18) return 'day';        // 6 AM - 6 PM (Day time)
+    return 'night';                                   // 6 PM - 6 AM (Night time)
+  }, [manualTimeOverride]);
+
+  // Helper function to get representative hour for a theme
+  const getRepresentativeHour = (theme: TimeTheme): number => {
+    switch (theme) {
+      case 'day': return 12;       // 12 PM (middle of day period)
+      case 'night': return 23;     // 11 PM (middle of night period)
+      // Keep old themes for backward compatibility but map to new logic
+      case 'afternoon': return 15; // 3 PM (maps to day)
+      case 'evening': return 20;   // 8 PM (maps to night)
+      default: return 12;
+    }
   };
 
   const getBackgroundTheme = (): TimeTheme => {
@@ -74,11 +88,13 @@ export const TimeThemeProvider: React.FC<TimeThemeProviderProps> = ({ children }
       const autoTheme = getTimeBasedTheme();
       setTheme(autoTheme);
     }
-  }, []);
+  }, [getTimeBasedTheme]);
 
   useEffect(() => {
     if (!isManualMode) {
       const updateTheme = () => {
+        const newHour = manualTimeOverride !== null ? manualTimeOverride : new Date().getHours();
+        setCurrentHour(newHour);
         setTheme(getTimeBasedTheme());
       };
 
@@ -86,7 +102,28 @@ export const TimeThemeProvider: React.FC<TimeThemeProviderProps> = ({ children }
       const interval = setInterval(updateTheme, 60000);
       return () => clearInterval(interval);
     }
-  }, [isManualMode]);
+  }, [isManualMode, manualTimeOverride, getTimeBasedTheme]);
+
+  // Listen for manual time changes from the time slider
+  useEffect(() => {
+    const handleManualTimeChange = (event: CustomEvent<number | null>) => {
+      setManualTimeOverride(event.detail);
+      if (event.detail !== null) {
+        setCurrentHour(event.detail);
+        setTheme(getTimeBasedTheme());
+      } else {
+        // Reset to actual current time
+        const actualHour = new Date().getHours();
+        setCurrentHour(actualHour);
+        setTheme(getTimeBasedTheme());
+      }
+    };
+
+    window.addEventListener('manualTimeChange', handleManualTimeChange as EventListener);
+    return () => {
+      window.removeEventListener('manualTimeChange', handleManualTimeChange as EventListener);
+    };
+  }, [getTimeBasedTheme, manualTimeOverride]);
 
   const toggleManualMode = () => {
     const newManualMode = !isManualMode;
@@ -94,10 +131,13 @@ export const TimeThemeProvider: React.FC<TimeThemeProviderProps> = ({ children }
     
     if (newManualMode) {
       setTheme(manualTheme);
+      setCurrentHour(getRepresentativeHour(manualTheme)); // Set hour to match manual theme
       localStorage.setItem('portfolio-manual-mode', 'true');
       localStorage.setItem('portfolio-manual-theme', manualTheme);
     } else {
-      setTheme(getTimeBasedTheme());
+      const currentTimeTheme = getTimeBasedTheme();
+      setTheme(currentTimeTheme);
+      setCurrentHour(new Date().getHours()); // Reset to actual current hour
       localStorage.setItem('portfolio-manual-mode', 'false');
     }
   };
@@ -106,6 +146,7 @@ export const TimeThemeProvider: React.FC<TimeThemeProviderProps> = ({ children }
     setManualTheme(newTheme);
     if (isManualMode) {
       setTheme(newTheme);
+      setCurrentHour(getRepresentativeHour(newTheme)); // Update currentHour to match theme
       localStorage.setItem('portfolio-manual-theme', newTheme);
     }
   };
@@ -127,43 +168,49 @@ export const TimeThemeProvider: React.FC<TimeThemeProviderProps> = ({ children }
       return 'text-dark-mode'; // Dark mode override - white text with glow
     }
     
-    const hour = new Date().getHours();
-    const isLateNight = (hour >= 22 && hour <= 23) || (hour >= 0 && hour <= 4);
+    // Use effectiveTheme to respect manual mode
+    const currentTheme = effectiveTheme;
     
-    if (isLateNight) {
-      return 'text-dark-mode'; // Late night gets same styling as dark mode
-    }
-    
-    const currentTheme = getTimeBasedTheme();
+    // Day period (6 AM - 6 PM) gets black text
     if (currentTheme === 'day' || currentTheme === 'afternoon') {
-      return 'text-light-mode'; // Day and afternoon - black text
+      return 'text-light-mode'; // Day period - black text
     }
     
-    return 'text-regular'; // Evening and regular night - white text
+    // Night period (6 PM - 6 AM) gets white text with glow
+    return 'text-dark-mode'; // Night period - white text with glow
   };
 
   // Check if comets should be shown
   const shouldShowComets = (): boolean => {
     if (isDarkModeOverride) return true;
     
-    const hour = new Date().getHours();
-    return (hour >= 22 && hour <= 23) || (hour >= 0 && hour <= 4);
-  };
-
-  // Check if glow effects should be shown
-  const shouldShowGlow = (): boolean => {
-    if (isDarkModeOverride) return true;
-    
-    const hour = new Date().getHours();
-    return (hour >= 22 && hour <= 23) || (hour >= 0 && hour <= 4);
+    // Use effectiveTheme to respect manual mode
+    const currentTheme = effectiveTheme;
+    // Only show comets during night hours
+    // Explicitly exclude day and afternoon
+    if (currentTheme === 'day' || currentTheme === 'afternoon') return false;
+    return currentTheme === 'night'; // Only show comets during night
   };
 
   // Check if it's day or afternoon for special text handling
   const isDayOrAfternoon = (): boolean => {
     if (isDarkModeOverride) return false;
     
-    const hour = new Date().getHours();
-    return (hour >= 6 && hour < 12) || (hour >= 12 && hour < 18);
+    // Use effectiveTheme to respect manual mode
+    const currentTheme = effectiveTheme;
+    // Day period is 6 AM - 6 PM
+    return currentTheme === 'day' || currentTheme === 'afternoon';
+  };
+
+  // Get time-based CSS class for higher specificity
+  const getTimeBasedClass = (): string => {
+    const hour = currentHour;
+    
+    if (isDarkModeOverride) return 'theme-dark-override';
+    
+    // Simplified logic: 6 AM - 6 PM is day, 6 PM - 6 AM is night
+    if (hour >= 6 && hour < 18) return 'theme-day';
+    return 'theme-night';
   };
 
   const value: TimeThemeContextType = {
@@ -172,14 +219,15 @@ export const TimeThemeProvider: React.FC<TimeThemeProviderProps> = ({ children }
     isDarkModeOverride,
     effectiveTheme,
     backgroundTheme,
+    currentHour,
     toggleManualMode,
     setManualTheme: handleSetManualTheme,
     toggleDarkMode,
     isAutoMode: !isDarkModeOverride,
     getTextClass,
     shouldShowComets,
-    shouldShowGlow,
     isDayOrAfternoon,
+    getTimeBasedClass,
   };
 
   return (

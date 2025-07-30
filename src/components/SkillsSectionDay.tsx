@@ -3,11 +3,10 @@ import { Card } from '@/components/ui/card';
 import portfolioData from '@/data/portfolio.json';
 import { useEffect, useRef, useState } from 'react';
 
-export const SkillsSection = () => {
+export const SkillsSectionDay = () => {
   const { 
     getTextClass, 
-    isDayOrAfternoon,
-    getTimeBasedClass
+    isDayOrAfternoon
   } = useTimeTheme();
   
   const { skills } = portfolioData;
@@ -16,7 +15,6 @@ export const SkillsSection = () => {
   
   const textClass = getTextClass();
   const isLightMode = isDayOrAfternoon();
-  const timeBasedClass = getTimeBasedClass();
 
   const skillCategories = [
     { title: 'Languages', skills: skills.languages, icon: '💻', direction: 'left' },
@@ -47,10 +45,10 @@ export const SkillsSection = () => {
   }, []);
 
   return (
-    <section ref={sectionRef} id="skills" className={`py-20 px-6 ${timeBasedClass}`}>
+    <section ref={sectionRef} id="skills" className="py-20 px-6">
       <div className="container mx-auto max-w-6xl">
         <h2 className={`
-          text-4xl font-bold text-center mb-12 transition-colors duration-300 synthwave-text-glow ${textClass}
+          text-4xl font-bold text-center mb-12 transition-colors duration-300 ${textClass}
         `}>
           Skills & Technologies
         </h2>

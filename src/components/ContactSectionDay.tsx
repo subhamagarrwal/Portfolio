@@ -8,8 +8,8 @@ import { Label } from '@/components/ui/label';
 import { Mail, Send, Github, Linkedin } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
-export const ContactSection = () => {
-  const { getTextClass, isDayOrAfternoon, getTimeBasedClass } = useTimeTheme();
+export const ContactSectionDay = () => {
+  const { getTextClass, isDayOrAfternoon } = useTimeTheme();
   const { toast } = useToast();
   const [formData, setFormData] = useState({
     name: '',
@@ -21,7 +21,6 @@ export const ContactSection = () => {
   // Get the appropriate text theme class
   const textClass = getTextClass();
   const isLightMode = isDayOrAfternoon();
-  const timeBasedClass = getTimeBasedClass();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
@@ -47,10 +46,10 @@ export const ContactSection = () => {
   };
 
   return (
-    <section id="contact" className={`py-20 px-6 ${timeBasedClass}`}>
+    <section id="contact" className="py-20 px-6">
       <div className="container mx-auto max-w-4xl">
         <h2 className={`
-          text-4xl font-bold text-center mb-12 transition-colors duration-300 synthwave-text-glow ${textClass}
+          text-4xl font-bold text-center mb-12 transition-colors duration-300 ${textClass}
           ${isLightMode ? 'liquid-glass-text-container' : ''}
         `}>
           Get In Touch
@@ -58,7 +57,7 @@ export const ContactSection = () => {
 
         <div className="grid md:grid-cols-2 gap-8">
           <Card className={`
-            p-6 transition-all duration-300 synthwave-glow
+            p-6 transition-all duration-300
             ${isLightMode
                 ? 'bg-white/25 border-white/40 liquid-glass-card'
                 : 'bg-white/15 border-white/25 liquid-glass-card'
@@ -114,7 +113,7 @@ export const ContactSection = () => {
           </Card>
 
           <Card className={`
-            p-6 transition-all duration-300 synthwave-glow
+            p-6 transition-all duration-300
             ${isLightMode
                 ? 'bg-white/25 border-white/40 liquid-glass-card'
                 : 'bg-white/15 border-white/25 liquid-glass-card'
