@@ -11,6 +11,7 @@ interface TimeThemeContextType {
   toggleManualMode: () => void;
   setManualTheme: (theme: TimeTheme) => void;
   toggleDarkMode: () => void;
+  isAutoMode: boolean;
 }
 
 const TimeThemeContext = createContext<TimeThemeContextType | undefined>(undefined);
@@ -49,7 +50,7 @@ export const TimeThemeProvider: React.FC<TimeThemeProviderProps> = ({ children }
     if (isDarkModeOverride) {
       return 'night'; // Force night theme for styling when dark mode override is active
     }
-    return 'day'; // Always use day (blue) theme for styling when dark mode override is off
+    return getTimeBasedTheme(); // Use actual time-based theme when in auto mode
   };
 
   const effectiveTheme = getEffectiveTheme();
@@ -143,6 +144,7 @@ export const TimeThemeProvider: React.FC<TimeThemeProviderProps> = ({ children }
     toggleManualMode,
     setManualTheme: handleSetManualTheme,
     toggleDarkMode,
+    isAutoMode: !isDarkModeOverride,
   };
 
   return (

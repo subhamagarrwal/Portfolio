@@ -6,14 +6,23 @@ import {
   Users, 
   Volume2, 
   VolumeX,
-  User,
   Mail,
   Sun,
   Moon,
-  Home
+  Home,
+  Clock,
+  Settings,
+  ArrowLeft
 } from 'lucide-react';
 import { useTimeTheme } from '@/hooks/useTimeTheme';
 import './GlassDock.css';
+
+// Extend Window interface for manual time override
+declare global {
+  interface Window {
+    manualTimeOverride?: number;
+  }
+}
 
 interface DockItem {
   id: string;
@@ -23,9 +32,11 @@ interface DockItem {
 }
 
 export const GlassDock = () => {
-  const { isDarkModeOverride, toggleDarkMode } = useTimeTheme();
+  const { isDarkModeOverride, toggleDarkMode, isAutoMode } = useTimeTheme();
   const [isMuted, setIsMuted] = useState(true);
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+  const [isTimeSliderMode, setIsTimeSliderMode] = useState(false);
+  const [manualTime, setManualTime] = useState(12); // 0-23 hours
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -39,18 +50,175 @@ export const GlassDock = () => {
     // TODO: Implement actual music toggle functionality
   };
 
+  const getTimeLabel = (hour: number) => {
+    if (hour >= 6 && hour < 12) return `${hour}:00 AM - Morning`;
+    if (hour >= 12 && hour < 18) return `${hour === 12 ? 12 : hour - 12}:00 PM - Afternoon`;
+    if (hour >= 18 && hour < 22) return `${hour - 12}:00 PM - Evening`;
+    return `${hour === 0 ? 12 : hour > 12 ? hour - 12 : hour}:00 ${hour === 0 || hour < 12 ? 'AM' : 'PM'} - Night`;
+  };
+
+  const handleTimeChange = (newTime: number) => {
+    setManualTime(newTime);
+    // This will be used by MountainLandscape to override the current time
+    window.manualTimeOverride = newTime;
+    // Trigger a re-render of the background
+    window.dispatchEvent(new CustomEvent('manualTimeChange', { detail: newTime }));
+  };
+
+  const handleBackToNormal = () => {
+    setIsTimeSliderMode(false);
+    // Clear the manual time override
+    delete window.manualTimeOverride;
+    window.dispatchEvent(new CustomEvent('manualTimeChange', { detail: null }));
+  };
+
+  // Time Slider Mode UI
+  if (isTimeSliderMode) {
+    return (
+      <>
+        {/* Back button in top left */}
+        <button
+          onClick={handleBackToNormal}
+          className={`
+            fixed top-6 left-6 z-50 flex items-center gap-2 px-4 py-2 rounded-xl
+            backdrop-blur-xl backdrop-saturate-150 border transition-all duration-300
+            ${isDarkModeOverride 
+              ? 'bg-black/20 border-white/10 text-white hover:bg-white/10' 
+              : 'bg-white/25 border-black/5 text-black hover:bg-white/40'
+            }
+          `}
+          style={{
+            background: isDarkModeOverride 
+              ? 'linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05))'
+              : 'linear-gradient(135deg, rgba(255,255,255,0.3), rgba(255,255,255,0.1))',
+            boxShadow: isDarkModeOverride
+              ? '0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.2)'
+              : '0 8px 32px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.3)',
+          }}
+        >
+          <ArrowLeft size={20} />
+          <span className="text-sm font-medium">Back</span>
+        </button>
+
+        {/* Time Slider Dock */}
+        <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50">
+          <div 
+            className={`
+              relative flex flex-col items-center px-6 py-4 rounded-2xl
+              backdrop-blur-xl backdrop-saturate-150
+              border shadow-2xl transition-all duration-300
+              ${isDarkModeOverride 
+                ? 'bg-black/20 border-white/10 shadow-white/5' 
+                : 'bg-white/25 border-black/5 shadow-black/10'
+              }
+            `}
+            style={{
+              background: isDarkModeOverride 
+                ? 'linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05))'
+                : 'linear-gradient(135deg, rgba(255,255,255,0.3), rgba(255,255,255,0.1))',
+              boxShadow: isDarkModeOverride
+                ? '0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.2)'
+                : '0 8px 32px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.3)',
+            }}
+          >
+            {/* Glass shine effect */}
+            <div className="absolute inset-0 rounded-2xl glass-reflection" />
+            
+            {/* Time display */}
+            <div className={`
+              relative z-10 text-center mb-4
+              ${isDarkModeOverride ? 'text-white' : 'text-black'}
+            `}>
+              <div className="text-lg font-semibold">{getTimeLabel(manualTime)}</div>
+              <div className="text-sm opacity-70">Drag to change time of day</div>
+            </div>
+            
+            {/* Time slider */}
+            <div className="relative z-10 w-80">
+              <input
+                type="range"
+                min="0"
+                max="23"
+                value={manualTime}
+                onChange={(e) => handleTimeChange(parseInt(e.target.value))}
+                className={`
+                  w-full h-2 rounded-lg appearance-none cursor-pointer
+                  ${isDarkModeOverride 
+                    ? 'bg-white/20 slider-dark' 
+                    : 'bg-black/20 slider-light'
+                  }
+                `}
+                style={{
+                  background: `linear-gradient(to right, 
+                    #87CEEB 0%, #87CEEB 25%, 
+                    #FFD700 25%, #FFD700 50%, 
+                    #FF4500 50%, #FF4500 75%, 
+                    #4B0082 75%, #4B0082 100%)`,
+                }}
+              />
+              
+              {/* Time markers */}
+              <div className="flex justify-between mt-2 text-xs opacity-60">
+                <span>12 AM</span>
+                <span>6 AM</span>
+                <span>12 PM</span>
+                <span>6 PM</span>
+                <span>11 PM</span>
+              </div>
+            </div>
+            
+            {/* Current time indicator */}
+            <div className={`
+              relative z-10 mt-3 text-xs opacity-50
+              ${isDarkModeOverride ? 'text-white' : 'text-black'}
+            `}>
+              Real time: {new Date().toLocaleTimeString()}
+            </div>
+          </div>
+        </div>
+        
+        <style>{`
+          .slider-dark::-webkit-slider-thumb {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.7));
+            cursor: pointer;
+            border: 2px solid rgba(255,255,255,0.3);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+          }
+          
+          .slider-light::-webkit-slider-thumb {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(0,0,0,0.8), rgba(0,0,0,0.6));
+            cursor: pointer;
+            border: 2px solid rgba(0,0,0,0.2);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+          }
+          
+          .slider-dark::-moz-range-thumb,
+          .slider-light::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+          }
+        `}</style>
+      </>
+    );
+  }
+
   const dockItems: DockItem[] = [
     {
       id: 'home',
       icon: <Home size={24} />,
       label: 'Home',
       onClick: () => scrollToSection('home'),
-    },
-    {
-      id: 'about',
-      icon: <User size={24} />,
-      label: 'About',
-      onClick: () => scrollToSection('about'),
     },
     {
       id: 'skills',
@@ -82,10 +250,17 @@ export const GlassDock = () => {
       label: 'Contact',
       onClick: () => scrollToSection('contact'),
     },
+    // Only show time control when in automatic mode
+    ...(isAutoMode ? [{
+      id: 'time-control',
+      icon: <Settings size={24} />,
+      label: 'Time Control',
+      onClick: () => setIsTimeSliderMode(true),
+    }] : []),
     {
       id: 'theme',
-      icon: isDarkModeOverride ? <Sun size={24} /> : <Moon size={24} />,
-      label: isDarkModeOverride ? 'Light Mode' : 'Dark Mode',
+      icon: isAutoMode ? <Clock size={24} /> : <Moon size={24} />,
+      label: isAutoMode ? 'Night Mode' : 'Auto Mode',
       onClick: toggleDarkMode,
     },
     {
@@ -219,10 +394,10 @@ export const GlassDock = () => {
               )}
               
               {/* Theme toggle indicator */}
-              {item.id === 'theme' && isDarkModeOverride && (
+              {item.id === 'theme' && !isAutoMode && (
                 <div 
-                  className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-yellow-400 rounded-full border border-white/50 animate-pulse"
-                  aria-label="Dark mode active"
+                  className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-purple-400 rounded-full border border-white/50 animate-pulse"
+                  aria-label="Night mode active"
                 />
               )}
               

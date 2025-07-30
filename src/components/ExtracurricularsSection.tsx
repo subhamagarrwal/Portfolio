@@ -14,7 +14,7 @@ export const ExtracurricularsSection = () => {
           text-4xl font-bold text-center mb-12 transition-colors duration-300
           ${isNightMode 
             ? 'text-night-text synthwave-text-glow' 
-            : `text-${theme}-text`
+            : `text-${theme}-text liquid-glass-text font-extrabold`
           }
         `}>
           Leadership & Activities
@@ -28,7 +28,7 @@ export const ExtracurricularsSection = () => {
                 p-6 transition-all duration-500 hover:scale-105
                 ${isNightMode 
                   ? 'bg-night-card/80 border-night-border synthwave-glow' 
-                  : `bg-${theme}-card border-${theme}-border`
+                  : `bg-${theme}-card border-${theme}-border liquid-glass-card`
                 }
               `}
               style={{ animationDelay: `${index * 0.2}s` }}

@@ -5,9 +5,28 @@ import { ArrowDown, Github, Linkedin, Mail } from 'lucide-react';
 export const HeroSection = () => {
   const { effectiveTheme, isDarkModeOverride } = useTimeTheme();
   
-  // For visual effects like glow, only use dark mode override
-  // For color themes, use the effective theme
+  // Only apply visual effects in dark mode override
   const isVisualDarkMode = isDarkModeOverride;
+  
+  // Check if it's day or afternoon for solid black text
+  const isDayOrAfternoon = effectiveTheme === 'day' || effectiveTheme === 'afternoon';
+  
+  // More specific time-based black text - only during day and afternoon hours
+  const currentHour = new Date().getHours();
+  const isDayTime = currentHour >= 6 && currentHour < 12;    // 6 AM to 12 PM (morning/day)
+  const isAfternoonTime = currentHour >= 12 && currentHour < 18; // 12 PM to 6 PM (afternoon)
+  const shouldBeBlack = (isDayTime || isAfternoonTime) && !isVisualDarkMode;
+
+  // Debug logging
+  console.log('HeroSection Debug:', {
+    effectiveTheme,
+    isDarkModeOverride,
+    isDayOrAfternoon,
+    currentHour,
+    isDayTime,
+    isAfternoonTime,
+    shouldBeBlack
+  });
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -23,31 +42,43 @@ export const HeroSection = () => {
           mb-8 transition-all duration-1000
           ${isVisualDarkMode ? 'synthwave-text-glow' : ''}
         `}>
-          <h1 className={`
-            text-5xl md:text-7xl font-bold mb-6 transition-colors duration-300
-            ${isVisualDarkMode 
-              ? 'text-night-text' 
-              : `text-${effectiveTheme}-text`
-            }
-          `}>
-            Your Name
+          <h1 
+            className={`
+              text-5xl md:text-7xl font-bold mb-6 transition-colors duration-300
+              ${isVisualDarkMode 
+                ? 'text-night-text synthwave-text-glow' 
+                : shouldBeBlack
+                  ? 'force-black-text'
+                  : 'force-black-text'
+              }
+            `}
+          >
+            Subham Agarwal
           </h1>
-          <p className={`
-            text-xl md:text-2xl mb-8 transition-colors duration-300
-            ${isVisualDarkMode 
-              ? 'text-night-text/80' 
-              : `text-${effectiveTheme}-text/80`
-            }
-          `}>
+          <p 
+            className={`
+              text-xl md:text-2xl mb-8 transition-colors duration-300
+              ${isVisualDarkMode 
+                ? 'text-night-text/80' 
+                : shouldBeBlack
+                  ? 'force-black-text'
+                  : 'force-black-text'
+              }
+            `}
+          >
             Full Stack Developer & Creative Technologist
           </p>
-          <p className={`
-            text-lg max-w-2xl mx-auto mb-12 transition-colors duration-300
-            ${isVisualDarkMode 
-              ? 'text-night-text/70' 
-              : `text-${effectiveTheme}-text/70`
-            }
-          `}>
+          <p 
+            className={`
+              text-lg max-w-2xl mx-auto mb-12 transition-colors duration-300
+              ${isVisualDarkMode 
+                ? 'text-night-text/70' 
+                : shouldBeBlack
+                  ? 'force-black-text'
+                  : 'force-black-text'
+              }
+            `}
+          >
             Passionate about creating innovative web applications that solve real-world problems. 
             Currently pursuing Computer Science with a focus on modern web technologies.
           </p>
@@ -57,27 +88,26 @@ export const HeroSection = () => {
           <Button
             onClick={() => scrollToSection('projects')}
             className={`
-              px-8 py-3 rounded-full font-semibold transition-all duration-300
+              px-8 py-3 rounded-full font-semibold transition-all duration-300 grey-liquid-glass-button text-black
               ${isVisualDarkMode 
-                ? 'bg-night-accent hover:bg-night-accent/80 text-white synthwave-glow' 
-                : `bg-${effectiveTheme}-accent hover:bg-${effectiveTheme}-accent/80 text-white`
+                ? 'synthwave-glow' 
+                : ''
               }
             `}
           >
             View My Work
           </Button>
           <Button
-            onClick={() => scrollToSection('contact')}
-            variant="outline"
+            onClick={() => scrollToSection('projects')}
             className={`
-              px-8 py-3 rounded-full font-semibold transition-all duration-300
+              px-8 py-3 rounded-full font-semibold transition-all duration-300 grey-liquid-glass-button text-black
               ${isVisualDarkMode 
-                ? 'border-night-border text-night-text hover:bg-night-card' 
-                : `border-${effectiveTheme}-border text-${effectiveTheme}-text hover:bg-${effectiveTheme}-card`
+                ? 'synthwave-glow' 
+                : ''
               }
             `}
           >
-            Get In Touch
+            Download Resume
           </Button>
         </div>
 
@@ -87,10 +117,10 @@ export const HeroSection = () => {
             target="_blank"
             rel="noopener noreferrer"
             className={`
-              p-3 rounded-full transition-all duration-300
+              p-3 rounded-full transition-all duration-300 grey-liquid-glass-button text-black
               ${isVisualDarkMode 
-                ? 'text-night-text hover:text-night-accent hover:bg-night-card' 
-                : `text-${effectiveTheme}-text hover:text-${effectiveTheme}-accent hover:bg-${effectiveTheme}-card`
+                ? 'synthwave-glow' 
+                : ''
               }
             `}
           >
@@ -101,10 +131,10 @@ export const HeroSection = () => {
             target="_blank"
             rel="noopener noreferrer"
             className={`
-              p-3 rounded-full transition-all duration-300
+              p-3 rounded-full transition-all duration-300 grey-liquid-glass-button text-black
               ${isVisualDarkMode 
-                ? 'text-night-text hover:text-night-accent hover:bg-night-card' 
-                : `text-${effectiveTheme}-text hover:text-${effectiveTheme}-accent hover:bg-${effectiveTheme}-card`
+                ? 'synthwave-glow' 
+                : ''
               }
             `}
           >
@@ -113,10 +143,10 @@ export const HeroSection = () => {
           <a
             href="mailto:your.email@example.com"
             className={`
-              p-3 rounded-full transition-all duration-300
+              p-3 rounded-full transition-all duration-300 grey-liquid-glass-button text-black
               ${isVisualDarkMode 
-                ? 'text-night-text hover:text-night-accent hover:bg-night-card' 
-                : `text-${effectiveTheme}-text hover:text-${effectiveTheme}-accent hover:bg-${effectiveTheme}-card`
+                ? 'synthwave-glow' 
+                : ''
               }
             `}
           >
@@ -130,7 +160,9 @@ export const HeroSection = () => {
               w-8 h-8 mx-auto cursor-pointer transition-colors duration-300
               ${isVisualDarkMode 
                 ? 'text-night-accent' 
-                : `text-${effectiveTheme}-accent`
+                : shouldBeBlack
+                  ? 'text-blue-600'
+                  : `text-${effectiveTheme}-accent`
               }
             `}
             onClick={() => scrollToSection('about')}

@@ -49,7 +49,7 @@ export const ContactSection = () => {
           text-4xl font-bold text-center mb-12 transition-colors duration-300
           ${isNightMode 
             ? 'text-night-text synthwave-text-glow' 
-            : `text-${theme}-text`
+            : `text-${theme}-text liquid-glass-text font-extrabold`
           }
         `}>
           Get In Touch
@@ -60,7 +60,7 @@ export const ContactSection = () => {
             p-6 transition-all duration-300
             ${isNightMode 
               ? 'bg-night-card/80 border-night-border synthwave-glow' 
-              : `bg-${theme}-card border-${theme}-border`
+              : `bg-${theme}-card border-${theme}-border liquid-glass-card`
             }
           `}>
             <h3 className={`
@@ -137,7 +137,7 @@ export const ContactSection = () => {
             p-6 transition-all duration-300
             ${isNightMode 
               ? 'bg-night-card/80 border-night-border synthwave-glow' 
-              : `bg-${theme}-card border-${theme}-border`
+              : `bg-${theme}-card border-${theme}-border liquid-glass-card`
             }
           `}>
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -237,7 +237,7 @@ export const ContactSection = () => {
                   w-full transition-all duration-300
                   ${isNightMode 
                     ? 'bg-night-accent hover:bg-night-accent/80 text-white synthwave-glow' 
-                    : `bg-${theme}-accent hover:bg-${theme}-accent/80 text-white`
+                    : `bg-${theme}-accent hover:bg-${theme}-accent/80 text-white liquid-glass-button`
                   }
                 `}
               >

@@ -16,7 +16,7 @@ export const ProjectsSection = () => {
           text-4xl font-bold text-center mb-12 transition-colors duration-300
           ${isNightMode 
             ? 'text-night-text synthwave-text-glow' 
-            : `text-${theme}-text`
+            : `text-${theme}-text liquid-glass-text`
           }
         `}>
           Featured Projects
@@ -30,7 +30,11 @@ export const ProjectsSection = () => {
                 overflow-hidden transition-all duration-500 hover:scale-105
                 ${isNightMode 
                   ? 'bg-night-card/80 border-night-border synthwave-glow' 
-                  : `bg-${theme}-card border-${theme}-border`
+                  : `bg-${theme}-card border-${theme}-border liquid-glass-card`
+                }
+                ${projects.length % 2 !== 0 && index === projects.length - 1 
+                  ? 'lg:col-span-2' 
+                  : ''
                 }
               `}
               style={{ animationDelay: `${index * 0.2}s` }}
@@ -145,9 +149,7 @@ export const ProjectsSection = () => {
               }
             `}
           >
-            <a href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer">
-              View More Projects on GitHub
-            </a>
+
           </Button>
         </div>
       </div>

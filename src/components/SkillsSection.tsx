@@ -1,48 +1,74 @@
 import { useTimeTheme } from '@/hooks/useTimeTheme';
 import { Card } from '@/components/ui/card';
 import portfolioData from '@/data/portfolio.json';
+import { useEffect, useRef, useState } from 'react';
 
 export const SkillsSection = () => {
   const { theme } = useTimeTheme();
   const isNightMode = theme === 'night' || theme === 'evening';
   const { skills } = portfolioData;
+  const [visibleCards, setVisibleCards] = useState<boolean[]>([false, false, false]);
+  const sectionRef = useRef<HTMLElement>(null);
 
   const skillCategories = [
-    { title: 'Languages', skills: skills.languages, icon: '💻' },
-    { title: 'Frameworks', skills: skills.frameworks, icon: '🚀' },
-    { title: 'Tools & Technologies', skills: skills.tools, icon: '🛠️' },
+    { title: 'Languages', skills: skills.languages, icon: '💻', direction: 'left' },
+    { title: 'Frameworks', skills: skills.frameworks, icon: '🚀', direction: 'right' },
+    { title: 'Tools & Technologies', skills: skills.tools, icon: '🛠️', direction: 'left' },
   ];
 
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // Trigger animations with staggered delays
+            setTimeout(() => setVisibleCards(prev => [true, prev[1], prev[2]]), 100);
+            setTimeout(() => setVisibleCards(prev => [prev[0], true, prev[2]]), 300);
+            setTimeout(() => setVisibleCards(prev => [prev[0], prev[1], true]), 500);
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section id="skills" className="py-20 px-6">
+    <section ref={sectionRef} id="skills" className="py-20 px-6">
       <div className="container mx-auto max-w-6xl">
         <h2 className={`
           text-4xl font-bold text-center mb-12 transition-colors duration-300
           ${isNightMode 
             ? 'text-night-text synthwave-text-glow' 
-            : `text-${theme}-text`
+            : `text-${theme}-text liquid-glass-text font-extrabold`
           }
         `}>
           Skills & Technologies
         </h2>
 
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="space-y-8">
           {skillCategories.map((category, index) => (
-            <Card
+            <div
               key={category.title}
               className={`
-                p-6 transition-all duration-500 hover:scale-105
-                ${isNightMode 
-                  ? 'bg-night-card/80 border-night-border synthwave-glow' 
-                  : `bg-${theme}-card border-${theme}-border`
+                transition-all duration-700 ease-out
+                ${!visibleCards[index] 
+                  ? category.direction === 'left' 
+                    ? '-translate-x-full opacity-0' 
+                    : 'translate-x-full opacity-0'
+                  : 'translate-x-0 opacity-100'
                 }
               `}
-              style={{ animationDelay: `${index * 0.1}s` }}
             >
-              <div className="text-center mb-6">
-                <div className="text-4xl mb-3">{category.icon}</div>
+              <div className="flex items-center mb-4">
+                <span className="text-3xl mr-3">{category.icon}</span>
                 <h3 className={`
-                  text-xl font-semibold transition-colors duration-300
+                  text-2xl font-bold transition-colors duration-300
                   ${isNightMode 
                     ? 'text-night-accent' 
                     : `text-${theme}-accent`
@@ -51,25 +77,28 @@ export const SkillsSection = () => {
                   {category.title}
                 </h3>
               </div>
-
-              <div className="space-y-3">
+              
+              <div className="flex flex-wrap gap-3">
                 {category.skills.map((skill, skillIndex) => (
-                  <div
+                  <span
                     key={skill}
                     className={`
-                      px-3 py-2 rounded-lg text-center transition-all duration-300 hover:scale-105
+                      px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 hover:scale-105 grey-liquid-glass-button
                       ${isNightMode 
-                        ? 'bg-night-card/60 border border-night-border text-night-text' 
-                        : `bg-${theme}-card/60 border border-${theme}-border text-${theme}-text`
+                        ? 'text-night-text synthwave-glow' 
+                        : 'text-black'
                       }
                     `}
-                    style={{ animationDelay: `${(index * 0.1) + (skillIndex * 0.05)}s` }}
+                    style={{ 
+                      animationDelay: `${(index * 200) + (skillIndex * 50)}ms`,
+                      transitionDelay: `${(index * 200) + (skillIndex * 50)}ms`
+                    }}
                   >
                     {skill}
-                  </div>
+                  </span>
                 ))}
               </div>
-            </Card>
+            </div>
           ))}
         </div>
 

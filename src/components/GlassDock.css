@@ -28,21 +28,21 @@
 /* Responsive breakpoints */
 @media (max-width: 768px) {
   .glass-dock {
-    transform: translateX(-50%) scale(0.92);
+    transform: translateX(-50%) scale(0.94);
     bottom: 1rem;
   }
 }
 
 @media (max-width: 640px) {
   .glass-dock {
-    transform: translateX(-50%) scale(0.85);
+    transform: translateX(-50%) scale(0.88);
     bottom: 0.75rem;
   }
 }
 
 @media (max-width: 480px) {
   .glass-dock {
-    transform: translateX(-50%) scale(0.75);
+    transform: translateX(-50%) scale(0.78);
     bottom: 0.5rem;
   }
   
@@ -53,19 +53,19 @@
 
 @media (max-width: 420px) {
   .glass-dock {
-    transform: translateX(-50%) scale(0.68);
+    transform: translateX(-50%) scale(0.72);
   }
 }
 
 @media (max-width: 380px) {
   .glass-dock {
-    transform: translateX(-50%) scale(0.62);
+    transform: translateX(-50%) scale(0.66);
   }
 }
 
 @media (max-width: 360px) {
   .glass-dock {
-    transform: translateX(-50%) scale(0.58);
+    transform: translateX(-50%) scale(0.62);
   }
 }
 

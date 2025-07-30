@@ -10,7 +10,7 @@
     --day-bg-start: 200 100% 94%;    /* Light blue */
     --day-bg-end: 210 100% 88%;      /* Soft blue */
     --day-accent: 220 100% 60%;      /* Blue accent */
-    --day-text: 220 30% 25%;         /* Dark blue */
+    --day-text: 0 0% 0%;             /* Pure black */
     --day-card: 0 0% 100%;           /* Pure white */
     --day-card-border: 210 40% 85%;  /* Light blue border */
 
@@ -18,7 +18,7 @@
     --afternoon-bg-start: 195 100% 75%;  /* Bright cyan */
     --afternoon-bg-end: 25 100% 70%;     /* Intense orange */
     --afternoon-accent: 15 100% 55%;     /* Vibrant red-orange */
-    --afternoon-text: 15 40% 15%;        /* Deep brown */
+    --afternoon-text: 0 0% 0%;           /* Pure black */
     --afternoon-card: 0 0% 98%;          /* Off-white */
     --afternoon-card-border: 15 50% 80%; /* Orange border */
 
@@ -147,6 +147,220 @@
   text-shadow: 0 0 10px hsl(var(--night-accent) / 0.8);
 }
 
+/* Liquid glass effects for auto mode */
+.liquid-glass-text {
+  text-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.15),
+    0 0 12px rgba(255, 255, 255, 0.3),
+    0 0 20px rgba(135, 206, 250, 0.15);
+  position: relative;
+  font-weight: 600;
+}
+
+/* Force black text for day and afternoon periods */
+.force-black-text {
+  color: #000000 !important;
+  text-shadow: none !important;
+  font-weight: 700 !important;
+}
+
+.force-black-text h1,
+.force-black-text h2,
+.force-black-text p {
+  color: #000000 !important;
+  text-shadow: none !important;
+}
+
+/* Force white text for evening and night periods */
+.force-other-black {
+  color: #ffffff !important;
+  text-shadow: none !important;
+  font-weight: 700 !important;
+}
+
+.force-other-black h1,
+.force-other-black h2,
+.force-other-black p {
+  color: #ffffff !important;
+  text-shadow: none !important;
+}
+
+/* Specific classes for day/afternoon hero text visibility */
+.day-afternoon-hero-title {
+  color: #000000 !important;
+  text-shadow: none !important;
+  font-weight: 900 !important;
+}
+
+.day-afternoon-hero-subtitle {
+  color: #000000 !important;
+  text-shadow: none !important;
+  font-weight: 700 !important;
+}
+
+.day-afternoon-hero-description {
+  color: #000000 !important;
+  text-shadow: none !important;
+  font-weight: 600 !important;
+}
+
+.day-afternoon-hero-button {
+  color: #ffffff !important;
+  background-color: #1e40af !important;
+  border-color: #1e40af !important;
+}
+
+.day-afternoon-hero-button:hover {
+  background-color: #1d4ed8 !important;
+  border-color: #1d4ed8 !important;
+}
+
+.day-afternoon-hero-button-outline {
+  color: #000000 !important;
+  background-color: transparent !important;
+  border-color: #000000 !important;
+}
+
+.day-afternoon-hero-button-outline:hover {
+  background-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+.day-afternoon-hero-social {
+  color: #000000 !important;
+}
+
+.day-afternoon-hero-social:hover {
+  color: #1e40af !important;
+  background-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Specific classes for day/afternoon about section text visibility */
+.day-afternoon-about-title {
+  color: #000000 !important;
+  text-shadow: none !important;
+  font-weight: 900 !important;
+}
+
+.day-afternoon-about-text {
+  color: #000000 !important;
+  text-shadow: none !important;
+  font-weight: 600 !important;
+}
+
+/* Universal button gradients for visibility across all themes */
+.gradient-button-primary {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%) !important;
+  color: #ffffff !important;
+  border: 1px solid #1d4ed8 !important;
+  font-weight: 600 !important;
+}
+
+.gradient-button-primary:hover {
+  background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4) !important;
+}
+
+.gradient-button-secondary {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 100%) !important;
+  color: #000000 !important;
+  border: 2px solid rgba(0, 0, 0, 0.3) !important;
+  backdrop-filter: blur(8px) !important;
+  font-weight: 600 !important;
+}
+
+.gradient-button-secondary:hover {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.2) 100%) !important;
+  border-color: rgba(0, 0, 0, 0.5) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Normal white text for evening/night without liquid glass effects */
+.normal-white-text {
+  color: #ffffff !important;
+  text-shadow: none !important;
+  font-weight: 600 !important;
+}
+
+.normal-white-text h1,
+.normal-white-text h2,
+.normal-white-text p {
+  color: #ffffff !important;
+  text-shadow: none !important;
+}
+
+.liquid-glass-card {
+  background: linear-gradient(135deg, 
+    rgba(255, 255, 255, 0.15) 0%,
+    rgba(255, 255, 255, 0.08) 50%,
+    rgba(255, 255, 255, 0.15) 100%
+  );
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.12),
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.liquid-glass-button {
+  background: linear-gradient(135deg, 
+    rgba(255, 255, 255, 0.18) 0%,
+    rgba(255, 255, 255, 0.10) 50%,
+    rgba(255, 255, 255, 0.18) 100%
+  );
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.liquid-glass-button:hover {
+  background: linear-gradient(135deg, 
+    rgba(255, 255, 255, 0.25) 0%,
+    rgba(255, 255, 255, 0.15) 50%,
+    rgba(255, 255, 255, 0.25) 100%
+  );
+  transform: translateY(-1px);
+  box-shadow: 
+    0 10px 35px rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(255, 255, 255, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* Greyish liquid glass buttons for better visibility */
+.grey-liquid-glass-button {
+  background: linear-gradient(135deg, 
+    rgba(128, 128, 128, 0.3) 0%,
+    rgba(96, 96, 96, 0.2) 50%,
+    rgba(128, 128, 128, 0.3) 100%
+  );
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(128, 128, 128, 0.4);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.2),
+    0 0 0 1px rgba(128, 128, 128, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.grey-liquid-glass-button:hover {
+  background: linear-gradient(135deg, 
+    rgba(144, 144, 144, 0.4) 0%,
+    rgba(112, 112, 112, 0.3) 50%,
+    rgba(144, 144, 144, 0.4) 100%
+  );
+  transform: translateY(-2px);
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.25),
+    0 0 0 1px rgba(128, 128, 128, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  border-color: rgba(128, 128, 128, 0.5);
+}
+
 /* Smooth scroll */
 html {
   scroll-behavior: smooth;
@@ -180,4 +394,38 @@ html {
     min-height: 100vh;
     overflow-x: hidden;
   }
+}
+
+/* Glowworm Animations */
+@keyframes glowwormFloat {
+  0%, 100% { 
+    transform: translate(0, 0); 
+  }
+  25% { 
+    transform: translate(15px, -8px); 
+  }
+  50% { 
+    transform: translate(-12px, 10px); 
+  }
+  75% { 
+    transform: translate(8px, -15px); 
+  }
+}
+
+@keyframes glowwormPulse {
+  0%, 100% { 
+    opacity: 0.6; 
+    transform: scale(1);
+    filter: blur(0.5px);
+  }
+  50% { 
+    opacity: 1; 
+    transform: scale(1.4);
+    filter: blur(0.1px);
+  }
+}
+
+@keyframes starTwinkle {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
 }

@@ -62,10 +62,10 @@ export const Navigation = () => {
                   ${activeSection === item.id
                     ? isVisualDarkMode
                       ? 'text-night-accent synthwave-text-glow'
-                      : `text-${effectiveTheme}-accent`
+                      : `text-${effectiveTheme}-accent liquid-glass-text font-semibold`
                     : isVisualDarkMode
                       ? 'text-night-text hover:text-night-accent'
-                      : `text-${effectiveTheme}-text hover:text-${effectiveTheme}-accent`
+                      : `text-${effectiveTheme}-text hover:text-${effectiveTheme}-accent font-medium`
                   }
                 `}
               >

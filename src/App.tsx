@@ -4,8 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { TimeThemeProvider } from "@/contexts/TimeThemeContext";
-import CosmicBackground from "@/components/CosmicBackground";
-import CloudyBackground from "@/components/CloudyBackground";
+import MountainLandscape from "@/components/MountainLandscape";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 
@@ -15,9 +14,8 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <TimeThemeProvider>
       <TooltipProvider>
-        {/* Animated backgrounds */}
-        <CosmicBackground />
-        <CloudyBackground />
+        {/* Time-based Mountain Landscape Background */}
+        <MountainLandscape />
         
         <Toaster />
         <Sonner />
