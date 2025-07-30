@@ -6,10 +6,14 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 import portfolioData from '@/data/portfolio.json';
 
 export const ExperienceSection = () => {
-  const { theme } = useTimeTheme();
+  const { theme, getTextThemeClass, shouldShowLateNightGlow } = useTimeTheme();
   const isNightMode = theme === 'night' || theme === 'evening';
   const { experience } = portfolioData;
   const [expandedItems, setExpandedItems] = useState<{ [key: string]: boolean }>({});
+  
+  // Get the appropriate text theme class and glow state
+  const textThemeClass = getTextThemeClass();
+  const showLateNightGlow = shouldShowLateNightGlow();
 
   const toggleExpanded = (id: string) => {
     setExpandedItems(prev => ({
@@ -22,11 +26,9 @@ export const ExperienceSection = () => {
     <section id="experience" className="py-20 px-6">
       <div className="container mx-auto max-w-4xl">
         <h2 className={`
-          text-4xl font-bold text-center mb-12 transition-colors duration-300
-          ${isNightMode 
-            ? 'text-night-text synthwave-text-glow' 
-            : `text-${theme}-text liquid-glass-text font-extrabold`
-          }
+          text-4xl font-bold text-center mb-12 transition-colors duration-300 ${textThemeClass}
+          ${!isNightMode && !showLateNightGlow ? 'liquid-glass-text font-extrabold' : ''}
+          ${showLateNightGlow ? 'synthwave-text-glow' : ''}
         `}>
           Professional Experience
         </h2>
@@ -37,7 +39,7 @@ export const ExperienceSection = () => {
               key={exp.id}
               className={`
                 transition-all duration-500 hover:scale-[1.02]
-                ${isNightMode 
+                ${isNightMode || showLateNightGlow
                   ? 'bg-night-card/80 border-night-border synthwave-glow' 
                   : `bg-${theme}-card border-${theme}-border liquid-glass-card`
                 }

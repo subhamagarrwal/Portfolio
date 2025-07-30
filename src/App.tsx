@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { TimeThemeProvider } from "@/contexts/TimeThemeContext";
 import MountainLandscape from "@/components/MountainLandscape";
+import { CometEffect } from "@/components/CometEffect";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 
@@ -16,6 +17,9 @@ const App = () => (
       <TooltipProvider>
         {/* Time-based Mountain Landscape Background */}
         <MountainLandscape />
+        
+        {/* Comet Effect for late night hours and dark mode */}
+        <CometEffect />
         
         <Toaster />
         <Sonner />

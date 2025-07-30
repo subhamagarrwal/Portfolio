@@ -4,11 +4,15 @@ import portfolioData from '@/data/portfolio.json';
 import { useEffect, useRef, useState } from 'react';
 
 export const SkillsSection = () => {
-  const { theme } = useTimeTheme();
+  const { theme, getTextThemeClass, shouldShowLateNightGlow } = useTimeTheme();
   const isNightMode = theme === 'night' || theme === 'evening';
   const { skills } = portfolioData;
   const [visibleCards, setVisibleCards] = useState<boolean[]>([false, false, false]);
   const sectionRef = useRef<HTMLElement>(null);
+  
+  // Get the appropriate text theme class and glow state
+  const textThemeClass = getTextThemeClass();
+  const showLateNightGlow = shouldShowLateNightGlow();
 
   const skillCategories = [
     { title: 'Languages', skills: skills.languages, icon: '💻', direction: 'left' },
@@ -42,11 +46,9 @@ export const SkillsSection = () => {
     <section ref={sectionRef} id="skills" className="py-20 px-6">
       <div className="container mx-auto max-w-6xl">
         <h2 className={`
-          text-4xl font-bold text-center mb-12 transition-colors duration-300
-          ${isNightMode 
-            ? 'text-night-text synthwave-text-glow' 
-            : `text-${theme}-text liquid-glass-text font-extrabold`
-          }
+          text-4xl font-bold text-center mb-12 transition-colors duration-300 ${textThemeClass}
+          ${!isNightMode && !showLateNightGlow ? 'liquid-glass-text font-extrabold' : ''}
+          ${showLateNightGlow ? 'synthwave-text-glow' : ''}
         `}>
           Skills & Technologies
         </h2>
@@ -68,11 +70,7 @@ export const SkillsSection = () => {
               <div className="flex items-center mb-4">
                 <span className="text-3xl mr-3">{category.icon}</span>
                 <h3 className={`
-                  text-2xl font-bold transition-colors duration-300
-                  ${isNightMode 
-                    ? 'text-night-accent' 
-                    : `text-${theme}-accent`
-                  }
+                  text-2xl font-bold transition-colors duration-300 ${textThemeClass}
                 `}>
                   {category.title}
                 </h3>
@@ -85,8 +83,10 @@ export const SkillsSection = () => {
                     className={`
                       px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 hover:scale-105 grey-liquid-glass-button
                       ${isNightMode 
-                        ? 'text-night-text synthwave-glow' 
-                        : 'text-black'
+                        ? 'text-night-text' 
+                        : showLateNightGlow
+                          ? 'text-black'
+                          : 'text-black'
                       }
                     `}
                     style={{ 
@@ -103,11 +103,7 @@ export const SkillsSection = () => {
         </div>
 
         <div className={`
-          mt-12 text-center transition-colors duration-300
-          ${isNightMode 
-            ? 'text-night-text/70' 
-            : `text-${theme}-text/70`
-          }
+          mt-12 text-center transition-colors duration-300 ${textThemeClass}
         `}>
           <p className="text-lg">
             Always learning and exploring new technologies to stay at the forefront of web development.

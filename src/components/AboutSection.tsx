@@ -2,7 +2,7 @@ import { useTimeTheme } from '@/hooks/useTimeTheme';
 import { Card } from '@/components/ui/card';
 
 export const AboutSection = () => {
-  const { theme, effectiveTheme, isDarkModeOverride } = useTimeTheme();
+  const { theme, effectiveTheme, isDarkModeOverride, getTextThemeClass, shouldShowLateNightGlow } = useTimeTheme();
   const isVisualDarkMode = isDarkModeOverride;
   
   // Check if it's day or afternoon for solid black text
@@ -14,18 +14,17 @@ export const AboutSection = () => {
   const isAfternoonTime = currentHour >= 12 && currentHour < 18; // 12 PM to 6 PM (afternoon)
   const shouldBeBlack = (isDayTime || isAfternoonTime) && !isVisualDarkMode;
 
+  // Get the appropriate text theme class
+  const textThemeClass = getTextThemeClass();
+  const showLateNightGlow = shouldShowLateNightGlow();
+
   return (
     <section id="about" className="py-20 px-6">
       <div className="container mx-auto max-w-4xl">
         <h2 
           className={`
-            text-4xl font-bold text-center mb-12 transition-colors duration-300
-            ${isVisualDarkMode 
-              ? 'text-night-text synthwave-text-glow' 
-              : shouldBeBlack
-                ? 'force-black-text'
-                : 'force-black-text'
-            }
+            text-4xl font-bold text-center mb-12 transition-colors duration-300 ${textThemeClass}
+            ${showLateNightGlow ? 'synthwave-text-glow' : ''}
           `}
         >
           About Me
@@ -35,21 +34,17 @@ export const AboutSection = () => {
           p-8 transition-all duration-300
           ${isVisualDarkMode 
             ? 'bg-night-card/80 border-night-border synthwave-glow' 
-            : shouldBeBlack
-              ? 'bg-white/20 border-white/30 backdrop-blur-sm'
-              : 'bg-white/10 border-white/20 backdrop-blur-sm liquid-glass-card'
+            : showLateNightGlow
+              ? 'bg-night-card/80 border-night-border late-night-element-glow'
+              : shouldBeBlack
+                ? 'bg-white/20 border-white/30 backdrop-blur-sm'
+                : 'bg-white/10 border-white/20 backdrop-blur-sm liquid-glass-card'
           }
         `}>
           <div className="space-y-6">
             <p 
               className={`
-                text-lg leading-relaxed text-center transition-colors duration-300
-                ${isVisualDarkMode 
-                  ? 'text-night-text/90' 
-                  : shouldBeBlack
-                    ? 'force-black-text'
-                    : 'force-black-text'
-                }
+                text-lg leading-relaxed text-center transition-colors duration-300 ${textThemeClass}
               `}
             >
               I'm a passionate full-stack developer with a love for creating innovative web applications 
@@ -59,13 +54,7 @@ export const AboutSection = () => {
 
             <p 
               className={`
-                text-lg leading-relaxed text-center transition-colors duration-300
-                ${isVisualDarkMode 
-                  ? 'text-night-text/90' 
-                  : shouldBeBlack
-                    ? 'force-black-text'
-                    : 'force-black-text'
-                }
+                text-lg leading-relaxed text-center transition-colors duration-300 ${textThemeClass}
               `}
             >
               My journey in tech began with curiosity about how websites work, which evolved into 
@@ -75,13 +64,7 @@ export const AboutSection = () => {
 
             <p 
               className={`
-                text-lg leading-relaxed text-center transition-colors duration-300
-                ${isVisualDarkMode 
-                  ? 'text-night-text/90' 
-                  : shouldBeBlack
-                    ? 'force-black-text'
-                    : 'force-black-text'
-                }
+                text-lg leading-relaxed text-center transition-colors duration-300 ${textThemeClass}
               `}
             >
               Beyond coding, I'm actively involved in the tech community as a DevRel Lead at IEEE-VIT, 
@@ -90,13 +73,7 @@ export const AboutSection = () => {
             </p>
 
             <div className="grid md:grid-cols-3 gap-6 mt-8">
-              <div className={`
-                text-center p-4 rounded-lg transition-all duration-300 grey-liquid-glass-button
-                ${isVisualDarkMode 
-                  ? 'synthwave-glow' 
-                  : ''
-                }
-              `}>
+              <div className="text-center p-4 rounded-lg transition-all duration-300 grey-liquid-glass-button">
                 <div className={`
                   text-2xl font-bold mb-2 transition-colors duration-300 text-black
                 `}>
@@ -109,13 +86,7 @@ export const AboutSection = () => {
                 </div>
               </div>
 
-              <div className={`
-                text-center p-4 rounded-lg transition-all duration-300 grey-liquid-glass-button
-                ${isVisualDarkMode 
-                  ? 'synthwave-glow' 
-                  : ''
-                }
-              `}>
+              <div className="text-center p-4 rounded-lg transition-all duration-300 grey-liquid-glass-button">
                 <div className={`
                   text-2xl font-bold mb-2 transition-colors duration-300 text-black
                 `}>
@@ -128,13 +99,7 @@ export const AboutSection = () => {
                 </div>
               </div>
 
-              <div className={`
-                text-center p-4 rounded-lg transition-all duration-300 grey-liquid-glass-button
-                ${isVisualDarkMode 
-                  ? 'synthwave-glow' 
-                  : ''
-                }
-              `}>
+              <div className="text-center p-4 rounded-lg transition-all duration-300 grey-liquid-glass-button">
                 <div className={`
                   text-2xl font-bold mb-2 transition-colors duration-300 text-black
                 `}>

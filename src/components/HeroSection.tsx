@@ -3,7 +3,13 @@ import { Button } from '@/components/ui/button';
 import { ArrowDown, Github, Linkedin, Mail } from 'lucide-react';
 
 export const HeroSection = () => {
-  const { effectiveTheme, isDarkModeOverride } = useTimeTheme();
+  const { 
+    effectiveTheme, 
+    isDarkModeOverride, 
+    getTextThemeClass, 
+    shouldShowLateNightGlow,
+    shouldUseHeroDayAfternoonVisibility 
+  } = useTimeTheme();
   
   // Only apply visual effects in dark mode override
   const isVisualDarkMode = isDarkModeOverride;
@@ -16,6 +22,11 @@ export const HeroSection = () => {
   const isDayTime = currentHour >= 6 && currentHour < 12;    // 6 AM to 12 PM (morning/day)
   const isAfternoonTime = currentHour >= 12 && currentHour < 18; // 12 PM to 6 PM (afternoon)
   const shouldBeBlack = (isDayTime || isAfternoonTime) && !isVisualDarkMode;
+  
+  // Get the appropriate text theme class
+  const textThemeClass = getTextThemeClass();
+  const showLateNightGlow = shouldShowLateNightGlow();
+  const useHeroVisibility = shouldUseHeroDayAfternoonVisibility();
 
   // Debug logging
   console.log('HeroSection Debug:', {
@@ -25,7 +36,10 @@ export const HeroSection = () => {
     currentHour,
     isDayTime,
     isAfternoonTime,
-    shouldBeBlack
+    shouldBeBlack,
+    textThemeClass,
+    showLateNightGlow,
+    useHeroVisibility
   });
 
   const scrollToSection = (sectionId: string) => {
@@ -40,43 +54,32 @@ export const HeroSection = () => {
       <div className="text-center max-w-4xl mx-auto">
         <div className={`
           mb-8 transition-all duration-1000
-          ${isVisualDarkMode ? 'synthwave-text-glow' : ''}
+          ${isVisualDarkMode || showLateNightGlow
+            ? 'synthwave-text-glow' 
+            : ''
+          }
+          ${useHeroVisibility ? 'hero-day-afternoon-visible' : ''}
         `}>
           <h1 
             className={`
-              text-5xl md:text-7xl font-bold mb-6 transition-colors duration-300
-              ${isVisualDarkMode 
-                ? 'text-night-text synthwave-text-glow' 
-                : shouldBeBlack
-                  ? 'force-black-text'
-                  : 'force-black-text'
-              }
+              text-5xl md:text-7xl font-bold mb-6 transition-colors duration-300 
+              ${useHeroVisibility ? 'hero-day-afternoon-visible' : textThemeClass}
             `}
           >
             Subham Agarwal
           </h1>
           <p 
             className={`
-              text-xl md:text-2xl mb-8 transition-colors duration-300
-              ${isVisualDarkMode 
-                ? 'text-night-text/80' 
-                : shouldBeBlack
-                  ? 'force-black-text'
-                  : 'force-black-text'
-              }
+              text-xl md:text-2xl mb-8 transition-colors duration-300 
+              ${useHeroVisibility ? 'hero-day-afternoon-visible' : textThemeClass}
             `}
           >
             Full Stack Developer & Creative Technologist
           </p>
           <p 
             className={`
-              text-lg max-w-2xl mx-auto mb-12 transition-colors duration-300
-              ${isVisualDarkMode 
-                ? 'text-night-text/70' 
-                : shouldBeBlack
-                  ? 'force-black-text'
-                  : 'force-black-text'
-              }
+              text-lg max-w-2xl mx-auto mb-12 transition-colors duration-300 
+              ${useHeroVisibility ? 'hero-day-afternoon-visible' : textThemeClass}
             `}
           >
             Passionate about creating innovative web applications that solve real-world problems. 
@@ -87,25 +90,13 @@ export const HeroSection = () => {
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
           <Button
             onClick={() => scrollToSection('projects')}
-            className={`
-              px-8 py-3 rounded-full font-semibold transition-all duration-300 grey-liquid-glass-button text-black
-              ${isVisualDarkMode 
-                ? 'synthwave-glow' 
-                : ''
-              }
-            `}
+            className="px-8 py-3 rounded-full font-semibold transition-all duration-300 grey-liquid-glass-button text-black"
           >
             View My Work
           </Button>
           <Button
             onClick={() => scrollToSection('projects')}
-            className={`
-              px-8 py-3 rounded-full font-semibold transition-all duration-300 grey-liquid-glass-button text-black
-              ${isVisualDarkMode 
-                ? 'synthwave-glow' 
-                : ''
-              }
-            `}
+            className="px-8 py-3 rounded-full font-semibold transition-all duration-300 grey-liquid-glass-button text-black"
           >
             Download Resume
           </Button>
@@ -116,13 +107,7 @@ export const HeroSection = () => {
             href="https://github.com/yourusername"
             target="_blank"
             rel="noopener noreferrer"
-            className={`
-              p-3 rounded-full transition-all duration-300 grey-liquid-glass-button text-black
-              ${isVisualDarkMode 
-                ? 'synthwave-glow' 
-                : ''
-              }
-            `}
+            className="p-3 rounded-full transition-all duration-300 grey-liquid-glass-button text-black"
           >
             <Github className="w-6 h-6" />
           </a>
@@ -130,25 +115,13 @@ export const HeroSection = () => {
             href="https://linkedin.com/in/yourusername"
             target="_blank"
             rel="noopener noreferrer"
-            className={`
-              p-3 rounded-full transition-all duration-300 grey-liquid-glass-button text-black
-              ${isVisualDarkMode 
-                ? 'synthwave-glow' 
-                : ''
-              }
-            `}
+            className="p-3 rounded-full transition-all duration-300 grey-liquid-glass-button text-black"
           >
             <Linkedin className="w-6 h-6" />
           </a>
           <a
             href="mailto:your.email@example.com"
-            className={`
-              p-3 rounded-full transition-all duration-300 grey-liquid-glass-button text-black
-              ${isVisualDarkMode 
-                ? 'synthwave-glow' 
-                : ''
-              }
-            `}
+            className="p-3 rounded-full transition-all duration-300 grey-liquid-glass-button text-black"
           >
             <Mail className="w-6 h-6" />
           </a>

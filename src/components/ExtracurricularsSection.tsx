@@ -3,19 +3,21 @@ import { Card } from '@/components/ui/card';
 import portfolioData from '@/data/portfolio.json';
 
 export const ExtracurricularsSection = () => {
-  const { theme } = useTimeTheme();
+  const { theme, getTextThemeClass, shouldShowLateNightGlow } = useTimeTheme();
   const isNightMode = theme === 'night' || theme === 'evening';
   const { extracurriculars } = portfolioData;
+  
+  // Get the appropriate text theme class and glow state
+  const textThemeClass = getTextThemeClass();
+  const showLateNightGlow = shouldShowLateNightGlow();
 
   return (
     <section id="extracurriculars" className="py-20 px-6">
       <div className="container mx-auto max-w-6xl">
         <h2 className={`
-          text-4xl font-bold text-center mb-12 transition-colors duration-300
-          ${isNightMode 
-            ? 'text-night-text synthwave-text-glow' 
-            : `text-${theme}-text liquid-glass-text font-extrabold`
-          }
+          text-4xl font-bold text-center mb-12 transition-colors duration-300 ${textThemeClass}
+          ${!isNightMode && !showLateNightGlow ? 'liquid-glass-text font-extrabold' : ''}
+          ${showLateNightGlow ? 'synthwave-text-glow' : ''}
         `}>
           Leadership & Activities
         </h2>
@@ -26,7 +28,7 @@ export const ExtracurricularsSection = () => {
               key={activity.id}
               className={`
                 p-6 transition-all duration-500 hover:scale-105
-                ${isNightMode 
+                ${isNightMode || showLateNightGlow
                   ? 'bg-night-card/80 border-night-border synthwave-glow' 
                   : `bg-${theme}-card border-${theme}-border liquid-glass-card`
                 }

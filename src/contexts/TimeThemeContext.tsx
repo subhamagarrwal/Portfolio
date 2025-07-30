@@ -12,6 +12,10 @@ interface TimeThemeContextType {
   setManualTheme: (theme: TimeTheme) => void;
   toggleDarkMode: () => void;
   isAutoMode: boolean;
+  getTextThemeClass: () => string;
+  shouldShowComets: () => boolean;
+  shouldShowLateNightGlow: () => boolean;
+  shouldUseHeroDayAfternoonVisibility: () => boolean;
 }
 
 const TimeThemeContext = createContext<TimeThemeContextType | undefined>(undefined);
@@ -135,6 +139,61 @@ export const TimeThemeProvider: React.FC<TimeThemeProviderProps> = ({ children }
     setForceUpdate(prev => prev + 1);
   };
 
+  // Get the appropriate text theme class based on current state
+  const getTextThemeClass = (): string => {
+    // Dark mode override - white text with glow
+    if (isDarkModeOverride) {
+      return 'theme-dark-override';
+    }
+    
+    // Check for late night hours (10PM-12AM and 12AM-5AM)
+    const hour = new Date().getHours();
+    const isLateNight = (hour >= 22 && hour <= 23) || (hour >= 0 && hour <= 4);
+    
+    if (isLateNight) {
+      return 'theme-dark-override'; // Use the same class as dark mode override for consistent glow
+    }
+    
+    // Time-based themes
+    const currentTheme = getTimeBasedTheme();
+    
+    // Day and afternoon (6 AM - 6 PM) - black text
+    if (currentTheme === 'day' || currentTheme === 'afternoon') {
+      return `theme-${currentTheme}-text`;
+    }
+    
+    // Evening and night - white text
+    return `theme-${currentTheme}-text`;
+  };
+
+  // Check if comets should be shown (dark mode OR 10PM-12AM OR 12AM-5AM)
+  const shouldShowComets = (): boolean => {
+    if (isDarkModeOverride) return true;
+    
+    const hour = new Date().getHours();
+    // 10PM-12AM (22-23) OR 12AM-5AM (0-4)
+    return (hour >= 22 && hour <= 23) || (hour >= 0 && hour <= 4);
+  };
+
+  // Check if late night glow should be shown (same conditions as comets)
+  const shouldShowLateNightGlow = (): boolean => {
+    if (isDarkModeOverride) return true;
+    
+    const hour = new Date().getHours();
+    // 10PM-12AM (22-23) OR 12AM-5AM (0-4)
+    return (hour >= 22 && hour <= 23) || (hour >= 0 && hour <= 4);
+  };
+
+  // Check if hero section needs special visibility during day/afternoon
+  const shouldUseHeroDayAfternoonVisibility = (): boolean => {
+    // Don't use if dark mode override is active
+    if (isDarkModeOverride) return false;
+    
+    const hour = new Date().getHours();
+    // 6AM-12PM (day) OR 12PM-6PM (afternoon) 
+    return (hour >= 6 && hour < 12) || (hour >= 12 && hour < 18);
+  };
+
   const value: TimeThemeContextType = {
     theme,
     isManualMode,
@@ -145,6 +204,10 @@ export const TimeThemeProvider: React.FC<TimeThemeProviderProps> = ({ children }
     setManualTheme: handleSetManualTheme,
     toggleDarkMode,
     isAutoMode: !isDarkModeOverride,
+    getTextThemeClass,
+    shouldShowComets,
+    shouldShowLateNightGlow,
+    shouldUseHeroDayAfternoonVisibility,
   };
 
   return (

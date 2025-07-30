@@ -5,19 +5,21 @@ import { Github, ExternalLink } from 'lucide-react';
 import portfolioData from '@/data/portfolio.json';
 
 export const ProjectsSection = () => {
-  const { theme } = useTimeTheme();
+  const { theme, getTextThemeClass, shouldShowLateNightGlow } = useTimeTheme();
   const isNightMode = theme === 'night' || theme === 'evening';
   const { projects } = portfolioData;
+  
+  // Get the appropriate text theme class and glow state
+  const textThemeClass = getTextThemeClass();
+  const showLateNightGlow = shouldShowLateNightGlow();
 
   return (
     <section id="projects" className="py-20 px-6">
       <div className="container mx-auto max-w-6xl">
         <h2 className={`
-          text-4xl font-bold text-center mb-12 transition-colors duration-300
-          ${isNightMode 
-            ? 'text-night-text synthwave-text-glow' 
-            : `text-${theme}-text liquid-glass-text`
-          }
+          text-4xl font-bold text-center mb-12 transition-colors duration-300 ${textThemeClass}
+          ${!isNightMode && !showLateNightGlow ? 'liquid-glass-text' : ''}
+          ${showLateNightGlow ? 'synthwave-text-glow' : ''}
         `}>
           Featured Projects
         </h2>
@@ -28,7 +30,7 @@ export const ProjectsSection = () => {
               key={project.id}
               className={`
                 overflow-hidden transition-all duration-500 hover:scale-105
-                ${isNightMode 
+                ${isNightMode || showLateNightGlow
                   ? 'bg-night-card/80 border-night-border synthwave-glow' 
                   : `bg-${theme}-card border-${theme}-border liquid-glass-card`
                 }
