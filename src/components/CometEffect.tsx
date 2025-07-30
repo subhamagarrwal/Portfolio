@@ -12,6 +12,8 @@ export const CometEffect = () => {
       <div className="comet comet-1"></div>
       <div className="comet comet-2"></div>
       <div className="comet comet-3"></div>
+      <div className="comet comet-4"></div>
+      <div className="comet comet-5"></div>
     </div>
   );
 };

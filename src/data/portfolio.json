@@ -10,19 +10,19 @@
     {
       "id": "taskquest",
       "title": "TaskQuest",
-      "description": "A gamified task management application that transforms productivity into an engaging RPG-like experience with levels, achievements, and rewards.",
-      "techStack": ["React", "Node.js", "MongoDB", "Express", "Socket.io"],
-      "github": "https://github.com/yourusername/taskquest",
-      "demo": "https://taskquest-demo.netlify.app",
+      "description": "Turn team tasks into thrilling quests. Admins create tasks on the web dashboard, share bot links with team members, and track progress through an intelligent Telegram bot interface.",
+      "techStack": ["React", "Node.js", "Firebase","MongoDB", "Express", "Telegraf", "GraphQL"],
+      "github": "https://github.com/subhamagarrwal/TaskQuest",
+      "demo": "https://taskquest.onrender.com/",
       "image": "/project-taskquest.jpg",
       "featured": true
     },
     {
       "id": "fintellect",
       "title": "FinTellect",
-      "description": "An intelligent personal finance management platform with AI-powered insights, budget tracking, and investment recommendations.",
-      "techStack": ["Next.js", "TypeScript", "PostgreSQL", "Prisma", "OpenAI API"],
-      "github": "https://github.com/yourusername/fintellect",
+      "description": "An intelligent personal finance management platform with AI-powered insights through RAG-based chat interactions, helping beginners understand how stock markets work.",
+      "techStack": ["Next.js", "TypeScript", "PostgreSQL", "ChromaDB", "LangChain"],
+      "github": "https://github.com/subhamagarrwal/FinTellect",
       "demo": "https://fintellect-app.vercel.app",
       "image": "/project-fintellect.jpg",
       "featured": true
@@ -30,8 +30,8 @@
     {
       "id": "fitfusion",
       "title": "FitFusion",
-      "description": "A comprehensive fitness tracking app with workout planning, nutrition monitoring, and social features for fitness enthusiasts.",
-      "techStack": ["React Native", "Firebase", "Redux", "Node.js", "Express"],
+      "description": "A comprehensive gym management app that allows users to look into gyms and give reviews, where gym owners can register their gyms.",
+      "techStack": ["MongoDB", "Firebase", "Redux", "Node.js", "Express"],
       "github": "https://github.com/yourusername/fitfusion",
       "demo": "https://fitfusion-mobile.expo.dev",
       "image": "/project-fitfusion.jpg",
@@ -57,8 +57,8 @@
   ],
   "skills": {
     "languages": ["JavaScript", "TypeScript", "Python", "Java", "C++", "HTML/CSS"],
-    "frameworks": ["React", "Next.js", "Node.js", "Express", "React Native", "Vue.js"],
-    "tools": ["Git", "Docker", "AWS", "MongoDB", "PostgreSQL", "Firebase", "Figma"]
+    "frameworks": ["React", "Next.js", "Node.js", "Express", "Tailwind CSS", "Vue.js","Bootstrap"],
+    "tools": ["Git", "Docker", "AWS", "MongoDB", "PostgreSQL", "ChromaDB", "Firebase", "Figma"]
   },
   "extracurriculars": [
     {

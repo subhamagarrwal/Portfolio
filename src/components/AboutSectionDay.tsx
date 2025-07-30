@@ -45,18 +45,8 @@ export const AboutSectionDay = () => {
               and sharing knowledge to help others grow in their tech journey.
             </p>
 
-            <div className="grid md:grid-cols-3 gap-6 mt-8">
-              <div className={`
-                text-center p-4 rounded-lg transition-all duration-300 
-                ${isLightMode ? 'liquid-glass-button' : 'bg-purple-900/20 border border-purple-500/30'}
-              `}>
-                <div className={`text-2xl font-bold mb-2 transition-colors duration-300 ${textClass}`}>
-                  10+
-                </div>
-                <div className={`text-sm transition-colors duration-300 ${textClass}`}>
-                  Projects Completed
-                </div>
-              </div>
+            <div className="grid md:grid-cols-2 gap-6 mt-8">
+
 
               <div className={`
                 text-center p-4 rounded-lg transition-all duration-300 
