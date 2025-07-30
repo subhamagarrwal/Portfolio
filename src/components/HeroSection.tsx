@@ -1,6 +1,6 @@
 import { useTimeTheme } from '@/hooks/useTimeTheme';
 import { Button } from '@/components/ui/button';
-import { ArrowDown, Github, Linkedin, Mail } from 'lucide-react';
+import { ArrowDown, Github, Linkedin, Mail, Download } from 'lucide-react';
 
 export const HeroSection = () => {
   const { 
@@ -21,6 +21,11 @@ export const HeroSection = () => {
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
+  };
+
+  const downloadResume = () => {
+    // Redirect to LinkedIn resume viewer
+    window.open('https://www.linkedin.com/in/subham-agarwal-99386222a/overlay/1753651974026/single-media-viewer/?profileId=ACoAADlveP8BRsu5ziJGWEV8wGvjt5jzC-n9Q0I', '_blank');
   };
 
   return (
@@ -53,12 +58,13 @@ export const HeroSection = () => {
             View My Work
           </Button>
           <Button
-            onClick={() => scrollToSection('projects')}
+            onClick={downloadResume}
             className={`
-              px-8 py-3 rounded-full font-semibold transition-all duration-300 
+              px-8 py-3 rounded-full font-semibold transition-all duration-300 flex items-center gap-2
               ${isLightMode ? 'liquid-glass-button text-black' : 'bg-transparent border-2 border-purple-500 text-white hover:bg-purple-500'}
             `}
           >
+            <Download className="w-4 h-4" />
             Download Resume
           </Button>
 
@@ -77,7 +83,7 @@ export const HeroSection = () => {
             <Github className="w-6 h-6" />
           </a>
           <a
-            href="https://linkedin.com/in/yourusername"
+            href="https://www.linkedin.com/in/subham-agarwal-99386222a/"
             target="_blank"
             rel="noopener noreferrer"
             className={`
