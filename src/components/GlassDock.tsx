@@ -41,6 +41,31 @@ export const GlassDock = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [musicMode, setMusicMode] = useState<'lofi' | 'synthwave'>('lofi');
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  
+  // Mobile detection for smaller icons
+  const [isMobile, setIsMobile] = useState(false);
+  
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+  
+  // Dynamic icon size based on screen size
+  const getIconSize = () => {
+    if (typeof window !== 'undefined') {
+      if (window.innerWidth <= 360) return 16;
+      if (window.innerWidth <= 480) return 18;
+      if (window.innerWidth <= 768) return 20;
+    }
+    return 24;
+  };
+  
+  const iconSize = getIconSize();
 
   // Initialize audio element
   useEffect(() => {
@@ -253,8 +278,10 @@ export const GlassDock = () => {
         <button
           onClick={handleBackToNormal}
           className={`
-            fixed top-6 left-6 z-50 flex items-center gap-2 px-4 py-2 rounded-xl
+            fixed top-4 left-4 z-50 flex items-center gap-2 px-3 py-2 rounded-xl
             backdrop-blur-xl backdrop-saturate-150 border transition-all duration-300
+            touch-manipulation select-none
+            md:top-6 md:left-6 md:px-4
             ${isDarkModeOverride 
               ? 'bg-black/20 border-white/10 text-white hover:bg-white/10' 
               : 'bg-white/25 border-black/5 text-black hover:bg-white/40'
@@ -269,17 +296,18 @@ export const GlassDock = () => {
               : '0 8px 32px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.3)',
           }}
         >
-          <ArrowLeft size={20} />
-          <span className="text-sm font-medium">Back</span>
+          <ArrowLeft size={iconSize} className="md:w-5 md:h-5" />
+          <span className="text-xs md:text-sm font-medium">Back</span>
         </button>
 
         {/* Time Slider Dock */}
-        <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50">
+        <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 px-4 md:bottom-6 md:px-0">
           <div 
             className={`
-              relative flex flex-col items-center px-6 py-4 rounded-2xl
+              relative flex flex-col items-center px-4 py-3 rounded-2xl max-w-[calc(100vw-32px)]
               backdrop-blur-xl backdrop-saturate-150
               border shadow-2xl transition-all duration-300
+              md:px-6 md:py-4
               ${isDarkModeOverride 
                 ? 'bg-black/20 border-white/10 shadow-white/5' 
                 : 'bg-white/25 border-black/5 shadow-black/10'
@@ -299,15 +327,15 @@ export const GlassDock = () => {
             
             {/* Time display */}
             <div className={`
-              relative z-10 text-center mb-4
+              relative z-10 text-center mb-3 md:mb-4
               ${isDarkModeOverride ? 'text-white' : 'text-black'}
             `}>
-              <div className="text-lg font-semibold">{getTimeLabel(manualTime)}</div>
-              <div className="text-sm opacity-70">Drag to change time of day</div>
+              <div className="text-base md:text-lg font-semibold">{getTimeLabel(manualTime)}</div>
+              <div className="text-xs md:text-sm opacity-70">Drag to change time of day</div>
             </div>
             
             {/* Time slider */}
-            <div className="relative z-10 w-80">
+            <div className="relative z-10 w-full max-w-xs md:w-80">
               <input
                 type="range"
                 min="0"
@@ -315,7 +343,8 @@ export const GlassDock = () => {
                 value={manualTime}
                 onChange={(e) => handleTimeChange(parseInt(e.target.value))}
                 className={`
-                  w-full h-2 rounded-lg appearance-none cursor-pointer
+                  w-full h-3 md:h-2 rounded-lg appearance-none cursor-pointer
+                  touch-manipulation
                   ${isDarkModeOverride 
                     ? 'bg-white/20 slider-dark' 
                     : 'bg-black/20 slider-light'
@@ -332,11 +361,16 @@ export const GlassDock = () => {
               
               {/* Time markers */}
               <div className="flex justify-between mt-2 text-xs opacity-60">
-                <span>12 AM</span>
-                <span>6 AM</span>
-                <span>12 PM</span>
-                <span>6 PM</span>
-                <span>11 PM</span>
+                <span className="hidden sm:inline">12 AM</span>
+                <span className="sm:hidden">12A</span>
+                <span className="hidden sm:inline">6 AM</span>
+                <span className="sm:hidden">6A</span>
+                <span className="hidden sm:inline">12 PM</span>
+                <span className="sm:hidden">12P</span>
+                <span className="hidden sm:inline">6 PM</span>
+                <span className="sm:hidden">6P</span>
+                <span className="hidden sm:inline">11 PM</span>
+                <span className="sm:hidden">11P</span>
               </div>
             </div>
             
@@ -389,50 +423,50 @@ export const GlassDock = () => {
   const dockItems: DockItem[] = [
     {
       id: 'home',
-      icon: <Home size={24} />,
+      icon: <Home size={iconSize} />,
       label: 'Home',
       onClick: () => scrollToSection('home'),
     },
     {
       id: 'skills',
-      icon: <Code2 size={24} />,
+      icon: <Code2 size={iconSize} />,
       label: 'Skills',
       onClick: () => scrollToSection('skills'),
     },
     {
       id: 'projects',
-      icon: <FolderOpen size={24} />,
+      icon: <FolderOpen size={iconSize} />,
       label: 'Projects',
       onClick: () => scrollToSection('projects'),
     },
     {
       id: 'experience',
-      icon: <Briefcase size={24} />,
+      icon: <Briefcase size={iconSize} />,
       label: 'Experience',
       onClick: () => scrollToSection('experience'),
     },
     {
       id: 'activities',
-      icon: <Users size={24} />,
+      icon: <Users size={iconSize} />,
       label: 'Activities',
       onClick: () => scrollToSection('extracurriculars'),
     },
     {
       id: 'contact',
-      icon: <Mail size={24} />,
+      icon: <Mail size={iconSize} />,
       label: 'Contact',
       onClick: () => scrollToSection('contact'),
     },
     // Only show time control when in automatic mode
     ...(isAutoMode ? [{
       id: 'time-control',
-      icon: <Settings size={24} />,
+      icon: <Settings size={iconSize} />,
       label: 'Time Control',
       onClick: () => setIsTimeSliderMode(true),
     }] : []),
     {
       id: 'theme',
-      icon: isAutoMode ? <Clock size={24} /> : <Moon size={24} />,
+      icon: isAutoMode ? <Clock size={iconSize} /> : <Moon size={iconSize} />,
       label: isAutoMode ? 'Night Mode' : 'Auto Mode',
       onClick: toggleDarkMode,
     },
@@ -440,7 +474,7 @@ export const GlassDock = () => {
       id: 'music-mode',
       icon: (
         <div className="relative">
-          <Radio size={24} />
+          <Radio size={iconSize} />
           <div className={`
             absolute -bottom-1 -right-1 text-xs font-bold px-1 py-0.5 rounded
             ${musicMode === 'synthwave' 
@@ -459,12 +493,12 @@ export const GlassDock = () => {
       id: 'volume',
       icon: isLoading ? (
         <div className="animate-spin">
-          <Volume2 size={24} className="opacity-50" />
+          <Volume2 size={iconSize} className="opacity-50" />
         </div>
       ) : isMuted ? (
-        <VolumeX size={24} />
+        <VolumeX size={iconSize} />
       ) : (
-        <Volume2 size={24} />
+        <Volume2 size={iconSize} />
       ),
       label: isLoading 
         ? `Loading ${musicMode}...` 
@@ -476,7 +510,7 @@ export const GlassDock = () => {
   ];
 
   return (
-    <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50 glass-dock">
+    <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50 glass-dock w-max max-w-[calc(100vw-24px)]">
       {/* Glass container */}
       <div 
         className={`
@@ -505,13 +539,23 @@ export const GlassDock = () => {
         />
         
         {/* Dock items */}
-        <div className="relative flex items-center space-x-1">
+        <div className="relative flex items-center space-x-0.5 sm:space-x-1 min-w-max">
           {dockItems.map((item, index) => (
             <div
               key={item.id}
               className="relative"
-              onMouseEnter={() => setHoveredItem(item.id)}
+              onMouseEnter={() => {
+                // Only show tooltips on non-touch devices
+                if (window.matchMedia('(hover: hover)').matches) {
+                  setHoveredItem(item.id);
+                }
+              }}
               onMouseLeave={() => setHoveredItem(null)}
+              onTouchStart={() => {
+                // Brief haptic feedback simulation for touch
+                setHoveredItem(item.id);
+                setTimeout(() => setHoveredItem(null), 150);
+              }}
             >
               {/* Tooltip */}
               {hoveredItem === item.id && (
@@ -552,6 +596,7 @@ export const GlassDock = () => {
                   relative flex items-center justify-center
                   w-11 h-11 rounded-xl transition-all duration-300 ease-out
                   transform hover:scale-110 active:scale-95
+                  touch-manipulation select-none
                   ${hoveredItem === item.id 
                     ? 'bg-white/25 shadow-lg scale-105' 
                     : 'hover:bg-white/15'
