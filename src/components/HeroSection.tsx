@@ -6,41 +6,15 @@ export const HeroSection = () => {
   const { 
     effectiveTheme, 
     isDarkModeOverride, 
-    getTextThemeClass, 
-    shouldShowLateNightGlow,
-    shouldUseHeroDayAfternoonVisibility 
+    getTextClass, 
+    shouldShowGlow,
+    isDayOrAfternoon 
   } = useTimeTheme();
   
-  // Only apply visual effects in dark mode override
-  const isVisualDarkMode = isDarkModeOverride;
-  
-  // Check if it's day or afternoon for solid black text
-  const isDayOrAfternoon = effectiveTheme === 'day' || effectiveTheme === 'afternoon';
-  
-  // More specific time-based black text - only during day and afternoon hours
-  const currentHour = new Date().getHours();
-  const isDayTime = currentHour >= 6 && currentHour < 12;    // 6 AM to 12 PM (morning/day)
-  const isAfternoonTime = currentHour >= 12 && currentHour < 18; // 12 PM to 6 PM (afternoon)
-  const shouldBeBlack = (isDayTime || isAfternoonTime) && !isVisualDarkMode;
-  
-  // Get the appropriate text theme class
-  const textThemeClass = getTextThemeClass();
-  const showLateNightGlow = shouldShowLateNightGlow();
-  const useHeroVisibility = shouldUseHeroDayAfternoonVisibility();
-
-  // Debug logging
-  console.log('HeroSection Debug:', {
-    effectiveTheme,
-    isDarkModeOverride,
-    isDayOrAfternoon,
-    currentHour,
-    isDayTime,
-    isAfternoonTime,
-    shouldBeBlack,
-    textThemeClass,
-    showLateNightGlow,
-    useHeroVisibility
-  });
+  // Get the appropriate text class
+  const textClass = getTextClass();
+  const showGlow = shouldShowGlow();
+  const isLightMode = isDayOrAfternoon();
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -52,36 +26,20 @@ export const HeroSection = () => {
   return (
     <section id="home" className="min-h-screen flex items-center justify-center px-6">
       <div className="text-center max-w-4xl mx-auto">
+        {/* Text Container with optional liquid glass effect for light mode */}
         <div className={`
           mb-8 transition-all duration-1000
-          ${isVisualDarkMode || showLateNightGlow
-            ? 'synthwave-text-glow' 
-            : ''
-          }
-          ${useHeroVisibility ? 'hero-day-afternoon-visible' : ''}
+          ${isLightMode ? 'liquid-glass-text-container' : ''}
+          ${showGlow ? 'synthwave-text-glow' : ''}
+          ${textClass}
         `}>
-          <h1 
-            className={`
-              text-5xl md:text-7xl font-bold mb-6 transition-colors duration-300 
-              ${useHeroVisibility ? 'hero-day-afternoon-visible' : textThemeClass}
-            `}
-          >
+          <h1 className={`text-5xl md:text-7xl font-bold mb-6 transition-colors duration-300 ${textClass}`}>
             Subham Agarwal
           </h1>
-          <p 
-            className={`
-              text-xl md:text-2xl mb-8 transition-colors duration-300 
-              ${useHeroVisibility ? 'hero-day-afternoon-visible' : textThemeClass}
-            `}
-          >
+          <p className={`text-xl md:text-2xl mb-8 transition-colors duration-300 ${textClass}`}>
             Full Stack Developer & Creative Technologist
           </p>
-          <p 
-            className={`
-              text-lg max-w-2xl mx-auto mb-12 transition-colors duration-300 
-              ${useHeroVisibility ? 'hero-day-afternoon-visible' : textThemeClass}
-            `}
-          >
+          <p className={`text-lg max-w-2xl mx-auto mb-12 transition-colors duration-300 ${textClass}`}>
             Passionate about creating innovative web applications that solve real-world problems. 
             Currently pursuing Computer Science with a focus on modern web technologies.
           </p>
@@ -90,13 +48,19 @@ export const HeroSection = () => {
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
           <Button
             onClick={() => scrollToSection('projects')}
-            className="px-8 py-3 rounded-full font-semibold transition-all duration-300 grey-liquid-glass-button text-black"
+            className={`
+              px-8 py-3 rounded-full font-semibold transition-all duration-300 
+              ${isLightMode ? 'liquid-glass-button text-black' : 'bg-purple-600 hover:bg-purple-700 text-white'}
+            `}
           >
             View My Work
           </Button>
           <Button
             onClick={() => scrollToSection('projects')}
-            className="px-8 py-3 rounded-full font-semibold transition-all duration-300 grey-liquid-glass-button text-black"
+            className={`
+              px-8 py-3 rounded-full font-semibold transition-all duration-300 
+              ${isLightMode ? 'liquid-glass-button text-black' : 'bg-transparent border-2 border-purple-500 text-white hover:bg-purple-500'}
+            `}
           >
             Download Resume
           </Button>
@@ -107,7 +71,10 @@ export const HeroSection = () => {
             href="https://github.com/yourusername"
             target="_blank"
             rel="noopener noreferrer"
-            className="p-3 rounded-full transition-all duration-300 grey-liquid-glass-button text-black"
+            className={`
+              p-3 rounded-full transition-all duration-300 
+              ${isLightMode ? 'liquid-glass-button text-black' : 'text-white hover:text-purple-400'}
+            `}
           >
             <Github className="w-6 h-6" />
           </a>
@@ -115,13 +82,19 @@ export const HeroSection = () => {
             href="https://linkedin.com/in/yourusername"
             target="_blank"
             rel="noopener noreferrer"
-            className="p-3 rounded-full transition-all duration-300 grey-liquid-glass-button text-black"
+            className={`
+              p-3 rounded-full transition-all duration-300 
+              ${isLightMode ? 'liquid-glass-button text-black' : 'text-white hover:text-purple-400'}
+            `}
           >
             <Linkedin className="w-6 h-6" />
           </a>
           <a
             href="mailto:your.email@example.com"
-            className="p-3 rounded-full transition-all duration-300 grey-liquid-glass-button text-black"
+            className={`
+              p-3 rounded-full transition-all duration-300 
+              ${isLightMode ? 'liquid-glass-button text-black' : 'text-white hover:text-purple-400'}
+            `}
           >
             <Mail className="w-6 h-6" />
           </a>
@@ -130,13 +103,7 @@ export const HeroSection = () => {
         <div className="animate-bounce">
           <ArrowDown 
             className={`
-              w-8 h-8 mx-auto cursor-pointer transition-colors duration-300
-              ${isVisualDarkMode 
-                ? 'text-night-accent' 
-                : shouldBeBlack
-                  ? 'text-blue-600'
-                  : `text-${effectiveTheme}-accent`
-              }
+              w-8 h-8 mx-auto cursor-pointer transition-colors duration-300 ${textClass}
             `}
             onClick={() => scrollToSection('about')}
           />

@@ -5,21 +5,23 @@ import { Github, ExternalLink } from 'lucide-react';
 import portfolioData from '@/data/portfolio.json';
 
 export const ProjectsSection = () => {
-  const { theme, getTextThemeClass, shouldShowLateNightGlow } = useTimeTheme();
-  const isNightMode = theme === 'night' || theme === 'evening';
-  const { projects } = portfolioData;
+  const { 
+    getTextClass, 
+    shouldShowGlow, 
+    isDayOrAfternoon 
+  } = useTimeTheme();
   
-  // Get the appropriate text theme class and glow state
-  const textThemeClass = getTextThemeClass();
-  const showLateNightGlow = shouldShowLateNightGlow();
+  const { projects } = portfolioData;
+  const textClass = getTextClass();
+  const showGlow = shouldShowGlow();
+  const isLightMode = isDayOrAfternoon();
 
   return (
     <section id="projects" className="py-20 px-6">
       <div className="container mx-auto max-w-6xl">
         <h2 className={`
-          text-4xl font-bold text-center mb-12 transition-colors duration-300 ${textThemeClass}
-          ${!isNightMode && !showLateNightGlow ? 'liquid-glass-text' : ''}
-          ${showLateNightGlow ? 'synthwave-text-glow' : ''}
+          text-4xl font-bold text-center mb-12 transition-colors duration-300 ${textClass}
+          ${showGlow ? 'synthwave-text-glow' : ''}
         `}>
           Featured Projects
         </h2>
@@ -30,9 +32,11 @@ export const ProjectsSection = () => {
               key={project.id}
               className={`
                 overflow-hidden transition-all duration-500 hover:scale-105
-                ${isNightMode || showLateNightGlow
+                ${showGlow
                   ? 'bg-night-card/80 border-night-border synthwave-glow' 
-                  : `bg-${theme}-card border-${theme}-border liquid-glass-card`
+                  : isLightMode
+                    ? 'bg-white/25 border-white/40 liquid-glass-card'
+                    : 'bg-white/15 border-white/25 liquid-glass-card'
                 }
                 ${projects.length % 2 !== 0 && index === projects.length - 1 
                   ? 'lg:col-span-2' 
@@ -43,18 +47,15 @@ export const ProjectsSection = () => {
             >
               <div className={`
                 h-48 bg-gradient-to-br transition-all duration-300
-                ${isNightMode 
-                  ? 'from-night-accent/20 to-night-secondary/20' 
-                  : `from-${theme}-accent/20 to-${theme}-accent/10`
+                ${showGlow 
+                  ? 'from-purple-600/20 to-purple-800/20' 
+                  : 'from-blue-500/20 to-purple-500/20'
                 }
               `}>
                 <div className="h-full flex items-center justify-center">
                   <div className={`
                     text-6xl font-bold opacity-20 transition-colors duration-300
-                    ${isNightMode 
-                      ? 'text-night-accent' 
-                      : `text-${theme}-accent`
-                    }
+                    ${showGlow ? 'text-purple-300' : 'text-blue-600'}
                   `}>
                     {project.title.charAt(0)}
                   </div>
@@ -62,23 +63,11 @@ export const ProjectsSection = () => {
               </div>
 
               <div className="p-6">
-                <h3 className={`
-                  text-xl font-bold mb-3 transition-colors duration-300
-                  ${isNightMode 
-                    ? 'text-night-accent' 
-                    : `text-${theme}-accent`
-                  }
-                `}>
+                <h3 className={`text-xl font-bold mb-3 transition-colors duration-300 ${textClass}`}>
                   {project.title}
                 </h3>
 
-                <p className={`
-                  text-sm mb-4 transition-colors duration-300
-                  ${isNightMode 
-                    ? 'text-night-text/80' 
-                    : `text-${theme}-text/80`
-                  }
-                `}>
+                <p className={`text-sm mb-4 transition-colors duration-300 ${textClass}`}>
                   {project.description}
                 </p>
 
@@ -88,9 +77,9 @@ export const ProjectsSection = () => {
                       key={tech}
                       className={`
                         px-2 py-1 text-xs rounded-full transition-all duration-300
-                        ${isNightMode 
-                          ? 'bg-night-accent/20 text-night-accent border border-night-accent/30' 
-                          : `bg-${theme}-accent/20 text-${theme}-accent border border-${theme}-accent/30`
+                        ${isLightMode 
+                          ? 'bg-blue-500/20 text-blue-800 border border-blue-300/30' 
+                          : 'bg-purple-500/20 text-purple-300 border border-purple-500/30'
                         }
                       `}
                     >
@@ -106,9 +95,9 @@ export const ProjectsSection = () => {
                     size="sm"
                     className={`
                       flex-1 transition-all duration-300
-                      ${isNightMode 
-                        ? 'border-night-border text-night-text hover:bg-night-card' 
-                        : `border-${theme}-border text-${theme}-text hover:bg-${theme}-card`
+                      ${isLightMode 
+                        ? 'border-blue-400 text-black hover:bg-blue-500/20' 
+                        : 'border-purple-500 text-white hover:bg-purple-500/20'
                       }
                     `}
                   >
@@ -122,9 +111,9 @@ export const ProjectsSection = () => {
                     size="sm"
                     className={`
                       flex-1 transition-all duration-300
-                      ${isNightMode 
-                        ? 'bg-night-accent hover:bg-night-accent/80 text-white' 
-                        : `bg-${theme}-accent hover:bg-${theme}-accent/80 text-white`
+                      ${isLightMode 
+                        ? 'bg-blue-600 hover:bg-blue-700 text-white' 
+                        : 'bg-purple-600 hover:bg-purple-700 text-white'
                       }
                     `}
                   >
@@ -144,14 +133,16 @@ export const ProjectsSection = () => {
             asChild
             variant="outline"
             className={`
-              px-8 py-3 transition-all duration-300
-              ${isNightMode 
-                ? 'border-night-border text-night-text hover:bg-night-card' 
-                : `border-${theme}-border text-${theme}-text hover:bg-${theme}-card`
+              px-8 py-3 transition-all duration-300 ${textClass}
+              ${isLightMode 
+                ? 'border-blue-400 hover:bg-blue-500/20' 
+                : 'border-purple-500 hover:bg-purple-500/20'
               }
             `}
           >
-
+            <a href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer">
+              View All Projects
+            </a>
           </Button>
         </div>
       </div>

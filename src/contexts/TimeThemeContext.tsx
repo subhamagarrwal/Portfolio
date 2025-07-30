@@ -12,10 +12,10 @@ interface TimeThemeContextType {
   setManualTheme: (theme: TimeTheme) => void;
   toggleDarkMode: () => void;
   isAutoMode: boolean;
-  getTextThemeClass: () => string;
+  getTextClass: () => string;
   shouldShowComets: () => boolean;
-  shouldShowLateNightGlow: () => boolean;
-  shouldUseHeroDayAfternoonVisibility: () => boolean;
+  shouldShowGlow: () => boolean;
+  isDayOrAfternoon: () => boolean;
 }
 
 const TimeThemeContext = createContext<TimeThemeContextType | undefined>(undefined);
@@ -29,30 +29,26 @@ export const TimeThemeProvider: React.FC<TimeThemeProviderProps> = ({ children }
   const [isManualMode, setIsManualMode] = useState(false);
   const [manualTheme, setManualTheme] = useState<TimeTheme>('night');
   const [isDarkModeOverride, setIsDarkModeOverride] = useState(false);
-  const [forceUpdate, setForceUpdate] = useState(0);
 
   const getTimeBasedTheme = (): TimeTheme => {
     const hour = new Date().getHours();
-    console.log('Current hour:', hour);
     
-    if (hour >= 6 && hour < 12) return 'day';        // 6 AM - 12 PM: Light summer colors
-    if (hour >= 12 && hour < 18) return 'afternoon'; // 12 PM - 6 PM: Intense summer colors
-    if (hour >= 18 && hour < 22) return 'evening';   // 6 PM - 10 PM: Fading to night
-    return 'night';                                   // 10 PM - 6 AM: Purple/violet theme
+    if (hour >= 6 && hour < 12) return 'day';        // 6 AM - 12 PM
+    if (hour >= 12 && hour < 18) return 'afternoon'; // 12 PM - 6 PM
+    if (hour >= 18 && hour < 22) return 'evening';   // 6 PM - 10 PM
+    return 'night';                                   // 10 PM - 6 AM
   };
 
-  // Calculate the background theme (what background should be shown)
   const getBackgroundTheme = (): TimeTheme => {
     if (isDarkModeOverride) {
-      return 'night'; // Force night background when dark mode override is active
+      return 'night'; // Force night background when dark mode is active
     }
-    return 'day'; // Always use day (blue) background when dark mode override is off
+    return getTimeBasedTheme(); // Use time-based background otherwise
   };
 
-  // Calculate the effective theme (for components to use for styling)
   const getEffectiveTheme = (): TimeTheme => {
     if (isDarkModeOverride) {
-      return 'night'; // Force night theme for styling when dark mode override is active
+      return 'night'; // Force night theme for styling when dark mode is active
     }
     return getTimeBasedTheme(); // Use actual time-based theme when in auto mode
   };
@@ -66,9 +62,6 @@ export const TimeThemeProvider: React.FC<TimeThemeProviderProps> = ({ children }
     const savedTheme = localStorage.getItem('portfolio-manual-theme') as TimeTheme;
     const savedDarkMode = localStorage.getItem('portfolio-dark-mode-override');
     
-    console.log('Loading preferences:', { savedMode, savedTheme, savedDarkMode });
-    
-    // Load dark mode override preference
     if (savedDarkMode === 'true') {
       setIsDarkModeOverride(true);
     }
@@ -77,11 +70,9 @@ export const TimeThemeProvider: React.FC<TimeThemeProviderProps> = ({ children }
       setIsManualMode(true);
       setManualTheme(savedTheme);
       setTheme(savedTheme);
-      console.log('Using manual theme:', savedTheme);
     } else {
       const autoTheme = getTimeBasedTheme();
       setTheme(autoTheme);
-      console.log('Using auto theme:', autoTheme);
     }
   }, []);
 
@@ -91,10 +82,7 @@ export const TimeThemeProvider: React.FC<TimeThemeProviderProps> = ({ children }
         setTheme(getTimeBasedTheme());
       };
 
-      // Update theme immediately
       updateTheme();
-
-      // Update theme every minute
       const interval = setInterval(updateTheme, 60000);
       return () => clearInterval(interval);
     }
@@ -126,71 +114,55 @@ export const TimeThemeProvider: React.FC<TimeThemeProviderProps> = ({ children }
     const newDarkMode = !isDarkModeOverride;
     setIsDarkModeOverride(newDarkMode);
     localStorage.setItem('portfolio-dark-mode-override', newDarkMode.toString());
-    console.log('Dark mode override toggled:', newDarkMode);
     
-    // If we're turning off dark mode override, update to current time-based theme
     if (!newDarkMode) {
       const currentTimeTheme = getTimeBasedTheme();
       setTheme(currentTimeTheme);
-      console.log('Updated to time-based theme:', currentTimeTheme);
     }
-    
-    // Force all components to re-render
-    setForceUpdate(prev => prev + 1);
   };
 
-  // Get the appropriate text theme class based on current state
-  const getTextThemeClass = (): string => {
-    // Dark mode override - white text with glow
+  // Simple text class logic
+  const getTextClass = (): string => {
     if (isDarkModeOverride) {
-      return 'theme-dark-override';
+      return 'text-dark-mode'; // Dark mode override - white text with glow
     }
     
-    // Check for late night hours (10PM-12AM and 12AM-5AM)
     const hour = new Date().getHours();
     const isLateNight = (hour >= 22 && hour <= 23) || (hour >= 0 && hour <= 4);
     
     if (isLateNight) {
-      return 'theme-dark-override'; // Use the same class as dark mode override for consistent glow
+      return 'text-dark-mode'; // Late night gets same styling as dark mode
     }
     
-    // Time-based themes
     const currentTheme = getTimeBasedTheme();
-    
-    // Day and afternoon (6 AM - 6 PM) - black text
     if (currentTheme === 'day' || currentTheme === 'afternoon') {
-      return `theme-${currentTheme}-text`;
+      return 'text-light-mode'; // Day and afternoon - black text
     }
     
-    // Evening and night - white text
-    return `theme-${currentTheme}-text`;
+    return 'text-regular'; // Evening and regular night - white text
   };
 
-  // Check if comets should be shown (dark mode OR 10PM-12AM OR 12AM-5AM)
+  // Check if comets should be shown
   const shouldShowComets = (): boolean => {
     if (isDarkModeOverride) return true;
     
     const hour = new Date().getHours();
-    // 10PM-12AM (22-23) OR 12AM-5AM (0-4)
     return (hour >= 22 && hour <= 23) || (hour >= 0 && hour <= 4);
   };
 
-  // Check if late night glow should be shown (same conditions as comets)
-  const shouldShowLateNightGlow = (): boolean => {
+  // Check if glow effects should be shown
+  const shouldShowGlow = (): boolean => {
     if (isDarkModeOverride) return true;
     
     const hour = new Date().getHours();
-    // 10PM-12AM (22-23) OR 12AM-5AM (0-4)
     return (hour >= 22 && hour <= 23) || (hour >= 0 && hour <= 4);
   };
 
-  // Check if hero section needs special visibility during day/afternoon
-  const shouldUseHeroDayAfternoonVisibility = (): boolean => {
-    // Don't use if dark mode override is active
+  // Check if it's day or afternoon for special text handling
+  const isDayOrAfternoon = (): boolean => {
     if (isDarkModeOverride) return false;
     
     const hour = new Date().getHours();
-    // 6AM-12PM (day) OR 12PM-6PM (afternoon) 
     return (hour >= 6 && hour < 12) || (hour >= 12 && hour < 18);
   };
 
@@ -204,10 +176,10 @@ export const TimeThemeProvider: React.FC<TimeThemeProviderProps> = ({ children }
     setManualTheme: handleSetManualTheme,
     toggleDarkMode,
     isAutoMode: !isDarkModeOverride,
-    getTextThemeClass,
+    getTextClass,
     shouldShowComets,
-    shouldShowLateNightGlow,
-    shouldUseHeroDayAfternoonVisibility,
+    shouldShowGlow,
+    isDayOrAfternoon,
   };
 
   return (
