@@ -98,7 +98,7 @@ export const ContactSectionDay = () => {
               </a>
 
               <a
-                href="https://linkedin.com/in/yourusername"
+                href="https://www.linkedin.com/in/subham-agarwal-99386222a/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className={`

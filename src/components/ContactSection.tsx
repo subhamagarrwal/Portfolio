@@ -82,11 +82,11 @@ export const ContactSection = () => {
                 `}
               >
                 <Mail className="w-5 h-5" />
-                <span>your.email@example.com</span>
+                <span>subhamag2003@gmail.com</span>
               </a>
 
               <a
-                href="https://github.com/yourusername"
+                href="https://github.com/subhamagarrwal"
                 target="_blank"
                 rel="noopener noreferrer"
                 className={`
@@ -99,7 +99,7 @@ export const ContactSection = () => {
               </a>
 
               <a
-                href="https://linkedin.com/in/yourusername"
+                href="https://www.linkedin.com/in/subham-agarwal-99386222a/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className={`

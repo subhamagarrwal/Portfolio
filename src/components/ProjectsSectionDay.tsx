@@ -135,7 +135,7 @@ export const ProjectsSectionDay = () => {
               }
             `}
           >
-            <a href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer">
+            <a href="https://github.com/subhamagarrwal" target="_blank" rel="noopener noreferrer">
               View All Projects
             </a>
           </Button>

@@ -63,7 +63,7 @@ export const HeroSectionDay = () => {
 
         <div className="flex justify-center space-x-6 mb-12">
           <a
-            href="https://github.com/yourusername"
+            href="https://github.com/subhamagarrwal"
             target="_blank"
             rel="noopener noreferrer"
             className={`
@@ -85,7 +85,7 @@ export const HeroSectionDay = () => {
             <Linkedin className="w-6 h-6" />
           </a>
           <a
-            href="mailto:your.email@example.com"
+            href="mailto:subhamag2003@gmail.com"
             className={`
               p-3 rounded-full transition-all duration-300 
               ${isLightMode ? 'bg-gray-200 hover:bg-gray-300 text-gray-800' : 'text-white hover:text-purple-400'}
