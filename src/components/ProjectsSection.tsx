@@ -43,17 +43,31 @@ export const ProjectsSection = () => {
               style={{ animationDelay: `${index * 0.2}s` }}
             >
               <div className={`
-                h-48 bg-gradient-to-br transition-all duration-300
+                h-48 bg-gradient-to-br transition-all duration-300 relative overflow-hidden
                 ${isLightMode 
                   ? 'from-blue-500/20 to-purple-500/20' 
                   : 'from-blue-500/20 to-purple-500/20'
                 }
               `}>
                 <div className="h-full flex items-center justify-center">
-                  <div className={`
-                    text-6xl font-bold opacity-20 transition-colors duration-300
-                    ${isLightMode ? 'text-blue-600' : 'text-blue-600'}
-                  `}>
+                  <img 
+                    src={project.image} 
+                    alt={`${project.title} preview`}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      // Fallback to letter if image fails to load
+                      e.currentTarget.style.display = 'none';
+                      const fallback = e.currentTarget.nextElementSibling as HTMLElement;
+                      if (fallback) fallback.style.display = 'flex';
+                    }}
+                  />
+                  <div 
+                    className={`
+                      text-6xl font-bold opacity-20 transition-colors duration-300 absolute inset-0 items-center justify-center
+                      ${isLightMode ? 'text-blue-600' : 'text-blue-600'}
+                    `}
+                    style={{ display: 'none' }}
+                  >
                     {project.title.charAt(0)}
                   </div>
                 </div>
