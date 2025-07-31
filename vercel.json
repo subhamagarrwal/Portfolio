@@ -26,11 +26,11 @@
       "headers": [
         {
           "key": "Content-Type",
-          "value": "application/xml"
+          "value": "application/xml; charset=utf-8"
         },
         {
           "key": "Cache-Control",
-          "value": "public, max-age=86400"
+          "value": "public, max-age=3600, s-maxage=86400"
         }
       ]
     },
@@ -39,11 +39,11 @@
       "headers": [
         {
           "key": "Content-Type",
-          "value": "text/plain"
+          "value": "text/plain; charset=utf-8"
         },
         {
           "key": "Cache-Control",
-          "value": "public, max-age=86400"
+          "value": "public, max-age=3600, s-maxage=86400"
         }
       ]
     }
@@ -53,16 +53,6 @@
       "source": "/resume",
       "destination": "/resume/SubhamAgarwal_Resume.pdf",
       "permanent": true
-    }
-  ],
-  "rewrites": [
-    {
-      "source": "/sitemap.xml",
-      "destination": "/sitemap.xml"
-    },
-    {
-      "source": "/robots.txt", 
-      "destination": "/robots.txt"
     }
   ]
 }

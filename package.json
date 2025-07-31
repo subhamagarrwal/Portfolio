@@ -7,10 +7,11 @@
     "dev": "vite",
     "build": "vite build",
     "build:dev": "vite build --mode development",
-    "build:seo": "vite build && npm run sitemap:validate",
+    "build:seo": "npm run sitemap:generate && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "sitemap:validate": "echo 'Sitemap generated successfully'",
+    "sitemap:generate": "node scripts/generate-sitemap.js",
+    "sitemap:validate": "node scripts/generate-sitemap.js",
     "seo:check": "echo 'Running SEO validation checks...'"
   },
   "dependencies": {
