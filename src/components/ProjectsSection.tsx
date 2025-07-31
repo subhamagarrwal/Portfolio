@@ -54,6 +54,10 @@ export const ProjectsSection = () => {
                     src={project.image} 
                     alt={`${project.title} preview`}
                     className="w-full h-full object-cover"
+                    loading="lazy"
+                    decoding="async"
+                    width="400"
+                    height="192"
                     onError={(e) => {
                       // Fallback to letter if image fails to load
                       e.currentTarget.style.display = 'none';
