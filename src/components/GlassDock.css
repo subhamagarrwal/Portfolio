@@ -19,6 +19,10 @@
   margin: 0 !important;
   padding: 6px 8px !important;
   
+  /* Ensure the dock itself is rounded */
+  border-radius: 1rem !important;
+  overflow: hidden !important;
+  
   /* Disable all transitions initially for stability */
   transition: none !important;
   animation: none !important;

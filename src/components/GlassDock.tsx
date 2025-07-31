@@ -265,13 +265,13 @@ export const GlassDock = () => {
     // Only show time control when in automatic mode
     ...(isAutoMode ? [{
       id: 'time-control',
-      icon: <Settings size={getSafeIconSize()} />,
+      icon: <Clock size={getSafeIconSize()} />,
       label: 'Time Control',
       onClick: () => setIsTimeSliderMode(true),
     }] : []),
     {
       id: 'theme',
-      icon: isAutoMode ? <Clock size={getSafeIconSize()} /> : <Moon size={getSafeIconSize()} />,
+      icon: isAutoMode ? <Sun size={getSafeIconSize()} /> : <Moon size={getSafeIconSize()} />,
       label: isAutoMode ? 'Night Mode' : 'Auto Mode',
       onClick: toggleDarkMode,
     },
@@ -282,30 +282,30 @@ export const GlassDock = () => {
       {/* Time Slider Overlay (when active) */}
       {isTimeSliderMode && renderTimeSlider()}
       
-      {/* Main Dock (always visible) */}
-      <div className="glass-dock">
-        {/* Glass container */}
-        <div 
-          className={`
-            relative flex items-center px-2 py-1.5 rounded-2xl
-            backdrop-blur-xl backdrop-saturate-150
-            border shadow-2xl
-            ${isDarkModeOverride 
-              ? 'bg-black/20 border-white/10 shadow-white/5' 
-              : 'bg-white/25 border-black/5 shadow-black/10'
-            }
-          `}
-          style={{
-            background: isDarkModeOverride 
-              ? 'linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05))'
-              : 'linear-gradient(135deg, rgba(255,255,255,0.3), rgba(255,255,255,0.1))',
-            boxShadow: isDarkModeOverride
-              ? '0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.2)'
-              : '0 8px 32px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.3)',
-          }}
-          role="navigation"
-          aria-label="Quick navigation dock"
-        >
+      {/* Main Dock (always visible) - Direct glass container */}
+      <div 
+        className={`
+          fixed bottom-3 left-1/2 transform -translate-x-1/2 z-50
+          flex items-center px-2 py-1.5 rounded-2xl
+          backdrop-blur-xl backdrop-saturate-150
+          border shadow-2xl
+          max-w-[calc(100vw-20px)]
+          ${isDarkModeOverride 
+            ? 'bg-black/20 border-white/10 shadow-white/5' 
+            : 'bg-white/25 border-black/5 shadow-black/10'
+          }
+        `}
+        style={{
+          background: isDarkModeOverride 
+            ? 'linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05))'
+            : 'linear-gradient(135deg, rgba(255,255,255,0.3), rgba(255,255,255,0.1))',
+          boxShadow: isDarkModeOverride
+            ? '0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.2)'
+            : '0 8px 32px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.3)',
+        }}
+        role="navigation"
+        aria-label="Quick navigation dock"
+      >
           {/* Glass shine effect */}
           <div 
             className="absolute inset-0 rounded-2xl glass-reflection"
@@ -439,7 +439,6 @@ export const GlassDock = () => {
             }}
           />
         </div>
-      </div>
     </>
   );
 };
