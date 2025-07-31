@@ -1,6 +1,6 @@
 # Subham Agarwal - Portfolio Website
 
-A modern, interactive portfolio website showcasing my work as a Full Stack Developer & Creative Technologist. Built with React, TypeScript, and featuring a beautiful glassmorphism design with dynamic day/night themes.
+A modern, interactive portfolio website showcasing my work as a Full Stack Developer & Machine Learning Enthusiast. Built with React, TypeScript, and featuring a beautiful glassmorphism design with dynamic day/night themes.
 
 ## 🌟 Features
 
