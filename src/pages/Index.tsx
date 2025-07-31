@@ -29,8 +29,8 @@ const Index = () => {
           {isDayTime ? <HeroSectionDay /> : <HeroSection />}
           {isDayTime ? <AboutSectionDay /> : <AboutSection />}
           {isDayTime ? <SkillsSectionDay /> : <SkillsSection />}
-          {isDayTime ? <ProjectsSectionDay /> : <ProjectsSection />}
           {isDayTime ? <ExperienceSectionDay /> : <ExperienceSection />}
+          {isDayTime ? <ProjectsSectionDay /> : <ProjectsSection />}
           {isDayTime ? <ExtracurricularsSectionDay /> : <ExtracurricularsSection />}
           {isDayTime ? <ContactSectionDay /> : <ContactSection />}
         </main>
