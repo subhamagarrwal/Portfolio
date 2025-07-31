@@ -56,7 +56,7 @@ export const ContactSection = () => {
           Get In Touch
         </h2>
 
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-2 gap-8 items-start justify-center">
           <Card className={`
             p-6 transition-all duration-300 synthwave-glow
             ${isLightMode
@@ -75,7 +75,7 @@ export const ContactSection = () => {
 
             <div className="space-y-4">
               <a
-                href="mailto:your.email@example.com"
+                href="mailto:subhamag2003@gmail.com"
                 className={`
                   flex items-center space-x-3 p-3 rounded-lg transition-all duration-300 hover:scale-105 ${textClass}
                   ${isLightMode ? 'hover:bg-blue-500/20' : 'hover:bg-purple-500/20'}
@@ -99,7 +99,7 @@ export const ContactSection = () => {
               </a>
 
               <a
-                href="https://www.linkedin.com/in/subham-agarwal-99386222a/"
+                href="https://www.linkedin.com/in/subham-agarwal2003"
                 target="_blank"
                 rel="noopener noreferrer"
                 className={`

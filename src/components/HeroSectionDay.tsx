@@ -22,8 +22,13 @@ export const HeroSectionDay = () => {
   };
 
   const downloadResume = () => {
-    // Redirect to LinkedIn resume viewer
-    window.open('https://www.linkedin.com/in/subham-agarwal-99386222a/overlay/1753651974026/single-media-viewer/?profileId=ACoAADlveP8BRsu5ziJGWEV8wGvjt5jzC-n9Q0I', '_blank');
+    // Create a link element and trigger download
+    const link = document.createElement('a');
+    link.href = '/resume/SubhamAgarwal_Resume.pdf';
+    link.download = 'SubhamAgarwal_Resume.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (

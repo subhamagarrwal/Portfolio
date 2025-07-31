@@ -67,14 +67,14 @@ export const SkillsSectionDay = () => {
                 }
               `}
             >
-              <div className="flex items-center mb-4">
+              <div className="flex items-center justify-center mb-4">
                 <span className="text-3xl mr-3">{category.icon}</span>
                 <h3 className={`text-2xl font-bold transition-colors duration-300 ${textClass}`}>
                   {category.title}
                 </h3>
               </div>
               
-              <div className="flex flex-wrap gap-3">
+              <div className="flex flex-wrap gap-3 justify-center">
                 {category.skills.map((skill, skillIndex) => (
                   <span
                     key={skill}

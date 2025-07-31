@@ -34,7 +34,7 @@ const Index = () => {
         </main>
 
         <footer className="py-8 text-center opacity-70">
-          <p>© 2024 Your Name. Built with React, TypeScript, and ❤️</p>
+          <p>© Subham Agarwal, {new Date().getFullYear()}.Never Quit</p>
         </footer>
         
         {/* Glass Dock - Apple-inspired navigation */}

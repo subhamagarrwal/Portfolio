@@ -55,7 +55,7 @@ export const ContactSectionDay = () => {
           Get In Touch
         </h2>
 
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-2 gap-8 items-start justify-center">
           <Card className={`
             p-6 transition-all duration-300
             ${isLightMode
@@ -74,18 +74,18 @@ export const ContactSectionDay = () => {
 
             <div className="space-y-4">
               <a
-                href="mailto:your.email@example.com"
+                href="mailto:subhamag2003@gmail.com"
                 className={`
                   flex items-center space-x-3 p-3 rounded-lg transition-all duration-300 hover:scale-105 ${textClass}
                   ${isLightMode ? 'hover:bg-blue-500/20' : 'hover:bg-purple-500/20'}
                 `}
               >
                 <Mail className="w-5 h-5" />
-                <span>your.email@example.com</span>
+                <span>subhamag2003@gmail.com</span>
               </a>
 
               <a
-                href="https://github.com/yourusername"
+                href="https://github.com/subhamagarrwal"
                 target="_blank"
                 rel="noopener noreferrer"
                 className={`
