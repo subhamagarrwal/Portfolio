@@ -14,6 +14,7 @@ import { ExperienceSectionDay } from '@/components/ExperienceSectionDay';
 import { ExtracurricularsSectionDay } from '@/components/ExtracurricularsSectionDay';
 import { ContactSectionDay } from '@/components/ContactSectionDay';
 import { GlassDock } from '@/components/GlassDock';
+import { StructuredData } from '@/components/StructuredData';
 import { useTimeTheme } from '@/hooks/useTimeTheme';
 
 const Index = () => {
@@ -22,6 +23,7 @@ const Index = () => {
 
   return (
     <ThemeProvider>
+      <StructuredData />
       <div className="relative z-10">
         <main>
           {isDayTime ? <HeroSectionDay /> : <HeroSection />}

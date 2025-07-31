@@ -12,3 +12,10 @@ Allow: /
 
 User-agent: *
 Allow: /
+
+# Sitemap
+Sitemap: https://subhamagarwal.vercel.app/sitemap.xml
+
+# Disallow certain files (optional)
+Disallow: /src/
+Disallow: /*.json$
