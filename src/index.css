@@ -2,6 +2,38 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Viewport Stability - Prevent jumping and layout shifts */
+html {
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  touch-action: manipulation;
+  scroll-behavior: smooth;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  height: 100%;
+  overflow-x: hidden;
+  position: relative;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Prevent layout shifts on mobile */
+* {
+  box-sizing: border-box;
+}
+
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 /* Portfolio Design System - Clean and Simple */
 
 @layer base {

@@ -4,12 +4,16 @@ import {
   FolderOpen, 
   Briefcase, 
   Users, 
+  Volume2, 
+  VolumeX,
+  Mail,
   Sun,
   Moon,
   Home,
   Clock,
   Settings,
-  ArrowLeft
+  ArrowLeft,
+  Radio
 } from 'lucide-react';
 import { useTimeTheme } from '@/hooks/useTimeTheme';
 import './GlassDock.css';
@@ -30,16 +34,20 @@ interface DockItem {
 
 export const GlassDock = () => {
   const { isDarkModeOverride, toggleDarkMode, isAutoMode } = useTimeTheme();
+  const [isMuted, setIsMuted] = useState(true);
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const [isTimeSliderMode, setIsTimeSliderMode] = useState(false);
   const [manualTime, setManualTime] = useState(12); // 0-23 hours
+  const [isLoading, setIsLoading] = useState(false);
+  const [musicMode, setMusicMode] = useState<'lofi' | 'synthwave'>('lofi');
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   
   // Mobile detection for smaller icons
   const [isMobile, setIsMobile] = useState(false);
-  const [iconSize, setIconSize] = useState(20); // Start with mobile-friendly default
+  const [iconSize, setIconSize] = useState(24);
   const [isClient, setIsClient] = useState(false);
   
-  // Client-side mounting detection - no loading states
+  // Client-side mounting detection
   useEffect(() => {
     setIsClient(true);
   }, []);
@@ -51,11 +59,11 @@ export const GlassDock = () => {
       const width = window.innerWidth;
       setIsMobile(width <= 768);
       
-      // Set icon size based on screen width - more conservative sizing
+      // Set icon size based on screen width
       if (width <= 360) setIconSize(16);
       else if (width <= 480) setIconSize(18);
       else if (width <= 768) setIconSize(20);
-      else setIconSize(22);
+      else setIconSize(24);
     };
     
     checkMobile();
@@ -65,9 +73,44 @@ export const GlassDock = () => {
   
   // Safe icon size getter with fallback
   const getSafeIconSize = () => {
-    if (!isClient || typeof window === 'undefined') return 18; // Conservative mobile default
+    if (!isClient || typeof window === 'undefined') return 20; // Default mobile size
     return iconSize;
   };
+
+  // Initialize audio element
+  useEffect(() => {
+    const initializeAudio = () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.removeEventListener('loadstart', () => {});
+        audioRef.current.removeEventListener('canplay', () => {});
+        audioRef.current.removeEventListener('error', () => {});
+        audioRef.current.remove();
+      }
+
+      const audio = new Audio();
+      
+      // Set the stream URL based on music mode
+      audio.src = musicMode === 'synthwave'
+        ? 'https://stream.nightride.fm/nightride.m3u8'
+        : 'https://somafm.com/dronezone130.pls';
+      
+      audio.crossOrigin = 'anonymous';
+      audio.preload = 'none';
+      audio.volume = 0.6;
+      
+      audioRef.current = audio;
+    };
+
+    initializeAudio();
+    
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.remove();
+      }
+    };
+  }, [musicMode]);
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -77,6 +120,43 @@ export const GlassDock = () => {
         block: 'start'
       });
     }
+  };
+
+  const toggleMute = async () => {
+    if (!audioRef.current) return;
+
+    setIsLoading(true);
+    
+    try {
+      if (isMuted) {
+        await audioRef.current.play();
+        setIsMuted(false);
+      } else {
+        audioRef.current.pause();
+        setIsMuted(true);
+      }
+    } catch (error) {
+      console.log('Audio format not supported, trying alternative...');
+      // Try alternative stream format
+      if (audioRef.current) {
+        audioRef.current.src = musicMode === 'synthwave'
+          ? 'https://somafm.com/spacestation.pls' // Try PLS format
+          : 'https://somafm.com/dronezone.pls';
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const toggleMusicMode = () => {
+    // If currently playing, pause first
+    if (!isMuted && audioRef.current) {
+      audioRef.current.pause();
+      setIsMuted(true);
+    }
+    
+    // Switch music mode
+    setMusicMode(prev => prev === 'lofi' ? 'synthwave' : 'lofi');
   };
 
   const getTimeLabel = (hour: number) => {
@@ -123,7 +203,7 @@ export const GlassDock = () => {
 
   // Instead of completely replacing the dock, show time slider as overlay
   const renderTimeSlider = () => (
-    <div className="glass-dock-container">
+    <div className="fixed bottom-20 left-1/2 transform -translate-x-1/2 z-40 px-4 md:bottom-24 md:px-0">
       <div 
         className={`
           relative flex flex-col items-center px-4 py-3 rounded-2xl max-w-[calc(100vw-32px)]
@@ -262,6 +342,12 @@ export const GlassDock = () => {
       label: 'Activities',
       onClick: () => scrollToSection('extracurriculars'),
     },
+    {
+      id: 'contact',
+      icon: <Mail size={getSafeIconSize()} />,
+      label: 'Contact',
+      onClick: () => scrollToSection('contact'),
+    },
     // Only show time control when in automatic mode
     ...(isAutoMode ? [{
       id: 'time-control',
@@ -275,6 +361,43 @@ export const GlassDock = () => {
       label: isAutoMode ? 'Night Mode' : 'Auto Mode',
       onClick: toggleDarkMode,
     },
+    {
+      id: 'music-mode',
+      icon: (
+        <div className="relative">
+          <Radio size={getSafeIconSize()} />
+          <div className={`
+            absolute -bottom-1 -right-1 text-xs font-bold px-1 py-0.5 rounded
+            ${musicMode === 'synthwave' 
+              ? 'bg-purple-500 text-white' 
+              : 'bg-green-500 text-white'
+            }
+          `}>
+            {musicMode === 'synthwave' ? 'SW' : 'LO'}
+          </div>
+        </div>
+      ),
+      label: `Switch to ${musicMode === 'lofi' ? 'Synthwave' : 'Lofi'}`,
+      onClick: toggleMusicMode,
+    },
+    {
+      id: 'volume',
+      icon: isLoading ? (
+        <div className="animate-spin">
+          <Volume2 size={getSafeIconSize()} className="opacity-50" />
+        </div>
+      ) : isMuted ? (
+        <VolumeX size={getSafeIconSize()} />
+      ) : (
+        <Volume2 size={getSafeIconSize()} />
+      ),
+      label: isLoading 
+        ? `Loading ${musicMode}...` 
+        : isMuted 
+          ? `▶ Play ${musicMode === 'synthwave' ? 'Synthwave' : 'Lofi'}` 
+          : `⏸ Pause ${musicMode === 'synthwave' ? 'Synthwave' : 'Lofi'}`,
+      onClick: toggleMute,
+    },
   ];
 
   return (
@@ -283,13 +406,13 @@ export const GlassDock = () => {
       {isTimeSliderMode && renderTimeSlider()}
       
       {/* Main Dock (always visible) */}
-      <div className="glass-dock">
+      <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50 glass-dock w-max max-w-[calc(100vw-24px)]">
         {/* Glass container */}
         <div 
           className={`
-            relative flex items-center px-2 py-1.5 rounded-2xl
+            relative flex items-center px-3 py-2 rounded-2xl
             backdrop-blur-xl backdrop-saturate-150
-            border shadow-2xl
+            border shadow-2xl transition-all duration-300
             ${isDarkModeOverride 
               ? 'bg-black/20 border-white/10 shadow-white/5' 
               : 'bg-white/25 border-black/5 shadow-black/10'
@@ -312,7 +435,7 @@ export const GlassDock = () => {
           />
           
           {/* Dock items */}
-          <div className="relative flex items-center gap-1 justify-center">
+          <div className="relative flex items-center space-x-0.5 sm:space-x-1 min-w-max">
             {dockItems.map((item, index) => (
               <div
                 key={item.id}
@@ -367,9 +490,9 @@ export const GlassDock = () => {
                   className={`
                     glass-dock-item
                     relative flex items-center justify-center
-                    rounded-xl
+                    w-11 h-11 rounded-xl transition-all duration-300 ease-out
+                    transform hover:scale-110 active:scale-95
                     touch-manipulation select-none
-                    transform hover:scale-105 active:scale-95 transition-all duration-150
                     ${hoveredItem === item.id 
                       ? 'bg-white/25 shadow-lg scale-105' 
                       : 'hover:bg-white/15'
@@ -406,6 +529,46 @@ export const GlassDock = () => {
                     {item.icon}
                   </div>
                 </button>
+                
+                {/* Volume/Music indicator */}
+                {item.id === 'volume' && !isMuted && !isLoading && (
+                  <div 
+                    className={`
+                      absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full border border-white/50 animate-pulse
+                      ${musicMode === 'synthwave' ? 'bg-purple-400' : 'bg-emerald-400'}
+                    `}
+                    aria-label={`${musicMode === 'synthwave' ? 'Synthwave' : 'Lofi'} music is playing`}
+                    style={{
+                      boxShadow: musicMode === 'synthwave' 
+                        ? '0 0 8px rgba(168, 85, 247, 0.6)'
+                        : '0 0 8px rgba(52, 211, 153, 0.6)',
+                    }}
+                  />
+                )}
+                
+                {/* Loading indicator for music */}
+                {item.id === 'volume' && isLoading && (
+                  <div 
+                    className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-amber-400 rounded-full border border-white/50 animate-spin"
+                    aria-label="Loading music..."
+                  />
+                )}
+
+                {/* Music mode indicator */}
+                {item.id === 'music-mode' && (
+                  <div 
+                    className={`
+                      absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full border border-white/50
+                      ${musicMode === 'synthwave' ? 'bg-purple-400' : 'bg-emerald-400'}
+                    `}
+                    aria-label={`Current mode: ${musicMode}`}
+                    style={{
+                      boxShadow: musicMode === 'synthwave' 
+                        ? '0 0 6px rgba(168, 85, 247, 0.4)'
+                        : '0 0 6px rgba(52, 211, 153, 0.4)',
+                    }}
+                  />
+                )}
                 
                 {/* Theme toggle indicator */}
                 {item.id === 'theme' && !isAutoMode && (

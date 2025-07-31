@@ -1,17 +1,93 @@
-/* Glass Dock Styles - Apple-inspired glassmorphism */
+/* Glass Dock Styles - Ultra-stable positioning */
 
 .glass-dock {
   /* Enhanced backdrop blur for better glass effect */
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
   
-  /* Smooth animations */
-  transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+  /* CRITICAL: Absolutely stable positioning - NEVER changes */
+  position: fixed !important;
+  bottom: 12px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  z-index: 50 !important;
+  
+  /* Prevent ANY layout shifts */
+  width: fit-content !important;
+  max-width: calc(100vw - 20px) !important;
+  min-width: auto !important;
+  margin: 0 !important;
+  padding: 6px 8px !important;
+  
+  /* Disable all transitions initially for stability */
+  transition: none !important;
+  animation: none !important;
+  
+  /* Force GPU acceleration and prevent reflows */
+  will-change: auto !important;
+  transform-style: preserve-3d !important;
+  backface-visibility: hidden !important;
+  perspective: 1000px !important;
+  
+  /* Ensure box model stability */
+  box-sizing: border-box !important;
+  contain: layout style !important;
+  
+  /* CRITICAL: Never affected by overlay elements */
+  isolation: isolate !important;
+}
+
+.glass-dock-container {
+  /* Time slider overlay - completely independent positioning */
+  position: fixed !important;
+  bottom: 90px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  z-index: 45 !important;
+  padding: 0 1rem !important;
+  max-width: calc(100vw - 32px) !important;
+  box-sizing: border-box !important;
+  
+  /* Prevent any interference with main dock */
+  pointer-events: auto !important;
+  contain: layout style !important;
+  
+  /* CRITICAL: Completely isolated from main dock */
+  isolation: isolate !important;
+  will-change: auto !important;
+}
+
+/* Desktop overrides - maintain same positioning */
+@media (min-width: 769px) {
+  .glass-dock {
+    bottom: 12px !important;
+    max-width: calc(100vw - 20px) !important;
+    padding: 8px 12px !important;
+  }
 }
 
 .glass-dock-item {
-  /* Smooth scaling animation */
+  /* Immediate sizing - no transitions on load */
+  transition: none;
+  
+  /* Consistent mobile-first sizing */
+  width: 36px !important;
+  height: 36px !important;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+/* Add transitions after load */
+.glass-dock.loaded .glass-dock-item {
   transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Desktop dock item sizing */
+@media (min-width: 769px) {
+  .glass-dock-item {
+    width: 44px !important;
+    height: 44px !important;
+  }
 }
 
 .glass-dock-item:hover {
@@ -25,83 +101,63 @@
   100% { transform: scale(1.1); }
 }
 
-/* Responsive breakpoints - Touch-friendly approach */
+/* Ultra-stable mobile breakpoints - only size changes, never position */
 @media (max-width: 768px) {
   .glass-dock {
-    transform: translateX(-50%);
-    bottom: 1rem;
-    padding: 6px 8px;
-    max-width: calc(100vw - 32px);
-    left: 50%;
-    right: auto;
+    bottom: 12px !important;
+    padding: 4px 6px !important;
+    max-width: calc(100vw - 16px) !important;
   }
   
   .glass-dock-item {
     width: 36px !important;
     height: 36px !important;
-    margin: 0 1px;
   }
 }
 
 @media (max-width: 640px) {
   .glass-dock {
-    bottom: 0.75rem;
-    padding: 5px 6px;
-    max-width: calc(100vw - 28px);
+    bottom: 12px !important;
+    padding: 3px 5px !important;
+    max-width: calc(100vw - 12px) !important;
   }
   
   .glass-dock-item {
     width: 34px !important;
     height: 34px !important;
-    margin: 0 0.5px;
   }
 }
 
 @media (max-width: 480px) {
   .glass-dock {
-    bottom: 0.5rem;
-    padding: 4px 5px;
-    max-width: calc(100vw - 24px);
-    overflow-x: auto;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-  }
-  
-  .glass-dock::-webkit-scrollbar {
-    display: none;
+    bottom: 12px !important;
+    padding: 3px 4px !important;
+    max-width: calc(100vw - 10px) !important;
   }
   
   .glass-dock-item {
     width: 32px !important;
     height: 32px !important;
-    margin: 0 0.5px;
-    flex-shrink: 0;
-  }
-  
-  .glass-dock .relative.flex {
-    min-width: max-content;
-    gap: 1px;
   }
 }
 
 @media (max-width: 420px) {
   .glass-dock {
-    padding: 4px;
-    max-width: calc(100vw - 20px);
+    bottom: 12px !important;
+    padding: 2px 3px !important;
+    max-width: calc(100vw - 8px) !important;
   }
   
   .glass-dock-item {
     width: 30px !important;
     height: 30px !important;
-    margin: 0;
   }
 }
 
 @media (max-width: 380px) {
   .glass-dock {
-    max-width: calc(100vw - 16px);
-    padding: 3px;
+    bottom: 12px !important;
+    max-width: calc(100vw - 6px) !important;
   }
   
   .glass-dock-item {
@@ -112,27 +168,14 @@
 
 @media (max-width: 360px) {
   .glass-dock {
-    max-width: calc(100vw - 12px);
-    padding: 3px;
-    overflow-x: auto;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-  }
-  
-  .glass-dock::-webkit-scrollbar {
-    display: none;
+    bottom: 12px !important;
+    max-width: calc(100vw - 4px) !important;
+    padding: 2px !important;
   }
   
   .glass-dock-item {
     width: 26px !important;
     height: 26px !important;
-    flex-shrink: 0;
-  }
-  
-  .glass-dock .relative.flex {
-    min-width: max-content;
-    gap: 1px;
   }
 }
 
@@ -247,6 +290,7 @@ input[type="range"]::-webkit-slider-thumb {
   border: 2px solid rgba(255, 255, 255, 0.5);
   cursor: pointer;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  touch-action: manipulation;
 }
 
 input[type="range"]::-moz-range-thumb {
@@ -257,6 +301,7 @@ input[type="range"]::-moz-range-thumb {
   border: 2px solid rgba(255, 255, 255, 0.5);
   cursor: pointer;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  touch-action: manipulation;
 }
 
 /* Larger thumb for mobile */
@@ -269,5 +314,12 @@ input[type="range"]::-moz-range-thumb {
   input[type="range"]::-moz-range-thumb {
     width: 24px;
     height: 24px;
+  }
+}
+
+/* Prevent zoom on mobile input focus */
+@media (max-width: 768px) {
+  input[type="range"] {
+    font-size: 16px;
   }
 }
