@@ -1,11 +1,15 @@
 #!/usr/bin/env node
 
 // Simple sitemap generator and validator
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const DOMAIN = 'https://subhamagarwal.vercel.app';
-const PUBLIC_DIR = path.join(__dirname, 'public');
+const PUBLIC_DIR = path.join(__dirname, '..', 'public');
 const SITEMAP_PATH = path.join(PUBLIC_DIR, 'sitemap.xml');
 
 // URLs to include in sitemap
@@ -63,10 +67,8 @@ function validateSitemap() {
 }
 
 // Main execution
-if (require.main === module) {
-  console.log('🔄 Generating sitemap...');
-  generateSitemap();
-  validateSitemap();
-}
+console.log('🔄 Generating sitemap...');
+generateSitemap();
+validateSitemap();
 
-module.exports = { generateSitemap, validateSitemap };
+export { generateSitemap, validateSitemap };
