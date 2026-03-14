@@ -327,3 +327,12 @@ input[type="range"]::-moz-range-thumb {
     font-size: 16px;
   }
 }
+
+.glass-dock-scroll {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.glass-dock-scroll::-webkit-scrollbar {
+  display: none;
+}

@@ -315,17 +315,19 @@ body {
 /* Comet Animations */
 @keyframes cometFly {
   0% {
-    transform: translateX(-100vw) translateY(50vh) rotate(45deg);
+    transform: rotate(var(--comet-angle, -45deg)) translateX(0) scale(0);
     opacity: 0;
   }
-  5% {
+  2% {
     opacity: 1;
+    transform: rotate(var(--comet-angle, -45deg)) translateX(10vw) scale(1);
   }
-  95% {
-    opacity: 1;
+  15% {
+    opacity: 0;
+    transform: rotate(var(--comet-angle, -45deg)) translateX(50vw) scale(0.5);
   }
   100% {
-    transform: translateX(120vw) translateY(-50vh) rotate(45deg);
+    transform: rotate(var(--comet-angle, -45deg)) translateX(50vw) scale(0);
     opacity: 0;
   }
 }
@@ -380,100 +382,94 @@ body {
   }
 }
 
+@keyframes starTwinkle {
+  0%, 100% {
+    opacity: 0.2;
+    transform: scale(0.8);
+    box-shadow: none;
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+    box-shadow: 0 0 5px 1px rgba(255, 255, 255, 0.4);
+  }
+}
+
 /* Enhanced Comet Effect Classes */
 .comet {
   position: fixed;
-  top: 20%;
-  left: -300px;
-  width: 8px;
-  height: 8px;
-  background: radial-gradient(circle, white, hsl(var(--night-accent)), hsl(var(--night-accent) / 0.3));
+  width: 3px;
+  height: 3px;
+  background: rgba(255, 255, 255, 1);
   border-radius: 50%;
-  animation: cometFly 12s linear infinite, cometGlow 3s ease-in-out infinite;
+  animation: cometFly 10s linear infinite backwards; /* backwards ensures 0% keyframe applies during delay */
   z-index: 1;
   pointer-events: none;
-  filter: blur(0.5px);
-  transform: rotate(45deg);
+  box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.8);
+  opacity: 0; /* Hidden by default until animation hits */
+  transform: rotate(var(--comet-angle, -45deg));
+}
+
+.comet::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 50%;
+  width: 120px;
+  height: 1px;
+  background: linear-gradient(to left, rgba(255, 255, 255, 0.9), transparent);
+}
+
+.comet::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 50%;
+  width: 15px;
+  height: 2px;
+  background: linear-gradient(to left, rgba(255, 255, 255, 1), transparent);
+  filter: blur(1px);
 }
 
 .comet-1 {
-  animation-delay: 0s;
-  top: 15%;
+  bottom: 40%;
+  left: 20%;
   animation-duration: 8s;
-}
-
-.comet-1::before {
-  animation-delay: 0s;
-  animation-duration: 8s;
-}
-
-.comet-1::after {
-  animation-delay: 0s;
-  animation-duration: 8s;
+  --comet-angle: -35deg;
 }
 
 .comet-2 {
-  animation-delay: 2s;
-  top: 25%;
-  animation-duration: 9s;
-}
-
-.comet-2::before {
+  bottom: 45%;
+  left: 35%;
   animation-delay: 2s;
   animation-duration: 9s;
-}
-
-.comet-2::after {
-  animation-delay: 2s;
-  animation-duration: 9s;
+  --comet-angle: -45deg;
 }
 
 .comet-3 {
-  animation-delay: 4s;
-  top: 35%;
-  animation-duration: 10s;
-}
-
-.comet-3::before {
+  bottom: 50%;
+  left: 55%;
   animation-delay: 4s;
   animation-duration: 10s;
-}
-
-.comet-3::after {
-  animation-delay: 4s;
-  animation-duration: 10s;
+  --comet-angle: -50deg;
 }
 
 .comet-4 {
-  animation-delay: 1s;
-  top: 45%;
-  animation-duration: 7s;
-}
-
-.comet-4::before {
+  bottom: 45%;
+  left: 75%;
   animation-delay: 1s;
   animation-duration: 7s;
-}
-
-.comet-4::after {
-  animation-delay: 1s;
-  animation-duration: 7s;
+  --comet-angle: -40deg;
 }
 
 .comet-5 {
-  animation-delay: 3s;
-  top: 55%;
-  animation-duration: 11s;
-}
-
-.comet-5::before {
+  bottom: 55%;
+  left: 50%;
   animation-delay: 3s;
   animation-duration: 11s;
-}
-
-.comet-5::after {
-  animation-delay: 3s;
-  animation-duration: 11s;
+  --comet-angle: -45deg;
 }
 
 /* =========================== */

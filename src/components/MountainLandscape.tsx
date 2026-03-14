@@ -1,5 +1,6 @@
 import { useTimeTheme } from '@/hooks/useTimeTheme';
 import { useState, useEffect } from 'react';
+import Fireflies from './Fireflies';
 
 export const MountainLandscape = () => {
   const { theme, isDarkModeOverride } = useTimeTheme();
@@ -69,9 +70,9 @@ export const MountainLandscape = () => {
     } else if (currentHour >= 18 && currentHour < 22) {
       // Evening/Sunset (6 PM - 10 PM)
       return {
-        skyGradient: 'linear-gradient(to bottom, #2F1B69 0%, #8B0000 30%, #FF4500 60%, #FFD700 100%)',
-        mountainColor: '#4B0082',
-        treeColor: '#191970',
+        skyGradient: 'linear-gradient(to bottom, #1a0b2e 0%, #4b1b4d 35%, #9e2a2b 65%, #e05618 85%, #f1a93e 100%)',
+        mountainColor: '#301b4d',
+        treeColor: '#1a0b2e',
         stars: true,
         moon: false,
         sun: true,
@@ -102,21 +103,25 @@ export const MountainLandscape = () => {
       {/* Stars */}
       {timeStyle.stars && (
         <div className="absolute inset-0">
-          {[...Array(100)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute bg-white rounded-full animate-pulse"
-              style={{
-                width: `${Math.random() * 3 + 1}px`,
-                height: `${Math.random() * 3 + 1}px`,
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 60}%`,
-                animationDuration: `${Math.random() * 3 + 2}s`,
-                animationDelay: `${Math.random() * 2}s`,
-                opacity: Math.random() * 0.8 + 0.2,
-              }}
-            />
-          ))}
+          {[...Array(150)].map((_, i) => {
+            const size = Math.random() > 0.8 ? 2 : 1;
+            const animDuration = Math.random() * 3 + 2;
+            const animDelay = Math.random() * 2;
+            return (
+              <div
+                key={i}
+                className="absolute bg-white rounded-full"
+                style={{
+                  width: `${size}px`,
+                  height: `${size}px`,
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 60}%`,
+                  animation: `starTwinkle ${animDuration}s ease-in-out ${animDelay}s infinite alternate`,
+                  opacity: 0.8,
+                }}
+              />
+            );
+          })}
         </div>
       )}
       
@@ -193,27 +198,7 @@ export const MountainLandscape = () => {
           
           {/* Glowworms around left trees - evening and night only */}
           {(currentHour >= 18 || currentHour < 6) && (
-            <>
-              {[...Array(20)].map((_, i) => (
-                <div
-                  key={`glow-left-${i}`}
-                  className="absolute"
-                  style={{
-                    left: `${Math.random() * 90 + 5}%`,
-                    bottom: `${Math.random() * 80 + 15}px`,
-                    width: '4px',
-                    height: '4px',
-                    backgroundColor: '#ADFF2F',
-                    borderRadius: '50%',
-                    boxShadow: '0 0 12px #ADFF2F, 0 0 20px #90EE90, 0 0 30px rgba(173, 255, 47, 0.3)',
-                    animation: `glowwormFloat ${3 + Math.random() * 4}s ease-in-out infinite, glowwormPulse ${1.5 + Math.random() * 2}s ease-in-out infinite`,
-                    animationDelay: `${Math.random() * 5}s`,
-                    opacity: Math.random() * 0.4 + 0.6,
-                    filter: 'blur(0.5px)',
-                  }}
-                />
-              ))}
-            </>
+            <Fireflies count={20} />
           )}
         </div>
         
@@ -235,73 +220,26 @@ export const MountainLandscape = () => {
           
           {/* Glowworms around right trees - evening and night only */}
           {(currentHour >= 18 || currentHour < 6) && (
-            <>
-              {[...Array(20)].map((_, i) => (
-                <div
-                  key={`glow-right-${i}`}
-                  className="absolute"
-                  style={{
-                    right: `${Math.random() * 90 + 5}%`,
-                    bottom: `${Math.random() * 80 + 15}px`,
-                    width: '4px',
-                    height: '4px',
-                    backgroundColor: '#ADFF2F',
-                    borderRadius: '50%',
-                    boxShadow: '0 0 12px #ADFF2F, 0 0 20px #90EE90, 0 0 30px rgba(173, 255, 47, 0.3)',
-                    animation: `glowwormFloat ${3 + Math.random() * 4}s ease-in-out infinite, glowwormPulse ${1.5 + Math.random() * 2}s ease-in-out infinite`,
-                    animationDelay: `${Math.random() * 5}s`,
-                    opacity: Math.random() * 0.4 + 0.6,
-                    filter: 'blur(0.5px)',
-                  }}
-                />
-              ))}
-            </>
+            <Fireflies count={20} />
           )}
         </div>
         
         {/* Center lake reflection */}
+        {/* Removed as requested - it created a visible halo around the dock on smaller views */}
+        {/* 
         <div 
-          className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-80 h-20 transition-all duration-[2000ms]"
+          className="hidden md:block absolute bottom-0 left-1/2 transform -translate-x-1/2 w-80 h-20 transition-all duration-[2000ms]"
           style={{
             background: `linear-gradient(to bottom, ${timeStyle.skyGradient.split(' ')[4]}, transparent)`,
             borderRadius: '50% 50% 0 0',
             opacity: 0.4,
           }}
-        />
+        /> 
+        */}
       </div>
       
-      {/* Atmospheric particles */}
-      <div className="absolute inset-0 overflow-hidden">
-        {[...Array(30)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute opacity-20 animate-pulse"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              width: `${Math.random() * 4 + 1}px`,
-              height: `${Math.random() * 4 + 1}px`,
-              backgroundColor: timeStyle.stars ? '#ffffff' : '#87CEEB',
-              borderRadius: '50%',
-              animation: `float ${5 + Math.random() * 10}s ease-in-out infinite`,
-              animationDelay: `${Math.random() * 5}s`,
-            }}
-          />
-        ))}
-      </div>
+      {/* Removed the large Atmospheric particles as they looked weird */}
       
-      <style>{`
-        @keyframes float {
-          0%, 100% {
-            transform: translateY(0px) translateX(0px);
-            opacity: 0.2;
-          }
-          50% {
-            transform: translateY(-20px) translateX(10px);
-            opacity: 0.4;
-          }
-        }
-      `}</style>
     </div>
   );
 };
