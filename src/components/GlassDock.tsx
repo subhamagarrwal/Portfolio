@@ -391,7 +391,7 @@ export const GlassDock = () => {
                     glass-dock-item
                     relative flex items-center justify-center
                     rounded-xl
-                    select-none
+                    select-none outline-none focus:outline-none
                     transform hover:scale-105 active:scale-95 transition-all duration-150
                     ${isHoveredOrActive 
                       ? 'bg-white/25 shadow-lg scale-105' 

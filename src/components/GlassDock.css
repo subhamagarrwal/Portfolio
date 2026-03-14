@@ -74,6 +74,9 @@
   /* Immediate sizing - no transitions on load */
   transition: none;
   
+  /* Remove tap highlight on mobile which causes a blue flash */
+  -webkit-tap-highlight-color: transparent;
+  
   /* Consistent mobile-first sizing */
   width: 36px !important;
   height: 36px !important;
