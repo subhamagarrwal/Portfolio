@@ -12,6 +12,7 @@ import {
   ArrowLeft
 } from 'lucide-react';
 import { useTimeTheme } from '@/hooks/useTimeTheme';
+import { TimeDial } from './TimeDial';
 import './GlassDock.css';
 
 // Extend Window interface for manual time override
@@ -138,128 +139,29 @@ export const GlassDock = () => {
   const handleBackToNormal = () => {
     try {
       setIsTimeSliderMode(false);
-      // Clear the manual time override
-      if (typeof window !== 'undefined') {
-        delete window.manualTimeOverride;
-        try {
-          window.dispatchEvent(new CustomEvent('manualTimeChange', { detail: null }));
-        } catch (error) {
-          console.warn('Failed to dispatch time reset event:', error);
-        }
-      }
+      // We no longer clear the manual time override here 
+      // so it persists when leaving the section.
     } catch (error) {
       console.error('Error returning to normal mode:', error);
     }
   };
 
+  // Add an effect to hide main contents when in time slider mode
+  useEffect(() => {
+    if (isTimeSliderMode) {
+      document.body.classList.add('time-slider-active');
+    } else {
+      document.body.classList.remove('time-slider-active');
+    }
+    
+    return () => {
+      document.body.classList.remove('time-slider-active');
+    };
+  }, [isTimeSliderMode]);
+
   // Instead of completely replacing the dock, show time slider as overlay
   const renderTimeSlider = () => (
-    <div className="glass-dock-container">
-      <div 
-        className={`
-          relative flex flex-col items-center px-4 py-3 rounded-2xl max-w-[calc(100vw-32px)]
-          backdrop-blur-xl backdrop-saturate-150
-          border shadow-2xl transition-all duration-300
-          md:px-6 md:py-4
-          ${isDarkModeOverride 
-            ? 'bg-black/30 border-white/20 shadow-white/10' 
-            : 'bg-white/40 border-black/10 shadow-black/20'
-          }
-        `}
-        style={{
-          background: isDarkModeOverride 
-            ? 'linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.05))'
-            : 'linear-gradient(135deg, rgba(255,255,255,0.4), rgba(255,255,255,0.1))',
-          boxShadow: isDarkModeOverride
-            ? '0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.3)'
-            : '0 8px 32px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.4)',
-        }}
-      >
-        {/* Glass shine effect */}
-        <div className="absolute inset-0 rounded-2xl glass-reflection" />
-        
-        {/* Time display */}
-        <div className={`
-          relative z-10 text-center mb-3 md:mb-4
-          ${isDarkModeOverride ? 'text-white' : 'text-black'}
-        `}>
-          <div className="text-base md:text-lg font-semibold">{getTimeLabel(manualTime)}</div>
-          <div className="text-xs md:text-sm opacity-70">Drag to change time of day</div>
-        </div>
-        
-        {/* Time slider */}
-        <div className="relative z-10 w-full max-w-xs md:w-80">
-          <input
-            type="range"
-            min="0"
-            max="23"
-            step="1"
-            value={manualTime}
-            onChange={(e) => {
-              const value = parseInt(e.target.value);
-              if (!isNaN(value) && value >= 0 && value <= 23) {
-                handleTimeChange(value);
-              }
-            }}
-            onInput={(e) => {
-              // Additional safety for mobile devices
-              const value = parseInt((e.target as HTMLInputElement).value);
-              if (!isNaN(value) && value >= 0 && value <= 23) {
-                handleTimeChange(value);
-              }
-            }}
-            className={`
-              w-full h-3 md:h-2 rounded-lg appearance-none cursor-pointer
-              touch-manipulation
-              ${isDarkModeOverride 
-                ? 'bg-white/20 slider-dark' 
-                : 'bg-black/20 slider-light'
-              }
-            `}
-            style={{
-              background: `linear-gradient(to right, 
-                #87CEEB 0%, #87CEEB 25%, 
-                #FFD700 25%, #FFD700 50%, 
-                #FF4500 50%, #FF4500 75%, 
-                #4B0082 75%, #4B0082 100%)`,
-            }}
-            aria-label="Time of day slider"
-            aria-valuemin={0}
-            aria-valuemax={23}
-            aria-valuenow={manualTime}
-          />
-          
-          {/* Time markers */}
-          <div className="flex justify-between mt-2 text-xs opacity-60">
-            <span className="hidden sm:inline">12 AM</span>
-            <span className="sm:hidden">12A</span>
-            <span className="hidden sm:inline">6 AM</span>
-            <span className="sm:hidden">6A</span>
-            <span className="hidden sm:inline">12 PM</span>
-            <span className="sm:hidden">12P</span>
-            <span className="hidden sm:inline">6 PM</span>
-            <span className="sm:hidden">6P</span>
-            <span className="hidden sm:inline">11 PM</span>
-            <span className="sm:hidden">11P</span>
-          </div>
-        </div>
-        
-        {/* Quick exit button */}
-        <button
-          onClick={handleBackToNormal}
-          className={`
-            relative z-10 mt-3 px-4 py-1.5 rounded-lg text-xs font-medium
-            transition-all duration-200 touch-manipulation
-            ${isDarkModeOverride 
-              ? 'bg-white/20 text-white hover:bg-white/30' 
-              : 'bg-black/20 text-black hover:bg-black/30'
-            }
-          `}
-        >
-          ✕ Close
-        </button>
-      </div>
-    </div>
+    <TimeDial onClose={handleBackToNormal} isDarkModeOverride={isDarkModeOverride} />
   );
 
   const dockItems: DockItem[] = [

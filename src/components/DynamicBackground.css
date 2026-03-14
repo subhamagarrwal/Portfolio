@@ -1,0 +1,263 @@
+.dynamic-bg-vars {
+  /* Dynamic variables updated by JS */
+  --sky-top: #080b18;
+  --sky-bottom: #12162d;
+  --mountain-back: #121422;
+  --mountain-front: #0a0c16;
+  --ground: #05060a;
+  
+  /* Sun and Moon specific variables */
+  --sun-x: 50%;
+  --sun-y: 120%;
+  --sun-opacity: 0;
+  --sun-glow: #ffea00; 
+  --sun-intensity: 0; /* NEW: Controls the physical brightness multiplier */
+  
+  --moon-x: 50%;
+  --moon-y: 15%;
+  --moon-opacity: 1;
+  
+  --stars-opacity: 1;
+}
+
+.scene-wrapper {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  background: linear-gradient(to bottom, var(--sky-top) 0%, var(--sky-bottom) 100%);
+  transition: background 0.1s linear;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.scene-stars {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: 
+      radial-gradient(1px 1px at 10% 20%, #fff, rgba(0,0,0,0)),
+      radial-gradient(1.5px 1.5px at 30% 40%, #fff, rgba(0,0,0,0)),
+      radial-gradient(2px 2px at 60% 10%, #fff, rgba(0,0,0,0)),
+      radial-gradient(1px 1px at 80% 50%, #fff, rgba(0,0,0,0)),
+      radial-gradient(1.5px 1.5px at 90% 30%, #fff, rgba(0,0,0,0)),
+      radial-gradient(2px 2px at 40% 70%, #fff, rgba(0,0,0,0)),
+      radial-gradient(1px 1px at 70% 80%, #fff, rgba(0,0,0,0)),
+      radial-gradient(1.5px 1.5px at 20% 80%, #fff, rgba(0,0,0,0));
+  opacity: var(--stars-opacity);
+  transition: opacity 0.1s linear;
+  z-index: 1;
+}
+
+.scene-sun {
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  background: #fff9d6;
+  border-radius: 50%;
+  left: var(--sun-x);
+  top: var(--sun-y);
+  transform: translate(-50%, -50%); 
+  box-shadow: 
+      0 0 60px var(--sun-glow), 
+      0 0 calc(50px + 100px * var(--sun-intensity)) var(--sun-glow), 
+      0 0 calc(100px + 250px * var(--sun-intensity)) var(--sun-glow);
+  opacity: var(--sun-opacity);
+  transition: top 0.1s linear, left 0.1s linear, opacity 0.2s linear, box-shadow 0.1s linear;
+  z-index: 2;
+}
+
+.scene-moon {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  background: #e6e8ed;
+  border-radius: 50%;
+  left: var(--moon-x);
+  top: var(--moon-y);
+  transform: translate(-50%, -50%);
+  box-shadow: inset -10px -10px 15px rgba(0,0,0,0.15), 0 0 20px rgba(255, 255, 255, 0.3), 0 0 60px rgba(255,255,255,0.1);
+  opacity: var(--moon-opacity);
+  transition: top 0.1s linear, left 0.1s linear, opacity 0.2s linear;
+  z-index: 2;
+}
+
+.scene-mountain {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  transition: background 0.1s linear;
+}
+
+.scene-mountain-back {
+  height: 55%;
+  background: var(--mountain-back);
+  clip-path: polygon(0% 100%, 0% 60%, 20% 30%, 45% 55%, 70% 20%, 100% 50%, 100% 100%);
+  z-index: 3;
+}
+
+.scene-mountain-front {
+  height: 40%;
+  background: var(--mountain-front);
+  clip-path: polygon(0% 100%, 0% 50%, 30% 20%, 60% 60%, 85% 35%, 100% 45%, 100% 100%);
+  z-index: 4;
+}
+
+.scene-ground-area {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 15%;
+  background: var(--ground);
+  z-index: 5;
+  transition: background 0.1s linear;
+}
+
+.scene-grass {
+  position: absolute;
+  bottom: 15%;
+  width: 100%;
+  height: 50px;
+  background-image: 
+      linear-gradient(to top, var(--ground) 0%, transparent 100%),
+      repeating-linear-gradient(to right, transparent 0, transparent 10px, var(--ground) 10px, var(--ground) 12px, transparent 12px, transparent 25px),
+      repeating-linear-gradient(to right, transparent 0, transparent 30px, var(--ground) 30px, var(--ground) 34px, transparent 34px, transparent 60px);
+  background-size: 100% 100%, 100% 100%, 100% 80%;
+  background-position: bottom;
+  background-repeat: no-repeat;
+  z-index: 4;
+  transition: all 0.1s linear;
+}
+
+.scene-firefly {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: #a3ff00;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #a3ff00, 0 0 20px #a3ff00;
+  z-index: 7; 
+  animation: scene-pulse 2s infinite alternate;
+}
+
+@keyframes scene-pulse {
+  0% { opacity: 0.1; transform: scale(0.8) translateY(0); }
+  100% { opacity: 1; transform: scale(1.2) translateY(-10px); }
+}
+
+.scene-global-illumination {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at var(--sun-x) var(--sun-y), rgba(255,255,255,0.4) 0%, var(--sun-glow) 30%, transparent 80%);
+  mix-blend-mode: soft-light; 
+  opacity: calc(var(--sun-opacity) * var(--sun-intensity) * 0.95);
+  z-index: 6; 
+  pointer-events: none;
+  transition: opacity 0.2s linear;
+}
+
+.scene-sun-rays {
+  position: absolute;
+  left: var(--sun-x);
+  top: var(--sun-y);
+  width: 200vmax;
+  height: 200vmax;
+  background: repeating-conic-gradient(from 0deg, transparent 0deg, var(--sun-glow) 15deg, transparent 30deg);
+  -webkit-mask-image: radial-gradient(circle, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 55%);
+  mask-image: radial-gradient(circle, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 55%);
+  filter: blur(15px); 
+  opacity: calc(var(--sun-opacity) * var(--sun-intensity) * 0.25);
+  z-index: 6; 
+  pointer-events: none;
+  mix-blend-mode: screen;
+  animation: scene-rotateRays 250s linear infinite;
+  transition: top 0.1s linear, left 0.1s linear, opacity 0.2s linear;
+}
+
+@keyframes scene-rotateRays {
+  0% { transform: translate(-50%, -50%) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Time Dial specific */
+.time-dial-controls {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%; 
+  width: 160px;
+  height: 160px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.2), inset 0 0 20px rgba(255,255,255,0.02);
+  touch-action: none; 
+  position: relative;
+  margin: 0 auto;
+}
+
+.time-dial-ring {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+  border-radius: 50%;
+  border: 1px dashed rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+}
+
+.time-dial-knob-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  transition: transform 0.05s linear;
+}
+
+.time-dial-knob {
+  position: absolute;
+  top: -6px;
+  left: calc(50% - 6px);
+  width: 12px;
+  height: 12px;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(255,255,255,0.8), 0 0 20px rgba(255,255,255,0.4);
+  pointer-events: auto;
+  cursor: grab;
+}
+
+.time-dial-knob:active {
+  cursor: grabbing;
+  transform: scale(1.2);
+}
+
+.time-clock-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.time-clock-time {
+  font-size: 1.3rem;
+  font-weight: 300;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+}
+
+.time-clock-period {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  opacity: 0.6;
+  margin-top: 4px;
+}

@@ -15,7 +15,7 @@ export const ExtracurricularsSection = () => {
     <section id="extracurriculars" className={`py-20 px-6 ${timeBasedClass}`}>
       <div className="container mx-auto max-w-6xl">
         <h2 className={`
-          text-4xl font-bold text-center mb-12 transition-colors duration-300 synthwave-text-glow ${textClass}
+          text-4xl font-bold text-center mb-12 transition-colors duration-300 ${!isLightMode ? 'synthwave-text-glow' : ''} ${textClass}
           ${isLightMode ? 'liquid-glass-text-container' : ''}
         `}>
           Leadership & Activities
@@ -26,7 +26,7 @@ export const ExtracurricularsSection = () => {
             <Card
               key={activity.id}
               className={`
-                p-6 transition-all duration-500 hover:scale-105 synthwave-glow
+                p-6 transition-all duration-500 hover:scale-105 ${!isLightMode ? 'synthwave-glow' : ''}
                 ${isLightMode
                     ? 'bg-white/25 border-white/40 liquid-glass-card'
                     : 'bg-white/15 border-white/25 liquid-glass-card'

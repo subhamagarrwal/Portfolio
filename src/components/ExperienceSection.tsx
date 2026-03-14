@@ -15,7 +15,7 @@ export const ExperienceSection = () => {
     <section id="experience" className={`py-20 px-6 ${timeBasedClass}`}>
       <div className="container mx-auto max-w-4xl">
         <h2 className={`
-          text-4xl font-bold text-center mb-12 transition-colors duration-300 synthwave-text-glow ${textClass}
+          text-4xl font-bold text-center mb-12 transition-colors duration-300 ${!isLightMode ? 'synthwave-text-glow' : ''} ${textClass}
           ${isLightMode ? 'liquid-glass-text-container' : ''}
         `}>
           Professional Experience
@@ -26,7 +26,7 @@ export const ExperienceSection = () => {
             <Card
               key={exp.id}
               className={`
-                transition-all duration-500 hover:scale-[1.02] synthwave-glow
+                transition-all duration-500 hover:scale-[1.02] ${!isLightMode ? 'synthwave-glow' : ''}
                 ${isLightMode
                     ? 'bg-white/25 border-white/40 liquid-glass-card'
                     : 'bg-white/15 border-white/25 liquid-glass-card'

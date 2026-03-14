@@ -1,245 +1,195 @@
-import { useTimeTheme } from '@/hooks/useTimeTheme';
-import { useState, useEffect } from 'react';
-import Fireflies from './Fireflies';
+import { useEffect, useState, useRef, useMemo } from 'react';
+import './DynamicBackground.css';
+
+const palettes = {
+  night:     { top: "#080b18", bottom: "#12162d", mBack: "#121422", mFront: "#0a0c16", ground: "#05060a", sunGlow: "#ffea00" },
+  preDawn:   { top: "#1a1835", bottom: "#3a2845", mBack: "#201c2e", mFront: "#14111f", ground: "#0c0a12", sunGlow: "#ffea00" },
+  sunrise:   { top: "#384568", bottom: "#e07b53", mBack: "#42384a", mFront: "#2a2230", ground: "#1a1215", sunGlow: "#ff7b00" },
+  morning:   { top: "#4f83c4", bottom: "#98c4df", mBack: "#5b84ad", mFront: "#385d82", ground: "#1e3b3a", sunGlow: "#ffe699" }, 
+  noon:      { top: "#2074d4", bottom: "#80c4f5", mBack: "#6499c4", mFront: "#3b6c94", ground: "#22473a", sunGlow: "#ffffff" }, 
+  afternoon: { top: "#3876be", bottom: "#8ab4d4", mBack: "#5c87ab", mFront: "#345e80", ground: "#203b32", sunGlow: "#ffdb70" },
+  sunset:    { top: "#2a3b5c", bottom: "#ff4d00", mBack: "#3a1a1c", mFront: "#1a0b0d", ground: "#140705", sunGlow: "#ff2a00" },
+  dusk:      { top: "#1c1d36", bottom: "#6e2030", mBack: "#201524", mFront: "#120a14", ground: "#0a050a", sunGlow: "#ff0000" }
+};
+
+const hexToRgb = (hex: string) => {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result ? [parseInt(result[1], 16), parseInt(result[2], 16), parseInt(result[3], 16)] : [0,0,0];
+};
+
+const interpolateColor = (c1: string, c2: string, factor: number) => {
+  const rgb1 = hexToRgb(c1);
+  const rgb2 = hexToRgb(c2);
+  const r = Math.round(rgb1[0] + factor * (rgb2[0] - rgb1[0]));
+  const g = Math.round(rgb1[1] + factor * (rgb2[1] - rgb1[1]));
+  const b = Math.round(rgb1[2] + factor * (rgb2[2] - rgb1[2]));
+  return `rgb(${r}, ${g}, ${b})`;
+};
 
 export const MountainLandscape = () => {
-  const { theme, isDarkModeOverride } = useTimeTheme();
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const [manualTime, setManualTime] = useState<number | null>(null);
+  const [times, setTimes] = useState({ sunriseTime: 6.0, sunsetTime: 18.25 });
+  const [fireflies, setFireflies] = useState<{left: number, bottom: number, delay: number, duration: number}[]>([]);
 
-  // Listen for manual time changes from the time slider
   useEffect(() => {
-    const handleManualTimeChange = (event: CustomEvent) => {
+    // Generate fireflies
+    const newFireflies = [];
+    for(let i=0; i<15; i++) {
+      newFireflies.push({
+        left: Math.random() * 100,
+        bottom: Math.random() * 15 + 2,
+        delay: Math.random() * 2,
+        duration: Math.random() * 1 + 1.5,
+      });
+    }
+    setFireflies(newFireflies);
+
+    // Watch for time slider
+    const handleManualTimeChange = (event: CustomEvent<number | null>) => {
       setManualTime(event.detail);
     };
 
     window.addEventListener('manualTimeChange', handleManualTimeChange as EventListener);
     
+    // Fetch real time
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(async (position) => {
+        try {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          const response = await fetch(`https://api.sunrise-sunset.org/json?lat=${lat}&lng=${lng}&formatted=0`);
+          const data = await response.json();
+          if(data.status === "OK") {
+            const rise = new Date(data.results.sunrise);
+            const set = new Date(data.results.sunset);
+            setTimes({
+              sunriseTime: rise.getHours() + (rise.getMinutes() / 60),
+              sunsetTime: set.getHours() + (set.getMinutes() / 60)
+            });
+          }
+        } catch (error) {
+          console.error("Failed to fetch sun times:", error);
+        }
+      }, () => {});
+    }
+
     return () => {
       window.removeEventListener('manualTimeChange', handleManualTimeChange as EventListener);
     };
   }, []);
 
-  // Get current time for real-time updates, or use manual override
-  const getCurrentHour = () => {
+  const keyframes = useMemo(() => {
+    const { sunriseTime, sunsetTime } = times;
+    const frames = [
+      { time: 0,                            name: "Deep Night", colors: palettes.night,     stars: 1 },
+      { time: sunriseTime - 1.0,            name: "Pre-Dawn",   colors: palettes.preDawn,   stars: 0.8 },
+      { time: sunriseTime + 0.0,            name: "Sunrise",    colors: palettes.sunrise,   stars: 0.1 },
+      { time: sunriseTime + 1.5,            name: "Morning",    colors: palettes.morning,   stars: 0 },
+      { time: (sunriseTime + sunsetTime)/2, name: "High Noon",  colors: palettes.noon,      stars: 0 },
+      { time: sunsetTime - 2.5,             name: "Afternoon",  colors: palettes.afternoon, stars: 0 }, 
+      { time: sunsetTime - 0.75,            name: "Sunset",     colors: palettes.sunset,    stars: 0.1 }, 
+      { time: sunsetTime + 0.25,            name: "Dusk",       colors: palettes.dusk,      stars: 0.8 }, 
+      { time: sunsetTime + 1.5,             name: "Deep Night", colors: palettes.night,     stars: 1 },
+      { time: 24,                           name: "Deep Night", colors: palettes.night,     stars: 1 }
+    ];
+    return frames.sort((a, b) => a.time - b.time);
+  }, [times]);
+
+  useEffect(() => {
+    let hours = 0;
     if (manualTime !== null) {
-      return manualTime;
-    }
-    if (window.manualTimeOverride !== undefined) {
-      return window.manualTimeOverride;
-    }
-    return new Date().getHours();
-  };
-
-  const currentHour = getCurrentHour();
-  
-  // Determine the time-based theme colors and elements
-  const getTimeBasedStyle = () => {
-    if (isDarkModeOverride) {
-      // Night mode override - always show night
-      return {
-        skyGradient: 'linear-gradient(to bottom, #0f0f23 0%, #1a1a3e 50%, #2d2d5f 100%)',
-        mountainColor: '#1a1a2e',
-        treeColor: '#0d1421',
-        stars: true,
-        moon: true,
-        sun: false,
-      };
-    }
-
-    // Natural time-based themes
-    if (currentHour >= 6 && currentHour < 12) {
-      // Dawn/Morning (6 AM - 12 PM)
-      return {
-        skyGradient: 'linear-gradient(to bottom, #87CEEB 0%, #E0F6FF 50%, #B0E0E6 100%)',
-        mountainColor: '#4682B4',
-        treeColor: '#2F4F4F',
-        stars: false,
-        moon: false,
-        sun: true,
-      };
-    } else if (currentHour >= 12 && currentHour < 18) {
-      // Afternoon (12 PM - 6 PM)
-      return {
-        skyGradient: 'linear-gradient(to bottom, #87CEEB 0%, #F0F8FF 30%, #E6F3FF 100%)',
-        mountainColor: '#5F9EA0',
-        treeColor: '#2F4F4F',
-        stars: false,
-        moon: false,
-        sun: true,
-      };
-    } else if (currentHour >= 18 && currentHour < 22) {
-      // Evening/Sunset (6 PM - 10 PM)
-      return {
-        skyGradient: 'linear-gradient(to bottom, #1a0b2e 0%, #4b1b4d 35%, #9e2a2b 65%, #e05618 85%, #f1a93e 100%)',
-        mountainColor: '#301b4d',
-        treeColor: '#1a0b2e',
-        stars: true,
-        moon: false,
-        sun: true,
-      };
+      hours = manualTime;
+    } else if (window.manualTimeOverride !== undefined && window.manualTimeOverride !== null) {
+      hours = window.manualTimeOverride;
     } else {
-      // Night (10 PM - 6 AM)
-      return {
-        skyGradient: 'linear-gradient(to bottom, #0f0f23 0%, #1a1a3e 50%, #2d2d5f 100%)',
-        mountainColor: '#1a1a2e',
-        treeColor: '#0d1421',
-        stars: true,
-        moon: true,
-        sun: false,
-      };
+      const now = new Date();
+      hours = now.getHours() + (now.getMinutes() / 60);
     }
-  };
 
-  const timeStyle = getTimeBasedStyle();
+    let start = keyframes[0], end = keyframes[keyframes.length - 1];
+    for (let i = 0; i < keyframes.length - 1; i++) {
+        if (hours >= keyframes[i].time && hours <= keyframes[i+1].time) {
+            start = keyframes[i];
+            end = keyframes[i+1];
+            break;
+        }
+    }
+
+    const duration = end.time - start.time;
+    const factor = duration === 0 ? 0 : (hours - start.time) / duration;
+
+    if (wrapperRef.current) {
+      const style = wrapperRef.current.style;
+      style.setProperty('--sky-top', interpolateColor(start.colors.top, end.colors.top, factor));
+      style.setProperty('--sky-bottom', interpolateColor(start.colors.bottom, end.colors.bottom, factor));
+      style.setProperty('--mountain-back', interpolateColor(start.colors.mBack, end.colors.mBack, factor));
+      style.setProperty('--mountain-front', interpolateColor(start.colors.mFront, end.colors.mFront, factor));
+      style.setProperty('--ground', interpolateColor(start.colors.ground, end.colors.ground, factor));
+      style.setProperty('--sun-glow', interpolateColor(start.colors.sunGlow, end.colors.sunGlow, factor));
+      style.setProperty('--stars-opacity', String(start.stars + factor * (end.stars - start.stars)));
+
+      const { sunriseTime, sunsetTime } = times;
+      const daylightHours = sunsetTime - sunriseTime;
+      const nightHours = 24 - daylightHours;
+
+      // THE SUN
+      let sunProgress = (hours - sunriseTime) / daylightHours; 
+      if (sunProgress >= -0.1 && sunProgress <= 1.1) { 
+          style.setProperty('--sun-x', `${sunProgress * 100}%`);
+          style.setProperty('--sun-y', `${100 - Math.sin(sunProgress * Math.PI) * 85}%`);
+          style.setProperty('--sun-opacity', '1');
+          
+          let intensity = Math.max(0, Math.sin(sunProgress * Math.PI));
+          style.setProperty('--sun-intensity', intensity.toFixed(3));
+      } else {
+          style.setProperty('--sun-opacity', '0'); 
+          style.setProperty('--sun-y', `120%`);
+          style.setProperty('--sun-intensity', '0');
+      }
+
+      // THE MOON 
+      let moonTime = hours >= sunsetTime ? (hours - sunsetTime) : (hours + (24 - sunsetTime)); 
+      let moonProgress = moonTime / nightHours;
+      
+      if (moonProgress >= -0.1 && moonProgress <= 1.1) {
+          style.setProperty('--moon-x', `${moonProgress * 100}%`);
+          style.setProperty('--moon-y', `${100 - Math.sin(moonProgress * Math.PI) * 85}%`);
+          style.setProperty('--moon-opacity', '1');
+      } else {
+          style.setProperty('--moon-opacity', '0');
+          style.setProperty('--moon-y', `120%`);
+      }
+      
+      // Dispatch an event globally so other components (like TimeDial) know the phase
+      window.dispatchEvent(new CustomEvent('timePhaseInfo', { detail: { name: start.name, hours } }));
+    }
+  }, [manualTime, keyframes, times]);
 
   return (
-    <div className="fixed inset-0 z-0 overflow-hidden">
-      {/* Sky gradient */}
-      <div 
-        className="absolute inset-0 transition-all duration-[2000ms] ease-in-out"
-        style={{ background: timeStyle.skyGradient }}
-      />
-      
-      {/* Stars */}
-      {timeStyle.stars && (
-        <div className="absolute inset-0">
-          {[...Array(150)].map((_, i) => {
-            const size = Math.random() > 0.8 ? 2 : 1;
-            const animDuration = Math.random() * 3 + 2;
-            const animDelay = Math.random() * 2;
-            return (
-              <div
-                key={i}
-                className="absolute bg-white rounded-full"
-                style={{
-                  width: `${size}px`,
-                  height: `${size}px`,
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 60}%`,
-                  animation: `starTwinkle ${animDuration}s ease-in-out ${animDelay}s infinite alternate`,
-                  opacity: 0.8,
-                }}
-              />
-            );
-          })}
-        </div>
-      )}
-      
-      {/* Moon */}
-      {timeStyle.moon && (
-        <div 
-          className="absolute top-20 right-32 w-16 h-16 bg-yellow-100 rounded-full shadow-lg opacity-90"
-          style={{
-            boxShadow: '0 0 30px rgba(255, 255, 255, 0.3), inset -8px -8px 0 rgba(255, 255, 255, 0.1)',
-          }}
-        />
-      )}
-      
-      {/* Sun */}
-      {timeStyle.sun && (
-        <div className="absolute top-20 right-32">
-          <div 
-            className="w-20 h-20 bg-yellow-400 rounded-full shadow-lg animate-pulse"
-            style={{
-              boxShadow: '0 0 50px rgba(255, 255, 0, 0.4)',
-              animationDuration: '4s',
-            }}
-          />
-        </div>
-      )}
-      
-      {/* Mountain ranges */}
-      <div className="absolute bottom-0 left-0 right-0">
-        {/* Back mountains */}
-        <svg 
-          viewBox="0 0 1200 400" 
-          className="absolute bottom-0 w-full h-auto transition-all duration-[2000ms]"
-          style={{ fill: timeStyle.mountainColor, opacity: 0.8 }}
-        >
-          <path d="M0,400 L0,200 L150,120 L300,180 L450,100 L600,140 L750,80 L900,120 L1050,160 L1200,140 L1200,400 Z" />
-        </svg>
+    <div ref={wrapperRef} className="scene-wrapper dynamic-bg-vars">
+        <div className="scene-stars"></div>
+        <div className="scene-sun"></div>
+        <div className="scene-moon"></div>
         
-        {/* Middle mountains */}
-        <svg 
-          viewBox="0 0 1200 350" 
-          className="absolute bottom-0 w-full h-auto transition-all duration-[2000ms]"
-          style={{ fill: timeStyle.mountainColor, opacity: 0.9 }}
-        >
-          <path d="M0,350 L0,250 L200,180 L400,220 L600,160 L800,200 L1000,180 L1200,220 L1200,350 Z" />
-        </svg>
+        <div className="scene-mountain scene-mountain-back"></div>
+        <div className="scene-mountain scene-mountain-front"></div>
+        <div className="scene-grass"></div>
+        <div className="scene-ground-area"></div>
         
-        {/* Front mountains */}
-        <svg 
-          viewBox="0 0 1200 300" 
-          className="absolute bottom-0 w-full h-auto transition-all duration-[2000ms]"
-          style={{ fill: timeStyle.mountainColor }}
-        >
-          <path d="M0,300 L0,200 L100,150 L250,190 L400,140 L550,170 L700,130 L850,160 L1000,140 L1150,180 L1200,160 L1200,300 Z" />
-        </svg>
-      </div>
-      
-      {/* Trees/Forest silhouettes */}
-      <div className="absolute bottom-0 left-0 right-0">
-        {/* Left forest */}
-        <div className="absolute bottom-0 left-0 w-1/4 h-40 transition-all duration-[2000ms]">
-          {[...Array(15)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute bottom-0 transition-all duration-[2000ms]"
-              style={{
-                left: `${i * 8}%`,
-                width: `${Math.random() * 15 + 8}px`,
-                height: `${Math.random() * 80 + 60}px`,
-                backgroundColor: timeStyle.treeColor,
-                clipPath: 'polygon(40% 0%, 60% 0%, 100% 100%, 0% 100%)',
-              }}
-            />
+        <div className="scene-global-illumination"></div>
+        <div className="scene-sun-rays"></div>
+        
+        <div id="fireflies-container">
+          {fireflies.map((f, i) => (
+            <div key={i} className="scene-firefly" style={{
+              left: `${f.left}%`,
+              bottom: `${f.bottom}%`,
+              animationDelay: `${f.delay}s`,
+              animationDuration: `${f.duration}s`
+            }}></div>
           ))}
-          
-          {/* Glowworms around left trees - evening and night only */}
-          {(currentHour >= 18 || currentHour < 6) && (
-            <Fireflies count={20} />
-          )}
         </div>
-        
-        {/* Right forest */}
-        <div className="absolute bottom-0 right-0 w-1/4 h-40 transition-all duration-[2000ms]">
-          {[...Array(15)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute bottom-0 transition-all duration-[2000ms]"
-              style={{
-                right: `${i * 8}%`,
-                width: `${Math.random() * 15 + 8}px`,
-                height: `${Math.random() * 80 + 60}px`,
-                backgroundColor: timeStyle.treeColor,
-                clipPath: 'polygon(40% 0%, 60% 0%, 100% 100%, 0% 100%)',
-              }}
-            />
-          ))}
-          
-          {/* Glowworms around right trees - evening and night only */}
-          {(currentHour >= 18 || currentHour < 6) && (
-            <Fireflies count={20} />
-          )}
-        </div>
-        
-        {/* Center lake reflection */}
-        {/* Removed as requested - it created a visible halo around the dock on smaller views */}
-        {/* 
-        <div 
-          className="hidden md:block absolute bottom-0 left-1/2 transform -translate-x-1/2 w-80 h-20 transition-all duration-[2000ms]"
-          style={{
-            background: `linear-gradient(to bottom, ${timeStyle.skyGradient.split(' ')[4]}, transparent)`,
-            borderRadius: '50% 50% 0 0',
-            opacity: 0.4,
-          }}
-        /> 
-        */}
-      </div>
-      
-      {/* Removed the large Atmospheric particles as they looked weird */}
-      
     </div>
   );
 };
