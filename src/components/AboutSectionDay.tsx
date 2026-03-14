@@ -34,20 +34,14 @@ export const AboutSectionDay = () => {
             </p>
 
             <p className={`text-lg leading-relaxed text-center transition-colors duration-300 ${textClass}`}>
-              My journey in tech began with curiosity about how websites work, which evolved into 
-              building complex applications like TaskQuest, FinTellect, and FitFusion. I enjoy 
-              the challenge of solving complex problems and turning ideas into reality through code.
+              My journey in tech began with fascination about websites and understanding utility behind them. I have had several internship experiences which cemented within me the effect of web development in the real world. Whilst working on several projects, I developed my love for full-stack development and have been honing my skills by working on different problems. 
             </p>
 
             <p className={`text-lg leading-relaxed text-center transition-colors duration-300 ${textClass}`}>
-              Beyond coding, I'm actively involved in the tech community as a DevRel Lead at IEEE-VIT, 
-              where I organize workshops and mentor fellow developers. I believe in continuous learning 
-              and sharing knowledge to help others grow in their tech journey.
+              Currently im working on Fintellect, a project where users can search for a stock ticker and get comprehensive detail into the stock performance in natural language. 
             </p>
 
             <div className="grid md:grid-cols-2 gap-6 mt-8">
-
-
               <div className={`
                 text-center p-4 rounded-lg transition-all duration-300 
                 ${isLightMode ? 'liquid-glass-button' : 'bg-purple-900/20 border border-purple-500/30'}
