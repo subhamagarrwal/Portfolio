@@ -1,6 +1,12 @@
-import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
+﻿import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
+import SunCalc from 'suncalc';
 
-export type TimeTheme = 'day' | 'afternoon' | 'evening' | 'night';
+export type TimeTheme = 'bright_day' | 'warm_day' | 'sunset' | 'twilight' | 'night' | 'day' | 'afternoon' | 'evening';
+
+interface SunData {
+  altitude: number; // degrees
+  azimuth: number; // degrees
+}
 
 interface TimeThemeContextType {
   theme: TimeTheme;
@@ -9,6 +15,9 @@ interface TimeThemeContextType {
   effectiveTheme: TimeTheme;
   backgroundTheme: TimeTheme;
   currentHour: number;
+  sunData: SunData | null;
+  latitude: number | null;
+  longitude: number | null;
   toggleManualMode: () => void;
   setManualTheme: (theme: TimeTheme) => void;
   toggleDarkMode: () => void;
@@ -26,94 +35,153 @@ interface TimeThemeProviderProps {
 }
 
 export const TimeThemeProvider: React.FC<TimeThemeProviderProps> = ({ children }) => {
-  const [theme, setTheme] = useState<TimeTheme>('day');
+  const [theme, setTheme] = useState<TimeTheme>('bright_day');
   const [isManualMode, setIsManualMode] = useState(false);
   const [manualTheme, setManualTheme] = useState<TimeTheme>('night');
   const [isDarkModeOverride, setIsDarkModeOverride] = useState(false);
   const [currentHour, setCurrentHour] = useState<number>(new Date().getHours());
   const [manualTimeOverride, setManualTimeOverride] = useState<number | null>(null);
+  
+  const [latitude, setLatitude] = useState<number | null>(null);
+  const [longitude, setLongitude] = useState<number | null>(null);
+  const [sunData, setSunData] = useState<SunData | null>(null);
+
+  // Fetch location once
+  useEffect(() => {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setLatitude(position.coords.latitude);
+          setLongitude(position.coords.longitude);
+        },
+        (error) => {
+          console.log("Geolocation error, using default NY coordinates.", error);
+          setLatitude(40.7128);
+          setLongitude(-74.0060);
+        }
+      );
+    } else {
+      setLatitude(40.7128);
+      setLongitude(-74.0060);
+    }
+  }, []);
+
+  const calculateSunData = useCallback((dateToCalc: Date, lat: number, lng: number): SunData => {
+    const pos = SunCalc.getPosition(dateToCalc, lat, lng);
+    // Convert radians to degrees
+    return {
+      altitude: pos.altitude * (180 / Math.PI),
+      azimuth: pos.azimuth * (180 / Math.PI)
+    };
+  }, []);
 
   const getTimeBasedTheme = useCallback((): TimeTheme => {
-    // Use manual time override if available (from time slider)
-    const hour = manualTimeOverride !== null ? manualTimeOverride : new Date().getHours();
+    let dateToCalc = new Date();
+    if (manualTimeOverride !== null) {
+      const now = new Date();
+      // Calculate fraction of manualTimeOverride so minutes are preserved
+      now.setHours(Math.floor(manualTimeOverride), Math.round((manualTimeOverride % 1) * 60), 0, 0);
+      dateToCalc = now;
+    }
+
+    // Default time based fallback if no location
+    if (latitude === null || longitude === null) {
+      const hour = manualTimeOverride !== null ? manualTimeOverride : dateToCalc.getHours();
+      if (hour >= 6 && hour < 18) return 'day';
+      return 'night';
+    }
+
+    const currentSun = calculateSunData(dateToCalc, latitude, longitude);
     
-    if (hour >= 6 && hour < 18) return 'day';        // 6 AM - 6 PM (Day time)
-    return 'night';                                   // 6 PM - 6 AM (Night time)
-  }, [manualTimeOverride]);
+    // Map example logic based on solar altitude
+    if (currentSun.altitude > 40) return 'bright_day';
+    if (currentSun.altitude > 10) return 'warm_day';
+    if (currentSun.altitude > 0) return 'sunset';
+    if (currentSun.altitude > -6) return 'twilight';
+    return 'night';
+  }, [manualTimeOverride, latitude, longitude, calculateSunData]);
 
   // Helper function to get representative hour for a theme
   const getRepresentativeHour = (theme: TimeTheme): number => {
     switch (theme) {
-      case 'day': return 12;       // 12 PM (middle of day period)
-      case 'night': return 23;     // 11 PM (middle of night period)
-      // Keep old themes for backward compatibility but map to new logic
-      case 'afternoon': return 15; // 3 PM (maps to day)
-      case 'evening': return 20;   // 8 PM (maps to night)
+      case 'bright_day': return 12;
+      case 'warm_day': return 16;
+      case 'sunset': return 18;
+      case 'twilight': return 19;
+      case 'night': return 23;
+      case 'day': return 12;
+      case 'afternoon': return 15;
+      case 'evening': return 20;
       default: return 12;
     }
   };
 
   const getBackgroundTheme = (): TimeTheme => {
-    if (isDarkModeOverride) {
-      return 'night'; // Force night background when dark mode is active
-    }
-    return getTimeBasedTheme(); // Use time-based background otherwise
+    if (isDarkModeOverride) return 'night';
+    return getTimeBasedTheme();
   };
 
   const getEffectiveTheme = (): TimeTheme => {
-    if (isDarkModeOverride) {
-      return 'night'; // Force night theme for styling when dark mode is active
-    }
-    return getTimeBasedTheme(); // Use actual time-based theme when in auto mode
+    if (isDarkModeOverride) return 'night';
+    return getTimeBasedTheme();
   };
 
   const effectiveTheme = getEffectiveTheme();
   const backgroundTheme = getBackgroundTheme();
 
   useEffect(() => {
-    // Load preferences from localStorage
-    const savedMode = localStorage.getItem('portfolio-manual-mode');
-    const savedTheme = localStorage.getItem('portfolio-manual-theme') as TimeTheme;
+    // Ignore legacy manual mode to prevent getting stuck at 11:00 PM
     const savedDarkMode = localStorage.getItem('portfolio-dark-mode-override');
-    
+
     if (savedDarkMode === 'true') {
       setIsDarkModeOverride(true);
     }
-    
-    if (savedMode === 'true' && savedTheme) {
-      setIsManualMode(true);
-      setManualTheme(savedTheme);
-      setTheme(savedTheme);
-    } else {
-      const autoTheme = getTimeBasedTheme();
-      setTheme(autoTheme);
-    }
+
+    setTheme(getTimeBasedTheme());
   }, [getTimeBasedTheme]);
 
   useEffect(() => {
     if (!isManualMode) {
       const updateTheme = () => {
-        const newHour = manualTimeOverride !== null ? manualTimeOverride : new Date().getHours();
+        const newHour = manualTimeOverride !== null ? manualTimeOverride : new Date().getHours() + (new Date().getMinutes() / 60);
         setCurrentHour(newHour);
         setTheme(getTimeBasedTheme());
+        if (latitude !== null && longitude !== null) {
+          let calcDate = new Date();
+          if (manualTimeOverride !== null) {
+            calcDate.setHours(Math.floor(manualTimeOverride), Math.round((manualTimeOverride % 1) * 60), 0, 0);
+          }
+          setSunData(calculateSunData(calcDate, latitude, longitude));
+        }
       };
 
       updateTheme();
-      const interval = setInterval(updateTheme, 60000);
+      const interval = setInterval(updateTheme, 60000); // 1 minute
       return () => clearInterval(interval);
+    } else {
+      // Manual mode syncing SunData
+        if (latitude !== null && longitude !== null) {
+          let calcDate = new Date();
+          const overrideHour = getRepresentativeHour(manualTheme);
+          calcDate.setHours(overrideHour, 0, 0, 0);
+          setSunData(calculateSunData(calcDate, latitude, longitude));
+          setCurrentHour(overrideHour);
+        }
     }
-  }, [isManualMode, manualTimeOverride, getTimeBasedTheme]);
+  }, [isManualMode, manualTimeOverride, getTimeBasedTheme, latitude, longitude, manualTheme, calculateSunData]);
 
   // Listen for manual time changes from the time slider
   useEffect(() => {
     const handleManualTimeChange = (event: CustomEvent<number | null>) => {
+      setIsManualMode(false);
+      localStorage.setItem('portfolio-manual-mode', 'false');
+      
       setManualTimeOverride(event.detail);
       if (event.detail !== null) {
         setCurrentHour(event.detail);
         setTheme(getTimeBasedTheme());
       } else {
-        // Reset to actual current time
-        const actualHour = new Date().getHours();
+        const actualHour = new Date().getHours() + (new Date().getMinutes() / 60);
         setCurrentHour(actualHour);
         setTheme(getTimeBasedTheme());
       }
@@ -123,21 +191,20 @@ export const TimeThemeProvider: React.FC<TimeThemeProviderProps> = ({ children }
     return () => {
       window.removeEventListener('manualTimeChange', handleManualTimeChange as EventListener);
     };
-  }, [getTimeBasedTheme, manualTimeOverride]);
+  }, [getTimeBasedTheme]);
 
   const toggleManualMode = () => {
     const newManualMode = !isManualMode;
     setIsManualMode(newManualMode);
-    
+
     if (newManualMode) {
       setTheme(manualTheme);
-      setCurrentHour(getRepresentativeHour(manualTheme)); // Set hour to match manual theme
+      setCurrentHour(getRepresentativeHour(manualTheme));
       localStorage.setItem('portfolio-manual-mode', 'true');
       localStorage.setItem('portfolio-manual-theme', manualTheme);
     } else {
-      const currentTimeTheme = getTimeBasedTheme();
-      setTheme(currentTimeTheme);
-      setCurrentHour(new Date().getHours()); // Reset to actual current hour
+      setTheme(getTimeBasedTheme());
+      setCurrentHour(new Date().getHours() + (new Date().getMinutes() / 60));
       localStorage.setItem('portfolio-manual-mode', 'false');
     }
   };
@@ -146,7 +213,7 @@ export const TimeThemeProvider: React.FC<TimeThemeProviderProps> = ({ children }
     setManualTheme(newTheme);
     if (isManualMode) {
       setTheme(newTheme);
-      setCurrentHour(getRepresentativeHour(newTheme)); // Update currentHour to match theme
+      setCurrentHour(getRepresentativeHour(newTheme));
       localStorage.setItem('portfolio-manual-theme', newTheme);
     }
   };
@@ -155,62 +222,36 @@ export const TimeThemeProvider: React.FC<TimeThemeProviderProps> = ({ children }
     const newDarkMode = !isDarkModeOverride;
     setIsDarkModeOverride(newDarkMode);
     localStorage.setItem('portfolio-dark-mode-override', newDarkMode.toString());
-    
     if (!newDarkMode) {
-      const currentTimeTheme = getTimeBasedTheme();
-      setTheme(currentTimeTheme);
+      setTheme(getTimeBasedTheme());
     }
   };
 
-  // Simple text class logic
   const getTextClass = (): string => {
-    if (isDarkModeOverride) {
-      return 'text-dark-mode'; // Dark mode override - white text with glow
-    }
-    
-    // Use effectiveTheme to respect manual mode
+    if (isDarkModeOverride) return 'text-dark-mode';
     const currentTheme = effectiveTheme;
-    
-    // Day period (6 AM - 6 PM) gets black text
-    if (currentTheme === 'day' || currentTheme === 'afternoon') {
-      return 'text-light-mode'; // Day period - black text
+    if (['bright_day', 'warm_day', 'day', 'afternoon'].includes(currentTheme)) {
+      return 'text-light-mode';
     }
-    
-    // Night period (6 PM - 6 AM) gets white text with glow
-    return 'text-dark-mode'; // Night period - white text with glow
+    return 'text-dark-mode';
   };
 
-  // Check if comets should be shown
   const shouldShowComets = (): boolean => {
     if (isDarkModeOverride) return true;
-    
-    // Use effectiveTheme to respect manual mode
     const currentTheme = effectiveTheme;
-    // Only show comets during night hours
-    // Explicitly exclude day and afternoon
-    if (currentTheme === 'day' || currentTheme === 'afternoon') return false;
-    return currentTheme === 'night'; // Only show comets during night
+    if (['bright_day', 'warm_day', 'day', 'afternoon'].includes(currentTheme)) return false;
+    return ['night', 'twilight'].includes(currentTheme);
   };
 
-  // Check if it's day or afternoon for special text handling
   const isDayOrAfternoon = (): boolean => {
     if (isDarkModeOverride) return false;
-    
-    // Use effectiveTheme to respect manual mode
     const currentTheme = effectiveTheme;
-    // Day period is 6 AM - 6 PM
-    return currentTheme === 'day' || currentTheme === 'afternoon';
+    return ['bright_day', 'warm_day', 'day', 'afternoon'].includes(currentTheme);
   };
 
-  // Get time-based CSS class for higher specificity
   const getTimeBasedClass = (): string => {
-    const hour = currentHour;
-    
     if (isDarkModeOverride) return 'theme-dark-override';
-    
-    // Simplified logic: 6 AM - 6 PM is day, 6 PM - 6 AM is night
-    if (hour >= 6 && hour < 18) return 'theme-day';
-    return 'theme-night';
+    return isDayOrAfternoon() ? 'theme-day' : 'theme-night';
   };
 
   const value: TimeThemeContextType = {
@@ -220,6 +261,9 @@ export const TimeThemeProvider: React.FC<TimeThemeProviderProps> = ({ children }
     effectiveTheme,
     backgroundTheme,
     currentHour,
+    sunData,
+    latitude,
+    longitude,
     toggleManualMode,
     setManualTheme: handleSetManualTheme,
     toggleDarkMode,

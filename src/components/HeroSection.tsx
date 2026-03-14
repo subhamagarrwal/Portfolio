@@ -44,10 +44,9 @@ export const HeroSection = () => {
     <section id="home" className={`min-h-screen flex items-center justify-center px-6 ${timeBasedClass}`}>
       <div className="text-center max-w-4xl mx-auto">
         <FadeIn delay={0.2}>
-          {/* Text Container with optional liquid glass effect for light mode */}
+          {/* Text Container */}
           <div className={`
             mb-8 transition-all duration-1000
-            ${isLightMode ? 'liquid-glass-text-container' : ''}
             ${!isLightMode ? 'synthwave-text-glow' : ''}
             ${textClass}
           `}>

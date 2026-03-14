@@ -16,7 +16,7 @@ export const ExtracurricularsSection = () => {
       <div className="container mx-auto max-w-6xl">
         <h2 className={`
           text-4xl font-bold text-center mb-12 transition-colors duration-300 ${!isLightMode ? 'synthwave-text-glow' : ''} ${textClass}
-          ${isLightMode ? 'liquid-glass-text-container' : ''}
+          
         `}>
           Leadership & Activities
         </h2>

@@ -1,5 +1,7 @@
 import { useEffect, useState, useRef, useMemo } from 'react';
 import './DynamicBackground.css';
+import { useTimeTheme } from '@/contexts/TimeThemeContext';
+import SunCalc from 'suncalc';
 
 const palettes = {
   night:     { top: "#080b18", bottom: "#12162d", mBack: "#121422", mFront: "#0a0c16", ground: "#05060a", sunGlow: "#ffea00" },
@@ -28,12 +30,11 @@ const interpolateColor = (c1: string, c2: string, factor: number) => {
 
 export const MountainLandscape = () => {
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const [manualTime, setManualTime] = useState<number | null>(null);
+  const { currentHour, sunData, latitude, longitude, isDayOrAfternoon } = useTimeTheme();
   const [times, setTimes] = useState({ sunriseTime: 6.0, sunsetTime: 18.25 });
   const [fireflies, setFireflies] = useState<{left: number, bottom: number, delay: number, duration: number}[]>([]);
 
   useEffect(() => {
-    // Generate fireflies
     const newFireflies = [];
     for(let i=0; i<15; i++) {
       newFireflies.push({
@@ -44,40 +45,35 @@ export const MountainLandscape = () => {
       });
     }
     setFireflies(newFireflies);
-
-    // Watch for time slider
-    const handleManualTimeChange = (event: CustomEvent<number | null>) => {
-      setManualTime(event.detail);
-    };
-
-    window.addEventListener('manualTimeChange', handleManualTimeChange as EventListener);
-    
-    // Fetch real time
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(async (position) => {
-        try {
-          const lat = position.coords.latitude;
-          const lng = position.coords.longitude;
-          const response = await fetch(`https://api.sunrise-sunset.org/json?lat=${lat}&lng=${lng}&formatted=0`);
-          const data = await response.json();
-          if(data.status === "OK") {
-            const rise = new Date(data.results.sunrise);
-            const set = new Date(data.results.sunset);
-            setTimes({
-              sunriseTime: rise.getHours() + (rise.getMinutes() / 60),
-              sunsetTime: set.getHours() + (set.getMinutes() / 60)
-            });
-          }
-        } catch (error) {
-          console.error("Failed to fetch sun times:", error);
-        }
-      }, () => {});
-    }
-
-    return () => {
-      window.removeEventListener('manualTimeChange', handleManualTimeChange as EventListener);
-    };
   }, []);
+
+  useEffect(() => {
+    if (latitude !== null && longitude !== null) {
+      let calcDate = new Date();
+      if (currentHour !== null) {
+        calcDate.setHours(Math.floor(currentHour), Math.round((currentHour % 1) * 60), 0, 0);
+      }
+      
+      const scTimes = SunCalc.getTimes(calcDate, latitude, longitude);
+      const sRise = scTimes.sunrise;
+      const sSet = scTimes.sunsetStart;
+      
+      let rTime = 6.0;
+      let sTime = 18.25;
+      
+      if (sRise && !isNaN(sRise.getTime())) {
+          rTime = sRise.getHours() + (sRise.getMinutes() / 60);
+      }
+      if (sSet && !isNaN(sSet.getTime())) {
+          sTime = sSet.getHours() + (sSet.getMinutes() / 60);
+      }
+      
+      setTimes({
+        sunriseTime: rTime,
+        sunsetTime: sTime
+      });
+    }
+  }, [latitude, longitude, currentHour]);
 
   const keyframes = useMemo(() => {
     const { sunriseTime, sunsetTime } = times;
@@ -97,15 +93,7 @@ export const MountainLandscape = () => {
   }, [times]);
 
   useEffect(() => {
-    let hours = 0;
-    if (manualTime !== null) {
-      hours = manualTime;
-    } else if (window.manualTimeOverride !== undefined && window.manualTimeOverride !== null) {
-      hours = window.manualTimeOverride;
-    } else {
-      const now = new Date();
-      hours = now.getHours() + (now.getMinutes() / 60);
-    }
+    let hours = currentHour;
 
     let start = keyframes[0], end = keyframes[keyframes.length - 1];
     for (let i = 0; i < keyframes.length - 1; i++) {
@@ -133,19 +121,36 @@ export const MountainLandscape = () => {
       const daylightHours = sunsetTime - sunriseTime;
       const nightHours = 24 - daylightHours;
 
-      // THE SUN
-      let sunProgress = (hours - sunriseTime) / daylightHours; 
-      if (sunProgress >= -0.1 && sunProgress <= 1.1) { 
-          style.setProperty('--sun-x', `${sunProgress * 100}%`);
-          style.setProperty('--sun-y', `${100 - Math.sin(sunProgress * Math.PI) * 85}%`);
-          style.setProperty('--sun-opacity', '1');
-          
-          let intensity = Math.max(0, Math.sin(sunProgress * Math.PI));
-          style.setProperty('--sun-intensity', intensity.toFixed(3));
+      // Real Solar Path mapping height
+      if (sunData) {
+         const altY = Math.max(-20, 100 - (sunData.altitude / 90) * 100);
+         style.setProperty('--sun-y', `${altY}%`);
+         
+         let sunProgress = (hours - sunriseTime) / daylightHours; 
+         if (sunProgress >= -0.1 && sunProgress <= 1.1) {
+             style.setProperty('--sun-x', `${sunProgress * 100}%`);
+             style.setProperty('--sun-opacity', "1");
+             let intensity = Math.max(0, Math.sin(sunProgress * Math.PI));
+             style.setProperty('--sun-intensity', intensity.toFixed(3));
+         } else {
+             style.setProperty('--sun-opacity', "0");
+             style.setProperty('--sun-intensity', "0");
+         }
       } else {
-          style.setProperty('--sun-opacity', '0'); 
-          style.setProperty('--sun-y', `120%`);
-          style.setProperty('--sun-intensity', '0');
+        // Fallback
+        let sunProgress = (hours - sunriseTime) / daylightHours; 
+        if (sunProgress >= -0.1 && sunProgress <= 1.1) { 
+            style.setProperty('--sun-x', `${sunProgress * 100}%`);
+            style.setProperty('--sun-y', `${100 - Math.sin(sunProgress * Math.PI) * 85}%`);
+            style.setProperty('--sun-opacity', "1");
+            
+            let intensity = Math.max(0, Math.sin(sunProgress * Math.PI));
+            style.setProperty('--sun-intensity', intensity.toFixed(3));
+        } else {
+            style.setProperty('--sun-opacity', "0"); 
+            style.setProperty('--sun-y', "120%");
+            style.setProperty('--sun-intensity', "0");
+        }
       }
 
       // THE MOON 
@@ -155,16 +160,15 @@ export const MountainLandscape = () => {
       if (moonProgress >= -0.1 && moonProgress <= 1.1) {
           style.setProperty('--moon-x', `${moonProgress * 100}%`);
           style.setProperty('--moon-y', `${100 - Math.sin(moonProgress * Math.PI) * 85}%`);
-          style.setProperty('--moon-opacity', '1');
+          style.setProperty('--moon-opacity', "1");
       } else {
-          style.setProperty('--moon-opacity', '0');
-          style.setProperty('--moon-y', `120%`);
+          style.setProperty('--moon-opacity', "0");
+          style.setProperty('--moon-y', "120%");
       }
       
-      // Dispatch an event globally so other components (like TimeDial) know the phase
       window.dispatchEvent(new CustomEvent('timePhaseInfo', { detail: { name: start.name, hours } }));
     }
-  }, [manualTime, keyframes, times]);
+  }, [currentHour, keyframes, times, sunData]);
 
   return (
     <div ref={wrapperRef} className="scene-wrapper dynamic-bg-vars">
@@ -181,7 +185,7 @@ export const MountainLandscape = () => {
         <div className="scene-sun-rays"></div>
         
         <div id="fireflies-container">
-          {fireflies.map((f, i) => (
+          {!isDayOrAfternoon() && fireflies.map((f, i) => (
             <div key={i} className="scene-firefly" style={{
               left: `${f.left}%`,
               bottom: `${f.bottom}%`,
@@ -195,3 +199,4 @@ export const MountainLandscape = () => {
 };
 
 export default MountainLandscape;
+

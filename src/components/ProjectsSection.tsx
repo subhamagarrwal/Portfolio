@@ -1,4 +1,4 @@
-﻿import { useTimeTheme } from '@/hooks/useTimeTheme';
+import { useTimeTheme } from '@/hooks/useTimeTheme';
 import { Button } from '@/components/ui/button';
 import portfolioData from '@/data/portfolio.json';
 import { ProjectCard } from './ProjectCard';

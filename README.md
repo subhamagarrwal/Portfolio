@@ -23,10 +23,6 @@ A modern, interactive portfolio website showcasing my work as a Full Stack Devel
 - **Viewport Stability**: No layout jumps or content shifts
 - **Progressive Enhancement**: Works great on all screen sizes
 
-## 🚀 Live Demo
-
-**URL**: [Portfolio Website](https://your-portfolio-url.com)
-
 ## 🛠 Technologies Used
 
 ### Frontend Framework
@@ -136,6 +132,22 @@ npm run preview
 ```
 
 ## 🎯 Key Components
+
+### ⚙️ Core Mechanics: Time Dialer & Dynamic Background
+
+#### 🕰️ The Interactive Time Dialer
+The Time Dialer allows users to override the real-time environment and manually scroll the website through different times of the day.
+- **Geometry-based interaction**: The circular dial tracks mouse or touch coordinates relative to the dial's exact center. Using `Math.atan2()`, the application calculates the angle of the pointer, offsets the angle so 12:00 PM is at the very top, and maps the 360-degree rotation precisely to a 24-hour time format.
+- **Real-time Sync**: Moving the dial immediately updates local state and dispatches a custom `manualTimeChange` event, which rapidly updates the background's time context at up to 60fps. 
+
+#### 🌄 Dynamic Mountain Environment
+The immersive landscape shifts seamlessly based on either the real-world time or the Time Dialer's selected hour.
+- **Geolocation & SunCalc**: We use the browser's Geolocation API alongside the `suncalc` library to define realistic phase timelines. Sunrise and sunset times aren't hardcoded; they are physically calculated based on your specific latitude and longitude. 
+- **Time Phase Interpolation**: The background gracefully moves through 8 keyframes spanning from *Deep Night* to *High Noon*. As the time changes, CSS Custom Properties directly update to fluidly interpolate the RGB colors of the sky, layered mountains, and ground in real-time.
+- **Celestial Physics**: 
+  - The **Sun** rises and sets on a sine wave trajectory, increasing its glow (intensity) dynamically as it approaches the peak altitude.
+  - The **Moon** mirrors the sun, traversing the sky precisely during the "night" phase calculated by SunCalc.
+  - **Atmosphere**: Elements like glowing fireflies, star fields, and global illumination dynamically fade in and out depending on the active phase.
 
 ### Glass Dock Navigation
 - **Stable Positioning**: Always centered, never jumps

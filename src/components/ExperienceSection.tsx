@@ -16,7 +16,7 @@ export const ExperienceSection = () => {
       <div className="container mx-auto max-w-4xl">
         <h2 className={`
           text-4xl font-bold text-center mb-12 transition-colors duration-300 ${!isLightMode ? 'synthwave-text-glow' : ''} ${textClass}
-          ${isLightMode ? 'liquid-glass-text-container' : ''}
+          
         `}>
           Professional Experience
         </h2>

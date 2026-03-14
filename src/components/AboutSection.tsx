@@ -1,4 +1,4 @@
-﻿import { useTimeTheme } from '@/hooks/useTimeTheme';
+import { useTimeTheme } from '@/hooks/useTimeTheme';
 import { Card } from '@/components/ui/card';
 
 export const AboutSection = () => {
