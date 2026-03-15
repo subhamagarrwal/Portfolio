@@ -1,7 +1,9 @@
 ﻿import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
 import SunCalc from 'suncalc';
 
-export type TimeTheme = 'bright_day' | 'warm_day' | 'sunset' | 'twilight' | 'night' | 'day' | 'afternoon' | 'evening';
+import { useGeolocation } from '@/hooks/useGeolocation';
+
+export type TimeTheme = 'bright_day' | 'warm_day' | 'sunset' | 'twilight' | 'night' | 'day' | 'afternoon' | 'evening' | 'sunrise' | 'dawn';
 
 interface SunData {
   altitude: number; // degrees
@@ -42,29 +44,8 @@ export const TimeThemeProvider: React.FC<TimeThemeProviderProps> = ({ children }
   const [currentHour, setCurrentHour] = useState<number>(new Date().getHours());
   const [manualTimeOverride, setManualTimeOverride] = useState<number | null>(null);
   
-  const [latitude, setLatitude] = useState<number | null>(null);
-  const [longitude, setLongitude] = useState<number | null>(null);
+  const { latitude, longitude } = useGeolocation();
   const [sunData, setSunData] = useState<SunData | null>(null);
-
-  // Fetch location once
-  useEffect(() => {
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setLatitude(position.coords.latitude);
-          setLongitude(position.coords.longitude);
-        },
-        (error) => {
-          console.log("Geolocation error, using default NY coordinates.", error);
-          setLatitude(40.7128);
-          setLongitude(-74.0060);
-        }
-      );
-    } else {
-      setLatitude(40.7128);
-      setLongitude(-74.0060);
-    }
-  }, []);
 
   const calculateSunData = useCallback((dateToCalc: Date, lat: number, lng: number): SunData => {
     const pos = SunCalc.getPosition(dateToCalc, lat, lng);
@@ -77,6 +58,7 @@ export const TimeThemeProvider: React.FC<TimeThemeProviderProps> = ({ children }
 
   const getTimeBasedTheme = useCallback((): TimeTheme => {
     let dateToCalc = new Date();
+    
     if (manualTimeOverride !== null) {
       const now = new Date();
       // Calculate fraction of manualTimeOverride so minutes are preserved
@@ -84,26 +66,40 @@ export const TimeThemeProvider: React.FC<TimeThemeProviderProps> = ({ children }
       dateToCalc = now;
     }
 
+    const hour = manualTimeOverride !== null ? manualTimeOverride : dateToCalc.getHours() + (dateToCalc.getMinutes() / 60);
+
     // Default time based fallback if no location
     if (latitude === null || longitude === null) {
-      const hour = manualTimeOverride !== null ? manualTimeOverride : dateToCalc.getHours();
       if (hour >= 6 && hour < 18) return 'day';
       return 'night';
     }
 
-    const currentSun = calculateSunData(dateToCalc, latitude, longitude);
+    const times = SunCalc.getTimes(dateToCalc, latitude, longitude);
     
-    // Map example logic based on solar altitude
-    if (currentSun.altitude > 40) return 'bright_day';
-    if (currentSun.altitude > 10) return 'warm_day';
-    if (currentSun.altitude > 0) return 'sunset';
-    if (currentSun.altitude > -6) return 'twilight';
+    const getDecHour = (d: Date | undefined, fallback: number) => {
+      if (!d || isNaN(d.getTime())) return fallback;
+      return d.getHours() + (d.getMinutes() / 60);
+    };
+
+    const sRise = getDecHour(times.sunrise, 6.0);
+    const sSet = getDecHour(times.sunsetStart, 18.25);
+
+    // Match exact logical phases from useSunPhase
+    if (hour < sRise - 1.0) return 'night';
+    if (hour < sRise) return 'dawn'; // pre-dawn
+    if (hour < sRise + 1.5) return 'sunrise';
+    if (hour < sSet - 2.5) return 'day'; // morning/noon
+    if (hour < sSet - 0.75) return 'afternoon';
+    if (hour < sSet + 0.25) return 'sunset';
+    if (hour < sSet + 1.5) return 'twilight'; // dusk
     return 'night';
-  }, [manualTimeOverride, latitude, longitude, calculateSunData]);
+  }, [manualTimeOverride, latitude, longitude]);
 
   // Helper function to get representative hour for a theme
   const getRepresentativeHour = (theme: TimeTheme): number => {
     switch (theme) {
+      case 'dawn': return 5;
+      case 'sunrise': return 6;
       case 'bright_day': return 12;
       case 'warm_day': return 16;
       case 'sunset': return 18;
@@ -228,7 +224,7 @@ export const TimeThemeProvider: React.FC<TimeThemeProviderProps> = ({ children }
   const getTextClass = (): string => {
     if (isDarkModeOverride) return 'text-dark-mode';
     const currentTheme = effectiveTheme;
-    if (['bright_day', 'warm_day', 'day', 'afternoon'].includes(currentTheme)) {
+    if (['bright_day', 'warm_day', 'day', 'afternoon', 'sunrise', 'sunset'].includes(currentTheme)) {
       return 'text-light-mode';
     }
     return 'text-dark-mode';
@@ -236,15 +232,21 @@ export const TimeThemeProvider: React.FC<TimeThemeProviderProps> = ({ children }
 
   const shouldShowComets = (): boolean => {
     if (isDarkModeOverride) return true;
+
+    // Explicitly hide comets if it's past 5 AM and before noon (morning block)
+    if (currentHour >= 5 && currentHour < 12) {
+      return false; 
+    }
+
     const currentTheme = effectiveTheme;
-    if (['bright_day', 'warm_day', 'day', 'afternoon'].includes(currentTheme)) return false;
-    return ['night', 'twilight'].includes(currentTheme);
+    // Only show comets during evening dusk (twilight) and night
+    return ['night', 'twilight', 'dawn'].includes(currentTheme) && currentHour < 5 || currentHour >= 12 && ['night', 'twilight'].includes(currentTheme);
   };
 
   const isDayOrAfternoon = (): boolean => {
     if (isDarkModeOverride) return false;
     const currentTheme = effectiveTheme;
-    return ['bright_day', 'warm_day', 'day', 'afternoon'].includes(currentTheme);
+    return ['bright_day', 'warm_day', 'day', 'afternoon', 'sunrise', 'sunset'].includes(currentTheme);
   };
 
   const getTimeBasedClass = (): string => {
@@ -258,8 +260,8 @@ export const TimeThemeProvider: React.FC<TimeThemeProviderProps> = ({ children }
     isDarkModeOverride,
     effectiveTheme,
     backgroundTheme,
-    currentHour,
-    sunData,
+    currentHour: isDarkModeOverride ? getRepresentativeHour('night') : currentHour,
+    sunData: isDarkModeOverride ? null : sunData,
     latitude,
     longitude,
     toggleManualMode,

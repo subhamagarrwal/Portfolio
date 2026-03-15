@@ -5,8 +5,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
-import { Mail, Send, Github, Linkedin } from 'lucide-react';
+import { Mail, Send, Github, Linkedin, Twitter } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import portfolioData from '@/data/portfolio.json';
 
 export const ContactSection = () => {
   const { getTextClass, isDayOrAfternoon, getTimeBasedClass } = useTimeTheme();
@@ -69,24 +70,23 @@ export const ContactSection = () => {
             </h3>
 
             <p className={`mb-6 transition-colors duration-300 ${textClass} opacity-80`}>
-              I'm always interested in hearing about new opportunities and connecting with fellow developers. 
-              Whether you have a project in mind or just want to chat about tech, feel free to reach out!
+              {portfolioData.personal.contactText}
             </p>
 
             <div className="space-y-4">
               <a
-                href="mailto:subhamag2003@gmail.com"
+                href={`mailto:${portfolioData.personal.email}`}
                 className={`
                   flex items-center space-x-3 p-3 rounded-lg transition-all duration-300 hover:scale-105 ${textClass}
                   ${isLightMode ? 'hover:bg-blue-500/20' : 'hover:bg-purple-500/20'}
                 `}
               >
                 <Mail className="w-5 h-5" />
-                <span>subhamag2003@gmail.com</span>
+                <span>{portfolioData.personal.email}</span>
               </a>
 
               <a
-                href="https://github.com/subhamagarrwal"
+                href={portfolioData.personal.github}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={`
@@ -99,7 +99,7 @@ export const ContactSection = () => {
               </a>
 
               <a
-                href="https://www.linkedin.com/in/subham-agarwal2003"
+                href={portfolioData.personal.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={`
@@ -109,6 +109,19 @@ export const ContactSection = () => {
               >
                 <Linkedin className="w-5 h-5" />
                 <span>LinkedIn Profile</span>
+              </a>
+
+              <a
+                href={portfolioData.personal.twitter}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`
+                  flex items-center space-x-3 p-3 rounded-lg transition-all duration-300 hover:scale-105 ${textClass}
+                  ${isLightMode ? 'hover:bg-blue-500/20' : 'hover:bg-purple-500/20'}
+                `}
+              >
+                <Twitter className="w-5 h-5" />
+                <span>Twitter Profile</span>
               </a>
             </div>
           </Card>

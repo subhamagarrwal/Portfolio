@@ -60,9 +60,6 @@ export const SkillsSection = () => {
         </div>
 
         <div className={`mt-12 text-center transition-colors duration-300 ${textClass}`}>
-          <p className="text-lg">
-            Always learning and exploring new technologies to stay at the forefront of web development.
-          </p>
         </div>
       </div>
     </section>

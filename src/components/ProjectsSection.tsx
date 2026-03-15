@@ -50,7 +50,7 @@ export const ProjectsSection = () => {
                   : 'liquid-glass-button border-white/40 hover:bg-white/10'
               }`}
             >
-              <a href="https://github.com/subhamagarrwal" target="_blank" rel="noopener noreferrer">
+              <a href={portfolioData.personal.github} target="_blank" rel="noopener noreferrer">
                 View All Projects
               </a>
             </Button>

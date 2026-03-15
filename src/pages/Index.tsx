@@ -1,11 +1,9 @@
 ﻿import { ThemeProvider } from '@/components/ThemeProvider';
 import { StructuredData } from '@/components/StructuredData';
 import { HeroSection } from '@/components/HeroSection';
-import { AboutSection } from '@/components/AboutSection';
 import { SkillsSection } from '@/components/SkillsSection';
 import { ProjectsSection } from '@/components/ProjectsSection';
-import { ExperienceSection } from '@/components/ExperienceSection';
-import { ExtracurricularsSection } from '@/components/ExtracurricularsSection';
+import { JourneySection } from '@/components/JourneySection';
 import { ContactSection } from '@/components/ContactSection';
 import { GlassDock } from '@/components/GlassDock';
 
@@ -16,11 +14,9 @@ const Index = () => {
       <div className="relative z-10">
         <main>
           <HeroSection />
-          <AboutSection />
+          <JourneySection />
           <SkillsSection />
-          <ExperienceSection />
           <ProjectsSection />
-          <ExtracurricularsSection />
           <ContactSection />
         </main>
 

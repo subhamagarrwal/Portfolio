@@ -30,7 +30,8 @@ interface DockItem {
 }
 
 export const GlassDock = () => {
-  const { isDarkModeOverride, toggleDarkMode, isAutoMode } = useTimeTheme();
+  const { isDarkModeOverride, toggleDarkMode, isAutoMode, isDayOrAfternoon } = useTimeTheme();
+  const isDarkTheme = !isDayOrAfternoon();
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const [hoveredRect, setHoveredRect] = useState<DOMRect | null>(null);
   const [activeSection, setActiveSection] = useState<string>('home');
@@ -51,7 +52,7 @@ export const GlassDock = () => {
     if (!isClient) return;
     
     // Intersection Observer for scroll spy
-    const sections = ['home', 'skills', 'experience', 'projects', 'extracurriculars'];
+    const sections = ['home', 'journey', 'skills', 'projects'];
     
     const observerOptions = {
       root: null,
@@ -172,28 +173,22 @@ export const GlassDock = () => {
       onClick: () => scrollToSection('home'),
     },
     {
+      id: 'journey',
+      icon: <Briefcase size={getSafeIconSize()} />,
+      label: 'Journey',
+      onClick: () => scrollToSection('journey'),
+    },
+    {
       id: 'skills',
       icon: <Code2 size={getSafeIconSize()} />,
       label: 'Skills',
       onClick: () => scrollToSection('skills'),
     },
     {
-      id: 'experience',
-      icon: <Briefcase size={getSafeIconSize()} />,
-      label: 'Experience',
-      onClick: () => scrollToSection('experience'),
-    },
-    {
       id: 'projects',
       icon: <FolderOpen size={getSafeIconSize()} />,
       label: 'Projects',
       onClick: () => scrollToSection('projects'),
-    },
-    {
-      id: 'activities',
-      icon: <Users size={getSafeIconSize()} />,
-      label: 'Activities',
-      onClick: () => scrollToSection('extracurriculars'),
     },
     // Only show time control when in automatic mode
     ...(isAutoMode ? [{
@@ -231,16 +226,16 @@ export const GlassDock = () => {
           
           overflow-hidden
           
-          ${isDarkModeOverride 
+          ${isDarkTheme 
             ? 'bg-black/20 border-white/10 shadow-white/5' 
             : 'bg-white/25 border-black/5 shadow-black/10'
           }
         `}
         style={{
-          background: isDarkModeOverride 
+          background: isDarkTheme 
             ? 'linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05))'
             : 'linear-gradient(135deg, rgba(255,255,255,0.3), rgba(255,255,255,0.1))',
-          boxShadow: isDarkModeOverride
+          boxShadow: isDarkTheme
             ? '0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.2)'
             : '0 8px 32px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.3)',
         }}
@@ -299,14 +294,14 @@ export const GlassDock = () => {
                       ? 'bg-white/25 shadow-lg scale-105' 
                       : 'hover:bg-white/15'
                     }
-                    ${isDarkModeOverride 
+                    ${isDarkTheme 
                       ? 'text-white/90 hover:text-white' 
                       : 'text-black/70 hover:text-black'
                     }
                   `}
                   style={{
                     background: isHoveredOrActive 
-                      ? isDarkModeOverride
+                      ? isDarkTheme
                         ? 'linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.1))'
                         : 'linear-gradient(135deg, rgba(255,255,255,0.4), rgba(255,255,255,0.2))'
                       : undefined,
@@ -348,7 +343,7 @@ export const GlassDock = () => {
                       md:-bottom-6 md:left-1/2 md:transform md:-translate-x-1/2 
                       max-md:-left-6 max-md:top-1/2 max-md:transform max-md:-translate-y-1/2
                       w-1 h-1 rounded-full transition-all duration-300
-                      ${isDarkModeOverride ? 'bg-white/60' : 'bg-black/40'}
+                      ${isDarkTheme ? 'bg-white/60' : 'bg-black/40'}
                     `}
                   />
                 )}
@@ -361,7 +356,7 @@ export const GlassDock = () => {
           <div 
             className="hidden sm:block absolute -bottom-4 left-2 right-2 h-4 rounded-b-2xl opacity-20 blur-sm"
             style={{
-              background: isDarkModeOverride 
+              background: isDarkTheme 
                 ? 'linear-gradient(to bottom, rgba(255,255,255,0.1), transparent)'
                 : 'linear-gradient(to bottom, rgba(0,0,0,0.1), transparent)',
             }}
@@ -374,14 +369,14 @@ export const GlassDock = () => {
           className={`
             fixed z-[60] px-3 py-1.5 rounded-lg text-xs font-medium
             backdrop-blur-md border tooltip-enter pointer-events-none transition-all
-            ${isDarkModeOverride 
+            ${isDarkTheme 
               ? 'bg-black/60 text-white border-white/20' 
               : 'bg-white/80 text-black border-black/10'
             }
           `}
           style={{ 
             minWidth: 'max-content',
-            boxShadow: isDarkModeOverride
+            boxShadow: isDarkTheme
               ? '0 4px 16px rgba(0,0,0,0.4)'
               : '0 4px 16px rgba(0,0,0,0.15)',
             top: isMobile 
@@ -405,7 +400,7 @@ export const GlassDock = () => {
                 ? 'left-full top-1/2 -translate-y-1/2 border-t-4 border-b-4 border-l-4' 
                 : 'top-full left-1/2 -translate-x-1/2 border-l-4 border-r-4 border-t-4'
               }
-              ${isDarkModeOverride 
+              ${isDarkTheme 
                 ? (isMobile ? 'border-l-black/60' : 'border-t-black/60') 
                 : (isMobile ? 'border-l-white/80' : 'border-t-white/80')
               }

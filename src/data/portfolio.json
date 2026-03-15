@@ -1,10 +1,18 @@
 {
   "personal": {
     "name": "Subham Agarwal",
-    "title": "Full Stack Developer",
+    "title": "Full Stack Developer, curious about building things at scale",
     "email": "subhamag2003@gmail.com",
     "github": "https://github.com/subhamagarrwal",
-    "linkedin": "www.linkedin.com/in/subham-agarwal2003"
+    "linkedin": "https://www.linkedin.com/in/subham-agarwal-99386222a/",
+    "twitter": "https://x.com/Fintellect_ai",
+    "spotify": "https://open.spotify.com/user/yourusername",
+    "resume": "/resume/SubhamAgarwal_Resume.pdf",
+    "about": [
+     "Full Stack Developer currently a final year Computer Science student at Vellore Institute of Technology. Have worked on a variety of projects, lying at the intersection of web development, AI, and user experience design.",
+     "Currently im working on Fintellect, a project where users can search for a stock ticker and get comprehensive detail into the stock performance in natural language."
+    ],
+    "contactText": "I'm always interested in hearing about new opportunities and connecting with fellow developers. Whether you have a project in mind or just want to chat about tech, feel free to reach out!"
   },
   "projects": [
     {
@@ -52,6 +60,20 @@
         "Collaborated with cross-functional teams in an agile environment",
         "Optimized application performance resulting in 30% faster load times",
         "Participated in code reviews and maintained high code quality standards"
+      ]
+    }
+  ],
+  "education": [
+    {
+      "id": "vit",
+      "institution": "Vellore Institute of Technology",
+      "degree": "Bachelor of Technology in Computer Science",
+      "duration": "2021 - 2025",
+      "location": "Vellore, India",
+      "description": "Final year Computer Science student with a focus on problem-solving and software development.",
+      "achievements": [
+        "Member of IEEE-VIT under technical leadership",
+        "Participated in multiple hackathons and technical symposiums"
       ]
     }
   ],
