@@ -25,7 +25,7 @@ const Index = () => {
         </main>
 
         <footer className="py-8 text-center opacity-70">
-          <p>© Subham Agarwal, {new Date().getFullYear()}.Never Quit</p>
+          <p className='text-white'>© Subham Agarwal, {new Date().getFullYear()}.</p>
         </footer>
 
         {/* Glass Dock - Apple-inspired navigation */}

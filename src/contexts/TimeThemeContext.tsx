@@ -179,11 +179,9 @@ export const TimeThemeProvider: React.FC<TimeThemeProviderProps> = ({ children }
       setManualTimeOverride(event.detail);
       if (event.detail !== null) {
         setCurrentHour(event.detail);
-        setTheme(getTimeBasedTheme());
       } else {
         const actualHour = new Date().getHours() + (new Date().getMinutes() / 60);
         setCurrentHour(actualHour);
-        setTheme(getTimeBasedTheme());
       }
     };
 
@@ -191,7 +189,7 @@ export const TimeThemeProvider: React.FC<TimeThemeProviderProps> = ({ children }
     return () => {
       window.removeEventListener('manualTimeChange', handleManualTimeChange as EventListener);
     };
-  }, [getTimeBasedTheme]);
+  }, []);
 
   const toggleManualMode = () => {
     const newManualMode = !isManualMode;

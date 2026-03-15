@@ -11,11 +11,23 @@ export const TimeDial: React.FC<TimeDialProps> = ({ onClose, isDarkModeOverride 
   const { currentHour } = useTimeTheme();
   const dialRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
+  const isDraggingRef = useRef(false);
+  
+  const setDragging = (val: boolean) => {
+    isDraggingRef.current = val;
+    setIsDragging(val);
+  };
+
   const [timeState, setTimeState] = useState({ name: 'Syncing...', hours: (window as any).manualTimeOverride !== undefined && (window as any).manualTimeOverride !== null ? (window as any).manualTimeOverride : currentHour });
 
   useEffect(() => {
     const handlePhaseInfo = (e: CustomEvent) => {
-      setTimeState({ name: e.detail.name, hours: e.detail.hours });
+      if (isDraggingRef.current) {
+         // Ignore the incoming hours if we are currently dragging to avoid jitter
+         setTimeState(prev => ({ ...prev, name: e.detail.name }));
+      } else {
+         setTimeState({ name: e.detail.name, hours: e.detail.hours });
+      }
     };
     window.addEventListener('timePhaseInfo', handlePhaseInfo as EventListener);
 
@@ -44,6 +56,9 @@ export const TimeDial: React.FC<TimeDialProps> = ({ onClose, isDarkModeOverride 
     // Update local state instantly for smooth 60fps UX before context catches up
     setTimeState(prev => ({ ...prev, hours }));
     
+    // Persist globally so re-mounts preserve the override
+    (window as any).manualTimeOverride = hours;
+
     window.dispatchEvent(new CustomEvent('manualTimeChange', { detail: hours }));
   };
 
@@ -59,13 +74,14 @@ export const TimeDial: React.FC<TimeDialProps> = ({ onClose, isDarkModeOverride 
   };
 
   useEffect(() => {
-    const onMouseUp = () => setIsDragging(false);
-    const onTouchEnd = () => setIsDragging(false);
+    const onMouseUp = () => setDragging(false);
+    const onTouchEnd = () => setDragging(false);
 
     if (isDragging) {
       document.addEventListener('mousemove', onMouseMove);
       document.addEventListener('mouseup', onMouseUp);
       document.addEventListener('touchmove', onTouchMove, { passive: false });
+      document.addEventListener('touchend', onTouchEnd);
     }
 
     return () => {
@@ -78,14 +94,12 @@ export const TimeDial: React.FC<TimeDialProps> = ({ onClose, isDarkModeOverride 
 
   const onMouseDown = (e: React.MouseEvent) => {
     e.preventDefault();
-    setIsDragging(true);
+    setDragging(true);
     handleDrag(e.clientX, e.clientY);
   };
 
   const onTouchStart = (e: React.TouchEvent) => {
-    // Only prevent default if it's a single touch to allow multi-touch zoom if they want? 
-    // Actually best to just handle it and rely on the touchmove preventDefault
-    setIsDragging(true);
+    setDragging(true);
     handleDrag(e.touches[0].clientX, e.touches[0].clientY);
   };
 
@@ -121,12 +135,10 @@ export const TimeDial: React.FC<TimeDialProps> = ({ onClose, isDarkModeOverride 
       <button
           onClick={onClose}
           className={`
-            relative z-10 mt-6 px-4 py-1.5 rounded-lg text-xs font-medium
+            relative z-10 mt-6 px-4 py-1.5 rounded-lg text-xs font-medium text-white
+            bg-black/30 hover:bg-black/40 backdrop-blur-md border border-white/20
+            shadow-lg
             transition-all duration-200 touch-manipulation
-            ${isDarkModeOverride 
-              ? 'bg-white/20 text-white hover:bg-white/30' 
-              : 'bg-black/20 text-black hover:bg-black/30'
-            }
           `}
         >
           ✕ Close
