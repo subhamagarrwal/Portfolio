@@ -51,7 +51,7 @@ export const ContactSection = () => {
     <section id="contact" className={`py-20 px-6 ${timeBasedClass}`}>
       <div className="container mx-auto max-w-4xl">
         <h2 className={`
-          text-4xl font-bold text-center mb-12 transition-colors duration-300 ${!isLightMode ? 'synthwave-text-glow' : ''} ${textClass}
+          text-4xl font-bold text-center mb-12 transition-colors duration-300 ${!isLightMode ? '' : ''} ${textClass}
           
         `}>
           Get In Touch
@@ -59,7 +59,7 @@ export const ContactSection = () => {
 
         <div className="grid md:grid-cols-2 gap-8 items-start justify-center">
           <Card className={`
-            p-6 transition-all duration-300 ${!isLightMode ? 'synthwave-glow' : ''}
+            p-6 transition-all duration-300 ${!isLightMode ? '' : ''}
             ${isLightMode
                 ? 'bg-white/25 border-white/40 liquid-glass-card'
                 : 'bg-white/15 border-white/25 liquid-glass-card'
@@ -127,7 +127,7 @@ export const ContactSection = () => {
           </Card>
 
           <Card className={`
-            p-6 transition-all duration-300 ${!isLightMode ? 'synthwave-glow' : ''}
+            p-6 transition-all duration-300 ${!isLightMode ? '' : ''}
             ${isLightMode
                 ? 'bg-white/25 border-white/40 liquid-glass-card'
                 : 'bg-white/15 border-white/25 liquid-glass-card'

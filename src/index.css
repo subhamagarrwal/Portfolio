@@ -189,7 +189,7 @@ html.lenis, html.lenis body {
 .text-dark-mode,
 .text-dark-mode * {
   color: #ffffff !important;
-  text-shadow: 0 0 10px hsl(var(--night-accent) / 0.8) !important;
+  /* no text glow */
   font-weight: 700 !important;
   -webkit-text-fill-color: #ffffff !important;
 }
@@ -243,20 +243,20 @@ html.lenis, html.lenis body {
 
 /* Night Theme - ALLOW GLOW */
 .theme-night .synthwave-glow {
-  box-shadow: 0 0 20px hsl(var(--night-accent) / 0.5), 0 0 40px hsl(var(--night-accent) / 0.3) !important;
+  /* no glow */
 }
 
 .theme-night .synthwave-text-glow {
-  text-shadow: 0 0 10px hsl(var(--night-accent) / 0.8) !important;
+  /* no text glow */
 }
 
 /* Dark Override Theme - FORCE GLOW */
 .theme-dark-override .synthwave-glow {
-  box-shadow: 0 0 20px hsl(var(--night-accent) / 0.5), 0 0 40px hsl(var(--night-accent) / 0.3) !important;
+  /* no glow */
 }
 
 .theme-dark-override .synthwave-text-glow {
-  text-shadow: 0 0 10px hsl(var(--night-accent) / 0.8) !important;
+  /* no text glow */
 }
 
 /* =========================== */
@@ -264,18 +264,12 @@ html.lenis, html.lenis body {
 /* =========================== */
 
 .liquid-glass-card {
-  background: linear-gradient(135deg, 
-    rgba(255, 255, 255, 0.25) 0%,
-    rgba(255, 255, 255, 0.15) 50%,
-    rgba(255, 255, 255, 0.25) 100%
-  );
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 
-    0 8px 32px rgba(0, 0, 0, 0.15),
-    0 0 0 1px rgba(255, 255, 255, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    --c-glass: #ffffff;
+    background: color-mix(in srgb, var(--c-glass) 20%, transparent);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
 .liquid-glass-button {
@@ -327,11 +321,11 @@ html.lenis, html.lenis body {
 /* =========================== */
 
 .synthwave-glow {
-  box-shadow: 0 0 20px hsl(var(--night-accent) / 0.5), 0 0 40px hsl(var(--night-accent) / 0.3);
+  /* no glow */
 }
 
 .synthwave-text-glow {
-  text-shadow: 0 0 10px hsl(var(--night-accent) / 0.8);
+  /* no text glow */
 }
 
 /* =========================== */

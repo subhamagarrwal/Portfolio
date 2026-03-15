@@ -46,7 +46,7 @@ export const ProjectsSection = () => {
         style={{ '--theme-color': primaryColor } as React.CSSProperties}
       >
         <FadeIn delay={0.2}>
-          <h2 className={`text-4xl font-bold text-center mb-12 transition-colors duration-300 ${!isLightMode ? 'synthwave-text-glow' : ''} ${textClass}`}>
+          <h2 className={`text-4xl font-bold text-center mb-12 transition-colors duration-300 ${!isLightMode ? '' : ''} ${textClass}`}>
             Featured Projects
           </h2>
         </FadeIn>
@@ -70,7 +70,7 @@ export const ProjectsSection = () => {
             <Button
               asChild
               variant="outline"
-              className={`px-8 py-3 transition-all duration-300 bg-transparent border-2 border-[var(--theme-color)] text-current hover:bg-[var(--theme-color)] hover:text-white ${ 
+              className={`px-8 py-3 transition-all duration-300 bg-transparent border-2 border-[var(--theme-color)] text-[var(--theme-color)] hover:bg-[var(--theme-color)] hover:text-white ${ 
                 !isLightMode ? 'hover:shadow-[0_0_15px_var(--theme-color)]' : ''
               }`}
             >

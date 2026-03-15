@@ -24,7 +24,7 @@ export const ProjectCard = memo(({ project, index, totalProjects, isLightMode, t
     <Card
       key={project.id}
       className={`
-        overflow-hidden transition-all duration-500 ${!isLightMode ? 'synthwave-glow' : ''}
+        overflow-hidden transition-all duration-500 ${!isLightMode ? '' : ''}
         ${isLightMode
             ? 'bg-white/25 border-white/40 liquid-glass-card'
             : 'bg-white/15 border-white/25 liquid-glass-card'
@@ -85,10 +85,10 @@ export const ProjectCard = memo(({ project, index, totalProjects, isLightMode, t
             <span
               key={tech}
               className={`
-                px-2 py-1 text-xs rounded-full transition-all duration-300 ${!isLightMode ? 'synthwave-glow' : ''}
+                px-2 py-1 text-xs rounded-full transition-all duration-300 font-medium
                 ${isLightMode
-                  ? 'bg-blue-500/20 text-blue-800 border border-blue-300/30'
-                  : 'bg-purple-500/20 text-purple-300 border border-purple-500/30'
+                  ? 'bg-[var(--theme-color)]/10 text-white border border-[var(--theme-color)]/30 hover:bg-[var(--theme-color)] hover:shadow-lg'
+                  : 'bg-[var(--theme-color)]/20 text-white border border-[var(--theme-color)]/50  hover:bg-[var(--theme-color)] hover:shadow-[0_0_15px_var(--theme-color)]'
                 }
               `}
             >

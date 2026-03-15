@@ -210,10 +210,11 @@ export const GlassDock = () => {
       {/* Time Slider Overlay (when active) */}
       {isTimeSliderMode && renderTimeSlider()}
       
-      {/* Main Dock (always visible) - Direct glass container */}
-      <div 
+{/* Main Dock (always visible unless slider is active) - Direct glass container */}
+      <div
         className={`
-          fixed z-[100]
+          fixed z-[100] transition-all duration-300
+          ${isTimeSliderMode ? 'opacity-0 pointer-events-none translate-y-10' : 'opacity-100 translate-y-0'}
           flex rounded-2xl
           backdrop-blur-xl backdrop-saturate-150
           border shadow-2xl

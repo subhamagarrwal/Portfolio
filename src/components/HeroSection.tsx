@@ -89,7 +89,7 @@ export const HeroSection = () => {
           {/* Text Container */}
           <div className={`
             mb-8 transition-all duration-1000
-            ${!isLightMode ? 'synthwave-text-glow' : ''}
+            ${!isLightMode ? '' : ''}
             ${textClass}
           `}>
             <h1 className={`text-5xl md:text-7xl font-bold mb-6 transition-colors duration-300 ${textClass}`}>
@@ -182,10 +182,10 @@ export const HeroSection = () => {
 
         <FadeIn delay={0.8}>
           <div className="mt-8 max-w-3xl mx-auto">
-            <h2 className={`text-2xl font-bold text-center mb-6 transition-colors duration-300 ${!isLightMode ? 'synthwave-text-glow' : ''} ${textClass}`}>
+            <h2 className={`text-2xl font-bold text-center mb-6 transition-colors duration-300 ${!isLightMode ? '' : ''} ${textClass}`}>
               About Me
             </h2>
-            <Card className={`p-8 transition-all duration-300 ${!isLightMode ? 'synthwave-glow' : ''} ${isLightMode ? 'bg-white/30 border-white/40 backdrop-blur-sm liquid-glass-card' : 'bg-white/10 border-white/20 backdrop-blur-sm liquid-glass-card'}`}>
+            <Card className={`p-8 transition-all duration-300 ${!isLightMode ? '' : ''} ${isLightMode ? 'bg-white/30 border-white/40 backdrop-blur-sm liquid-glass-card' : 'bg-white/10 border-white/20 backdrop-blur-sm liquid-glass-card'}`}>
               <div className="space-y-6">
                 {portfolioData.personal.about.map((paragraph, index) => (
                   <p key={index} className={`text-base md:text-lg leading-relaxed text-center transition-colors duration-300 ${textClass}`}>

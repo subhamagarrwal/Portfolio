@@ -233,14 +233,7 @@ export const TimeThemeProvider: React.FC<TimeThemeProviderProps> = ({ children }
   const shouldShowComets = (): boolean => {
     if (isDarkModeOverride) return true;
 
-    // Explicitly hide comets if it's past 5 AM and before noon (morning block)
-    if (currentHour >= 5 && currentHour < 12) {
-      return false; 
-    }
-
-    const currentTheme = effectiveTheme;
-    // Only show comets during evening dusk (twilight) and night
-    return ['night', 'twilight', 'dawn'].includes(currentTheme) && currentHour < 5 || currentHour >= 12 && ['night', 'twilight'].includes(currentTheme);
+    return effectiveTheme === 'night';
   };
 
   const isDayOrAfternoon = (): boolean => {
