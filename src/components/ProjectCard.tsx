@@ -24,7 +24,7 @@ export const ProjectCard = memo(({ project, index, totalProjects, isLightMode, t
     <Card
       key={project.id}
       className={`
-        overflow-hidden transition-all duration-500 hover:scale-105 ${!isLightMode ? 'synthwave-glow' : ''}
+        overflow-hidden transition-all duration-500 ${!isLightMode ? 'synthwave-glow' : ''}
         ${isLightMode
             ? 'bg-white/25 border-white/40 liquid-glass-card'
             : 'bg-white/15 border-white/25 liquid-glass-card'
@@ -105,10 +105,8 @@ export const ProjectCard = memo(({ project, index, totalProjects, isLightMode, t
               size="sm"
               className={`
                 flex-1 transition-all duration-300
-                ${isLightMode
-                  ? 'border-blue-400 text-black hover:bg-blue-500/20'
-                  : 'liquid-glass-button border-white/40 text-white hover:bg-white/10'
-                }
+                bg-transparent border-2 border-[var(--theme-color)] text-current hover:bg-[var(--theme-color)] hover:text-white
+                ${!isLightMode ? 'hover:shadow-[0_0_15px_var(--theme-color)]' : ''}
               `}
             >
               <a href={project.github} target="_blank" rel="noopener noreferrer">
@@ -123,10 +121,8 @@ export const ProjectCard = memo(({ project, index, totalProjects, isLightMode, t
               size="sm"
               className={`
                 flex-1 transition-all duration-300
-                ${isLightMode
-                  ? 'bg-blue-600 hover:bg-blue-700 text-white'
-                  : 'bg-purple-600 hover:bg-purple-700 text-white'
-                }
+                bg-[var(--theme-color)] hover:opacity-80 text-white border-2 border-[var(--theme-color)]
+                ${!isLightMode ? 'shadow-[0_0_10px_var(--theme-color)]' : ''}
               `}
             >
               <a href={project.demo} target="_blank" rel="noopener noreferrer">

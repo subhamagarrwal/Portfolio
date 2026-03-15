@@ -222,12 +222,8 @@ export const GlassDock = () => {
           md:bottom-3 md:left-1/2 md:transform md:-translate-x-1/2 md:items-center md:px-2 md:py-1.5 md:max-w-[calc(100vw-20px)]
           
           /* Mobile constraints */
-          max-md:right-2 max-md:top-1/2 max-md:transform max-md:-translate-y-1/2 max-md:flex-col max-md:items-center max-md:py-2 max-md:px-2 max-md:max-h-[calc(100vh-40px)] max-md:min-h-0
+          max-md:bottom-3 max-md:left-1/2 max-md:transform max-md:-translate-x-1/2 max-md:items-center max-md:px-2 max-md:py-1.5 max-md:max-w-[calc(100vw-20px)]
           
-          overflow-hidden
-          
-          ${isDarkTheme 
-            ? 'bg-black/20 border-white/10 shadow-white/5' 
             : 'bg-white/25 border-black/5 shadow-black/10'
           }
         `}
@@ -248,7 +244,7 @@ export const GlassDock = () => {
           />
           
           {/* Dock items container with overflow scrolling */}
-          <div className="glass-dock-scroll relative flex items-center gap-1 md:justify-center max-md:justify-start max-md:flex-col overflow-x-auto overflow-y-hidden max-md:overflow-y-auto max-md:overflow-x-hidden md:max-w-full w-full h-full max-md:flex-1 max-md:min-h-0 mask-image-vertical">
+          <div className="glass-dock-scroll relative flex items-center gap-1 justify-center overflow-x-auto overflow-y-hidden max-w-full w-full h-full">
             {dockItems.map((item, index) => {
               const isHovered = hoveredItem === item.id;
               const isActive = activeSection === item.id;
@@ -337,11 +333,10 @@ export const GlassDock = () => {
                 
                 {/* Active state indicator */}
                 {isHoveredOrActive && (
-                  <div 
+                  <div
                     className={`
                       absolute
-                      md:-bottom-6 md:left-1/2 md:transform md:-translate-x-1/2 
-                      max-md:-left-6 max-md:top-1/2 max-md:transform max-md:-translate-y-1/2
+                      -bottom-1 left-1/2 transform -translate-x-1/2
                       w-1 h-1 rounded-full transition-all duration-300
                       ${isDarkTheme ? 'bg-white/60' : 'bg-black/40'}
                     `}
@@ -374,35 +369,26 @@ export const GlassDock = () => {
               : 'bg-white/80 text-black border-black/10'
             }
           `}
-          style={{ 
+          style={{
             minWidth: 'max-content',
             boxShadow: isDarkTheme
               ? '0 4px 16px rgba(0,0,0,0.4)'
               : '0 4px 16px rgba(0,0,0,0.15)',
-            top: isMobile 
-              ? hoveredRect.top + (hoveredRect.height / 2)
-              : hoveredRect.top - 12,
-            left: isMobile 
-              ? hoveredRect.left - 12
-              : hoveredRect.left + (hoveredRect.width / 2),
-            transform: isMobile 
-              ? 'translate(-100%, -50%)' 
-              : 'translate(-50%, -100%)',
+            top: hoveredRect.top - 12,
+            left: hoveredRect.left + (hoveredRect.width / 2),
+            transform: 'translate(-50%, -100%)',
           }}
           role="tooltip"
         >
           {dockItems.find(i => i.id === hoveredItem)?.label}
-          <div 
+          <div
             className={`
-              absolute 
+              absolute
               border-transparent
-              ${isMobile 
-                ? 'left-full top-1/2 -translate-y-1/2 border-t-4 border-b-4 border-l-4' 
-                : 'top-full left-1/2 -translate-x-1/2 border-l-4 border-r-4 border-t-4'
-              }
-              ${isDarkTheme 
-                ? (isMobile ? 'border-l-black/60' : 'border-t-black/60') 
-                : (isMobile ? 'border-l-white/80' : 'border-t-white/80')
+              top-full left-1/2 -translate-x-1/2 border-l-4 border-r-4 border-t-4
+              ${isDarkTheme
+                ? 'border-t-black/60'
+                : 'border-t-white/80'
               }
             `}
           />

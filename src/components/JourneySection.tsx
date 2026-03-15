@@ -48,22 +48,22 @@ export const JourneySection = () => {
         </h2>
 
         <Tabs defaultValue="education" className="w-full">
-          <TabsList className="grid w-full grid-cols-3 mb-8 bg-transparent gap-2 p-1 border rounded-full backdrop-blur-sm shadow-inner overflow-hidden mx-auto max-w-3xl" style={{ borderColor: isLightMode ? 'rgba(255,255,255,0.5)' : 'rgba(255,255,255,0.1)', background: isLightMode ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)' }}>
-            <TabsTrigger 
+          <TabsList className="flex flex-col sm:grid w-full sm:grid-cols-3 mb-8 bg-transparent gap-2 p-1 border rounded-[2rem] sm:rounded-full backdrop-blur-sm shadow-inner overflow-hidden mx-auto max-w-3xl h-auto" style={{ borderColor: isLightMode ? 'rgba(255,255,255,0.5)' : 'rgba(255,255,255,0.1)', background: isLightMode ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)' }}>
+            <TabsTrigger
               value="education"
-              className={`rounded-full data-[state=active]:bg-[var(--theme-color)] data-[state=active]:text-white transition-all duration-300 ${textClass}`}
+              className={`rounded-full flex-1 w-full data-[state=active]:bg-[var(--theme-color)] data-[state=active]:text-white transition-all duration-300 ${textClass}`}
             >
               Education
             </TabsTrigger>
-            <TabsTrigger 
+            <TabsTrigger
               value="experience"
-              className={`rounded-full data-[state=active]:bg-[var(--theme-color)] data-[state=active]:text-white transition-all duration-300 ${textClass}`}
+              className={`rounded-full flex-1 w-full data-[state=active]:bg-[var(--theme-color)] data-[state=active]:text-white transition-all duration-300 ${textClass}`}
             >
               Work Experience
             </TabsTrigger>
-            <TabsTrigger 
+            <TabsTrigger
               value="volunteering"
-              className={`rounded-full data-[state=active]:bg-[var(--theme-color)] data-[state=active]:text-white transition-all duration-300 ${textClass}`}
+              className={`rounded-full flex-1 w-full data-[state=active]:bg-[var(--theme-color)] data-[state=active]:text-white transition-all duration-300 ${textClass}`}
             >
               Volunteering
             </TabsTrigger>
@@ -74,7 +74,7 @@ export const JourneySection = () => {
               <Card
                 key={edu.id}
                 className={`
-                  transition-all duration-500 hover:scale-[1.02] ${!isLightMode ? 'synthwave-glow' : ''}                                                                          ${isLightMode
+                  transition-all duration-500  ${!isLightMode ? 'synthwave-glow' : ''}                                                                          ${isLightMode
                       ? 'bg-white/25 border-white/40 liquid-glass-card'
                       : 'bg-white/15 border-white/25 liquid-glass-card'
                   }
@@ -128,7 +128,7 @@ export const JourneySection = () => {
               <Card
                 key={exp.id}
                 className={`
-                  transition-all duration-500 hover:scale-[1.02] ${!isLightMode ? 'synthwave-glow' : ''}                                                                          ${isLightMode
+                  transition-all duration-500  ${!isLightMode ? 'synthwave-glow' : ''}                                                                          ${isLightMode
                       ? 'bg-white/25 border-white/40 liquid-glass-card'
                       : 'bg-white/15 border-white/25 liquid-glass-card'
                   }
@@ -180,7 +180,7 @@ export const JourneySection = () => {
               <Card
                 key={activity.id}
                 className={`
-                  transition-all duration-500 hover:scale-[1.02] ${!isLightMode ? 'synthwave-glow' : ''}                                                                          ${isLightMode
+                  transition-all duration-500  ${!isLightMode ? 'synthwave-glow' : ''}                                                                          ${isLightMode
                       ? 'bg-white/25 border-white/40 liquid-glass-card'
                       : 'bg-white/15 border-white/25 liquid-glass-card'
                   }

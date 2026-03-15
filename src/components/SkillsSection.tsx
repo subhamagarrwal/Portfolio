@@ -44,7 +44,7 @@ export const SkillsSection = () => {
                   <span
                     key={skill}
                     className={`
-                      px-4 py-2 rounded-full text-sm font-medium transition-colors duration-300 hover:scale-105 
+                      px-4 py-2 rounded-full text-sm font-medium transition-colors duration-300 
                       ${isLightMode 
                         ? 'liquid-glass-button text-black' 
                         : 'bg-purple-900/20 border border-purple-500/30 text-white'
