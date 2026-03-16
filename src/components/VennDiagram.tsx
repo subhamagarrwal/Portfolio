@@ -89,7 +89,7 @@ export const VennDiagram = () => {
         className="absolute left-[88%] top-[54%] -translate-y-1/2 z-0 font-medium italic text-foreground/80 dark:text-foreground/60 whitespace-nowrap transition-opacity duration-1000"
         style={{ opacity: visible ? 1 : 0, fontSize: 'clamp(0.6rem, 2.5cqw, 1.2rem)' }}
       >
-        I'm here
+        I work here
       </div>
     </div>
   );
