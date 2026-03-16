@@ -5,9 +5,9 @@
     "email": "subhamag2003@gmail.com",
     "github": "https://github.com/subhamagarrwal",
     "linkedin": "https://www.linkedin.com/in/subham-agarwal-99386222a/",
-    "twitter": "https://x.com/Fintellect_ai",
-    "spotify": "https://open.spotify.com/user/yourusername",
-    "resume": "/resume/SubhamAgarwal_Resume.pdf",
+    "twitter": "https://x.com/shoothebomb",
+    "spotify": "https://open.spotify.com/user/syfg3okbqewd4hooz7nhbjz6y?si=705286229e7a40cc",
+    "resume": "https://drive.google.com/file/d/1UUhanEkOicXr9qcF9t0ar-28-U-n9ngQ/view?usp=sharing",
     "about": [
      "Full Stack Developer currently a final year Computer Science student at Vellore Institute of Technology. Have worked on a variety of projects, lying at the intersection of web development, AI, and user experience design.",
      "Currently im working on Fintellect, a project where users can search for a stock ticker and get comprehensive detail into the stock performance in natural language."
@@ -19,7 +19,7 @@
       "id": "taskquest",
       "title": "TaskQuest",
       "description": "Turn team tasks into thrilling quests. Admins create tasks on the web dashboard, share bot links with team members, and track progress through an intelligent Telegram bot interface.",
-      "techStack": ["React", "Node.js", "Firebase","MongoDB", "Express", "Telegraf", "GraphQL"],
+      "techStack": ["Node.js", "Firebase","MongoDB", "Express", "Telegraf", "GraphQL"],
       "github": "https://github.com/subhamagarrwal/TaskQuest",
       "demo": "https://taskquest.onrender.com/",
       "image": "/photos/TaskQuest.png",
@@ -40,7 +40,7 @@
       "title": "FitFusion",
       "description": "A comprehensive gym management app that allows users to look into gyms and give reviews, where gym owners can register their gyms.",
       "techStack": ["MongoDB", "Firebase", "Redux", "Node.js", "Express"],
-      "github": "https://github.com/yourusername/fitfusion",
+      "github": "https://github.com/subhamagarrwal/fitfusion",
       "demo": "https://fitfusion-mobile.expo.dev",
       "image": "/photos/FitFusion.png",
       "featured": true

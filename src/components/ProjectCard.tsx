@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Github, ExternalLink } from 'lucide-react';
@@ -20,11 +20,13 @@ interface ProjectCardProps {
 }
 
 export const ProjectCard = memo(({ project, index, totalProjects, isLightMode, textClass }: ProjectCardProps) => {
+  const [isOverlayVisible, setIsOverlayVisible] = useState(false);
+
   return (
     <Card
       key={project.id}
       className={`
-        overflow-hidden transition-all duration-500 ${!isLightMode ? '' : ''}
+        group overflow-hidden transition-all duration-500 ${!isLightMode ? '' : ''}
         ${isLightMode
             ? 'bg-white/25 border-white/40 liquid-glass-card'
             : 'bg-white/15 border-white/25 liquid-glass-card'
@@ -36,13 +38,75 @@ export const ProjectCard = memo(({ project, index, totalProjects, isLightMode, t
       `}
       style={{ animationDelay: `${index * 0.2}s` }}
     >
-      <div className={`
-        h-48 bg-gradient-to-br transition-all duration-300 relative overflow-hidden
-        ${isLightMode 
-          ? 'from-blue-500/20 to-purple-500/20'
-          : 'from-blue-500/20 to-purple-500/20'
-        }
-      `}>
+      <div 
+        className={`
+          h-48 bg-gradient-to-br transition-all duration-300 relative overflow-hidden
+          ${isLightMode
+            ? 'from-blue-500/20 to-purple-500/20'
+            : 'from-blue-500/20 to-purple-500/20'
+          }
+        `}
+        onMouseEnter={() => setIsOverlayVisible(true)}
+        onMouseLeave={() => setIsOverlayVisible(false)}
+        onClick={() => setIsOverlayVisible(!isOverlayVisible)}
+      >
+        <div className={`absolute inset-0 bg-black/70 transition-opacity duration-300 flex items-center justify-center gap-4 z-20 ${isOverlayVisible ? 'opacity-100' : 'opacity-0'}`}>
+          {project.github ? (
+            <Button
+              asChild
+              variant="outline"
+              size="sm"
+              className={`
+                transition-all duration-300 pointer-events-auto
+                bg-transparent border-2 border-[var(--theme-color)] text-white hover:bg-[var(--theme-color)] hover:text-white
+                ${!isLightMode ? 'hover:shadow-[0_0_15px_var(--theme-color)]' : ''}
+              `}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <a href={project.github} target="_blank" rel="noopener noreferrer">
+                <Github className="w-4 h-4 mr-2" />
+                Code
+              </a>
+            </Button>
+          ) : (
+            <Button
+              variant="outline"
+              size="sm"
+              disabled
+              className="transition-all duration-300 bg-transparent border-2 border-gray-500 text-gray-400 cursor-not-allowed pointer-events-auto"
+            >
+              <Github className="w-4 h-4 mr-2" />
+              Code
+            </Button>
+          )}
+
+          {project.demo ? (
+            <Button
+              asChild
+              size="sm"
+              className={`
+                transition-all duration-300 pointer-events-auto
+                bg-[var(--theme-color)] hover:opacity-80 text-white border-2 border-[var(--theme-color)]
+                ${!isLightMode ? 'shadow-[0_0_10px_var(--theme-color)]' : ''}
+              `}
+            >
+              <a href={project.demo} target="_blank" rel="noopener noreferrer">
+                <ExternalLink className="w-4 h-4 mr-2" />
+                Demo
+              </a>
+            </Button>
+          ) : (
+            <Button
+              size="sm"
+              disabled
+              className="bg-gray-600 border-2 border-gray-600 text-gray-300 cursor-not-allowed opacity-80 pointer-events-auto"
+            >
+              <ExternalLink className="w-4 h-4 mr-2" />
+              Demo
+            </Button>
+          )}
+        </div>
+
         <div className="h-full flex items-center justify-center">
           <img
             src={project.image}
@@ -95,42 +159,6 @@ export const ProjectCard = memo(({ project, index, totalProjects, isLightMode, t
               {tech}
             </span>
           ))}
-        </div>
-
-        <div className="flex gap-3">
-          {project.github && (
-            <Button
-              asChild
-              variant="outline"
-              size="sm"
-              className={`
-                flex-1 transition-all duration-300
-                bg-transparent border-2 border-[var(--theme-color)] text-current hover:bg-[var(--theme-color)] hover:text-white
-                ${!isLightMode ? 'hover:shadow-[0_0_15px_var(--theme-color)]' : ''}
-              `}
-            >
-              <a href={project.github} target="_blank" rel="noopener noreferrer">
-                <Github className="w-4 h-4 mr-2" />
-                Code
-              </a>
-            </Button>
-          )}
-          {project.demo && (
-            <Button
-              asChild
-              size="sm"
-              className={`
-                flex-1 transition-all duration-300
-                bg-[var(--theme-color)] hover:opacity-80 text-white border-2 border-[var(--theme-color)]
-                ${!isLightMode ? 'shadow-[0_0_10px_var(--theme-color)]' : ''}
-              `}
-            >
-              <a href={project.demo} target="_blank" rel="noopener noreferrer">
-                <ExternalLink className="w-4 h-4 mr-2" />
-                Demo
-              </a>
-            </Button>
-          )}
         </div>
       </div>
     </Card>
