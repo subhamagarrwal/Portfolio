@@ -9,10 +9,12 @@
     "spotify": "https://open.spotify.com/user/syfg3okbqewd4hooz7nhbjz6y?si=705286229e7a40cc",
     "resume": "https://drive.google.com/file/d/1UUhanEkOicXr9qcF9t0ar-28-U-n9ngQ/view?usp=sharing",
     "about": [
-     "Full Stack Developer currently a final year Computer Science student at Vellore Institute of Technology. Have worked on a variety of projects, lying at the intersection of web development, AI, and user experience design.",
-     "Currently im working on Fintellect, a project where users can search for a stock ticker and get comprehensive detail into the stock performance in natural language."
-    ],
-    "contactText": "I'm always interested in hearing about new opportunities and connecting with fellow developers. Whether you have a project in mind or just want to chat about tech, feel free to reach out!"
+     "I am a full-stack developer who enjoys building things from the ground up. I like understanding how systems actually work — from the logic behind the backend to the way an interface feels when someone interacts with it.",
+
+"Most of what I build sits at the intersection of web systems, data, and AI. I’m drawn to problems where there’s a lot of information but very little clarity, and the challenge is turning that complexity into something simple and intuitive.",
+
+"Right now I’m working on FinTellect, a project that lets users search a stock ticker and understand what’s happening with the company through clear natural-language insights instead of raw financial data."
+    ]
   },
   "projects": [
     {

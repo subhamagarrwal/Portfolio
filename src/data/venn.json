@@ -1,0 +1,47 @@
+{
+  "user": {
+    "title": "Frontend",
+    "titleX": 25,
+    "titleY": 25,
+    "color": "bg-fuchsia-500/80 text-white dark:bg-fuchsia-600/80 border border-fuchsia-400/50",
+    "circle": "border-fuchsia-500/40 dark:border-fuchsia-400/40 bg-fuchsia-500/5",
+    "titleClass": "text-fuchsia-600 dark:text-fuchsia-300 drop-shadow-sm",
+    "items": [
+      { "label": "State Logic", "x": 28, "y": 14 },
+      { "label": "Layout", "x": 16, "y": 20 },
+      { "label": "Accessibility", "x": 34, "y": 34 },
+      { "label": "Performance", "x": 12, "y": 34 },
+      { "label": "Responsive Design", "x": 24, "y": 42 }
+    ]
+  },
+  "technology": {
+    "title": "Backend",
+    "titleX": 75,
+    "titleY": 25,
+    "color": "bg-purple-500/80 text-white dark:bg-purple-600/80 border border-purple-400/50",
+    "circle": "border-purple-500/40 dark:border-purple-400/40 bg-purple-500/5",
+    "titleClass": "text-purple-600 dark:text-purple-300 drop-shadow-sm",
+    "items": [
+      { "label": "Deployment", "x": 68, "y": 12 },
+      { "label": "Monitoring", "x": 84, "y": 18 },
+      { "label": "Testing", "x": 65, "y": 32 },
+      { "label": "Middleware", "x": 86, "y": 32 },
+      { "label": "Database", "x": 75, "y": 40 },
+      { "label": "Security", "x": 78, "y": 49 }
+    ]
+  },
+  "business": {
+    "title": "System Design",
+    "titleX": 50,
+    "titleY": 70,
+    "color": "bg-orange-500/80 text-white dark:bg-orange-600/80 border border-orange-400/50",
+    "circle": "border-orange-500/40 dark:border-orange-400/40 bg-orange-500/5",
+    "titleClass": "text-orange-600 dark:text-orange-300 drop-shadow-sm",
+    "items": [
+      { "label": "Scalability", "x": 48, "y": 62 },
+      { "label": "Reliability", "x": 34, "y": 76 },
+      { "label": "Observability", "x": 65, "y": 78 },
+      { "label": "Data Architecture", "x": 50, "y": 88 }
+    ]
+  }
+}
