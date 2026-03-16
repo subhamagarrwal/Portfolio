@@ -1,5 +1,4 @@
 import { useTimeTheme } from '@/hooks/useTimeTheme';
-import { Card } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import portfolioData from '@/data/portfolio.json';
 import { palettes } from '@/constants/palettes';
@@ -34,11 +33,9 @@ export const JourneySection = () => {
   const primaryColor = getThemePrimaryColor();
 
   return (
-    <section id="journey" className={`py-20 px-6 ${timeBasedClass}`}>        
+    <section id="journey" className={`py-20 px-6 ${timeBasedClass}`}>
       <div 
-        className={`container mx-auto max-w-5xl p-6 md:p-10 rounded-[2.5rem] backdrop-blur-md border shadow-2xl transition-all duration-500
-          ${isLightMode ? 'bg-white/30 border-white/40' : 'bg-black/20 border-white/10'}
-        `}
+        className="container mx-auto max-w-5xl"
         style={{ '--theme-color': primaryColor } as React.CSSProperties}
       >
         <h2 className={`
@@ -69,160 +66,139 @@ export const JourneySection = () => {
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="education" className="space-y-6">
-            {education.map((edu, index) => (
-              <Card
-                key={edu.id}
-                className={`
-                  transition-all duration-500  ${!isLightMode ? 'synthwave-glow' : ''}                                                                          ${isLightMode
-                      ? 'bg-white/25 border-white/40 liquid-glass-card'
-                      : 'bg-white/15 border-white/25 liquid-glass-card'
-                  }
-                `}
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                <div className="p-6">
-                  <div className="mb-4">
-                    <div>
-                      <h3 className={`text-xl font-bold transition-colors duration-300 ${textClass}`}>
-                        {edu.degree}
-                      </h3>
-                      <p className={`text-lg font-semibold transition-colors duration-300 ${textClass}`}>
-                        {edu.institution}
-                      </p>
-                      <p className={`text-sm transition-colors duration-300 ${textClass} opacity-70`}>
-                        {edu.duration} &bull; {edu.location}
-                      </p>
+          <TabsContent value="education" className="mt-8">
+            <div className={`p-6 md:p-10 rounded-[2.5rem] backdrop-blur-md border shadow-2xl transition-all duration-500
+              ${isLightMode ? 'bg-white/30 border-white/40' : 'bg-black/20 border-white/10'}
+              ${!isLightMode ? 'synthwave-glow' : ''}
+            `}>
+              <div className="flex flex-col">
+                {education.map((edu, index) => (
+                  <div key={edu.id} className={`relative pb-8 mb-8 border-b ${isLightMode ? 'border-black/10' : 'border-white/10'} last:border-0 last:pb-0 last:mb-0`} style={{ animationDelay: `${index * 0.1}s` }}>
+                    <div className="mb-4">
+                      <div>
+                        <h3 className={`text-xl font-bold transition-colors duration-300 ${textClass}`}>
+                          {edu.degree}
+                        </h3>
+                        <p className={`text-lg font-semibold transition-colors duration-300 ${textClass}`}>
+                          {edu.institution}
+                        </p>
+                        <p className={`text-sm transition-colors duration-300 ${textClass} opacity-70`}>
+                          {edu.duration} &bull; {edu.location}
+                        </p>
+                      </div>
                     </div>
+
+                    <p className={`mb-4 transition-colors duration-300 ${textClass} opacity-80`}>
+                      {edu.description}
+                    </p>
+
+                    {edu.achievements && edu.achievements.length > 0 && (
+                      <div className="space-y-2">
+                        <h4 className={`font-semibold mb-3 transition-colors duration-300 ${textClass}`}>
+                          Highlights:
+                        </h4>
+                        <ul className="space-y-2">
+                          {edu.achievements.map((achievement, achIndex) => (
+                            <li key={achIndex} className={`flex items-start transition-colors duration-300 ${textClass} opacity-80`}>
+                              <span className="inline-block w-2 h-2 rounded-full mt-2 mr-3 flex-shrink-0 bg-[var(--theme-color)]" />
+                              {achievement}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
                   </div>
+                ))}
+              </div>
+            </div>
+          </TabsContent>
 
-                  <p className={`mb-4 transition-colors duration-300 ${textClass} opacity-80`}>
-                    {edu.description}
-                  </p>
+          <TabsContent value="experience" className="mt-8">
+            <div className={`p-6 md:p-10 rounded-[2.5rem] backdrop-blur-md border shadow-2xl transition-all duration-500
+              ${isLightMode ? 'bg-white/30 border-white/40' : 'bg-black/20 border-white/10'}
+              ${!isLightMode ? 'synthwave-glow' : ''}
+            `}>
+              <div className="flex flex-col">
+                {experience.map((exp, index) => (
+                  <div key={exp.id} className={`relative pb-8 mb-8 border-b ${isLightMode ? 'border-black/10' : 'border-white/10'} last:border-0 last:pb-0 last:mb-0`} style={{ animationDelay: `${index * 0.1}s` }}>
+                    <div className="mb-4">
+                      <div>
+                        <h3 className={`text-xl font-bold transition-colors duration-300 ${textClass}`}>
+                          {exp.position}
+                        </h3>
+                        <p className={`text-lg font-semibold transition-colors duration-300 ${textClass}`}>
+                          {exp.company}
+                        </p>
+                        <p className={`text-sm transition-colors duration-300 ${textClass} opacity-70`}>
+                          {exp.duration} &bull; {exp.location}
+                        </p>
+                      </div>
+                    </div>
 
-                  {edu.achievements && edu.achievements.length > 0 && (
+                    <p className={`mb-4 transition-colors duration-300 ${textClass} opacity-80`}>
+                      {exp.description}
+                    </p>
+
                     <div className="space-y-2">
                       <h4 className={`font-semibold mb-3 transition-colors duration-300 ${textClass}`}>
-                        Highlights:
+                        Key Achievements:
                       </h4>
                       <ul className="space-y-2">
-                        {edu.achievements.map((achievement, achIndex) => (
-                          <li
-                            key={achIndex}
-                            className={`flex items-start transition-colors duration-300 ${textClass} opacity-80`}
-                          >
-                            <span className="inline-block w-2 h-2 rounded-full mt-2 mr-3 flex-shrink-0 bg-[var(--theme-color)]" />
-                            {achievement}
-                          </li>
-                        ))}
+                          {exp.achievements.map((achievement, achIndex) => (
+                            <li key={achIndex} className={`flex items-start transition-colors duration-300 ${textClass} opacity-80`}>
+                              <span className="inline-block w-2 h-2 rounded-full mt-2 mr-3 flex-shrink-0 bg-[var(--theme-color)]" />
+                              {achievement}
+                            </li>
+                          ))}
                       </ul>
                     </div>
-                  )}
-                </div>
-              </Card>
-            ))}
+                  </div>
+                ))}
+              </div>
+            </div>
           </TabsContent>
 
-          <TabsContent value="experience" className="space-y-6">
-            {experience.map((exp, index) => (
-              <Card
-                key={exp.id}
-                className={`
-                  transition-all duration-500  ${!isLightMode ? 'synthwave-glow' : ''}                                                                          ${isLightMode
-                      ? 'bg-white/25 border-white/40 liquid-glass-card'
-                      : 'bg-white/15 border-white/25 liquid-glass-card'
-                  }
-                `}
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                <div className="p-6">
-                  <div className="mb-4">
-                    <div>
-                      <h3 className={`text-xl font-bold transition-colors duration-300 ${textClass}`}>
-                        {exp.position}
+          <TabsContent value="volunteering" className="mt-8">
+            <div className={`p-6 md:p-10 rounded-[2.5rem] backdrop-blur-md border shadow-2xl transition-all duration-500
+              ${isLightMode ? 'bg-white/30 border-white/40' : 'bg-black/20 border-white/10'}
+              ${!isLightMode ? 'synthwave-glow' : ''}
+            `}>
+              <div className="flex flex-col">
+                {extracurriculars.map((activity, index) => (
+                  <div key={activity.id} className={`relative pb-8 mb-8 border-b ${isLightMode ? 'border-black/10' : 'border-white/10'} last:border-0 last:pb-0 last:mb-0`} style={{ animationDelay: `${index * 0.1}s` }}>
+                    <div className="mb-4">
+                      <h3 className={`text-xl font-bold mb-2 transition-colors duration-300 ${textClass}`}>
+                        {activity.position}
                       </h3>
                       <p className={`text-lg font-semibold transition-colors duration-300 ${textClass}`}>
-                        {exp.company}
+                        {activity.organization}
                       </p>
                       <p className={`text-sm transition-colors duration-300 ${textClass} opacity-70`}>
-                        {exp.duration} &bull; {exp.location}
+                        {activity.duration}
                       </p>
                     </div>
-                  </div>
 
-                  <p className={`mb-4 transition-colors duration-300 ${textClass} opacity-80`}>
-                    {exp.description}
-                  </p>
-
-                  <div className="space-y-2">
-                    <h4 className={`font-semibold mb-3 transition-colors duration-300 ${textClass}`}>
-                      Key Achievements:
-                    </h4>
-                    <ul className="space-y-2">
-                        {exp.achievements.map((achievement, achIndex) => (
-                          <li
-                            key={achIndex}
-                            className={`flex items-start transition-colors duration-300 ${textClass} opacity-80`}
-                          >
-                            <span className="inline-block w-2 h-2 rounded-full mt-2 mr-3 flex-shrink-0 bg-[var(--theme-color)]" />
-                            {achievement}
-                          </li>
-                        ))}
-                    </ul>
-                  </div>
-                </div>
-              </Card>
-            ))}
-          </TabsContent>
-
-          <TabsContent value="volunteering" className="space-y-6">
-            {extracurriculars.map((activity, index) => (
-              <Card
-                key={activity.id}
-                className={`
-                  transition-all duration-500  ${!isLightMode ? 'synthwave-glow' : ''}                                                                          ${isLightMode
-                      ? 'bg-white/25 border-white/40 liquid-glass-card'
-                      : 'bg-white/15 border-white/25 liquid-glass-card'
-                  }
-                `}
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                <div className="p-6">
-                  <div className="mb-4">
-                    <h3 className={`text-xl font-bold mb-2 transition-colors duration-300 ${textClass}`}>
-                      {activity.position}
-                    </h3>
-                    <p className={`text-lg font-semibold transition-colors duration-300 ${textClass}`}>
-                      {activity.organization}
+                    <p className={`mb-4 transition-colors duration-300 ${textClass} opacity-80`}>
+                      {activity.description}
                     </p>
-                    <p className={`text-sm transition-colors duration-300 ${textClass} opacity-70`}>
-                      {activity.duration}
-                    </p>
-                  </div>
 
-                  <p className={`mb-4 transition-colors duration-300 ${textClass} opacity-80`}>
-                    {activity.description}
-                  </p>
-
-                  <div className="space-y-2">
-                    <h4 className={`font-semibold mb-3 transition-colors duration-300 ${textClass}`}>
-                      Key Accomplishments:
-                    </h4>
-                    <ul className="space-y-2">
-                        {activity.achievements.map((achievement, achIndex) => (       
-                          <li
-                            key={achIndex}
-                            className={`flex items-start transition-colors duration-300 ${textClass} opacity-80`}
-                          >
-                            <span className="inline-block w-2 h-2 rounded-full mt-2 mr-3 flex-shrink-0 bg-[var(--theme-color)]" />
-                            {achievement}
-                          </li>
-                        ))}
-                      </ul>
+                    <div className="space-y-2">
+                      <h4 className={`font-semibold mb-3 transition-colors duration-300 ${textClass}`}>
+                        Key Accomplishments:
+                      </h4>
+                      <ul className="space-y-2">
+                          {activity.achievements.map((achievement, achIndex) => (       
+                            <li key={achIndex} className={`flex items-start transition-colors duration-300 ${textClass} opacity-80`}>
+                              <span className="inline-block w-2 h-2 rounded-full mt-2 mr-3 flex-shrink-0 bg-[var(--theme-color)]" />
+                              {achievement}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
                     </div>
-                  </div>
-                </Card>
-              ))}
+                  ))}
+                </div>
+              </div>
             </TabsContent>
           </Tabs>
       </div>
