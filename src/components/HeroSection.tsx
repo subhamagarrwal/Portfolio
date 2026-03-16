@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useTimeTheme } from '@/hooks/useTimeTheme';
 import { Button } from '@/components/ui/button';
-import { Github, Linkedin, Mail, Download } from 'lucide-react';
+import { Github, Linkedin, Mail, Download, MapPin } from 'lucide-react';
 import { FadeIn } from '@/components/ui/FadeIn';
 import { Card } from '@/components/ui/card';
 import portfolioData from '@/data/portfolio.json';
@@ -95,9 +95,13 @@ export const HeroSection = () => {
             <h1 className={`text-5xl md:text-7xl font-bold mb-6 transition-colors duration-300 ${textClass}`}>
               {personal.name}
             </h1>
-            <p className={`text-xl md:text-2xl mb-8 transition-colors duration-300 ${textClass}`}>
+            <p className={`text-xl md:text-2xl mb-4 transition-colors duration-300 ${textClass}`}>
               {personal.title}
             </p>
+            <div className={`flex items-center justify-center gap-2 text-sm md:text-base font-medium opacity-80 mb-8 transition-colors duration-300 ${textClass}`}>
+              <MapPin className="w-4 h-4 md:w-5 md:h-5 text-[var(--theme-color)]" style={{ color: primaryColor }} />
+              <span>Vellore, Tamil Nadu, <span className="opacity-75">India</span></span>
+            </div>
           </div>
         </FadeIn>
 

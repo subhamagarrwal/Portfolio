@@ -52,9 +52,14 @@ export const MountainLandscape = () => {
              style.setProperty('--sun-opacity', "1");
              let intensity = Math.max(0, Math.sin(sunProgress * Math.PI));
              style.setProperty('--sun-intensity', intensity.toFixed(3));
+             style.setProperty('--sun-angle', `${(sunProgress * 180).toFixed(1)}deg`);
+             style.setProperty('--ground-brightness', (0.6 + intensity * 0.4).toFixed(3));
+             style.setProperty('--haze-opacity', (1 - Math.sin(sunProgress * Math.PI)).toFixed(3));
          } else {
              style.setProperty('--sun-opacity', "0");
              style.setProperty('--sun-intensity', "0");
+             style.setProperty('--ground-brightness', "0.3");
+             style.setProperty('--haze-opacity', "0");
          }
       } else {
         // Fallback
@@ -66,10 +71,15 @@ export const MountainLandscape = () => {
             
             let intensity = Math.max(0, Math.sin(sunProgress * Math.PI));
             style.setProperty('--sun-intensity', intensity.toFixed(3));
+            style.setProperty('--sun-angle', `${(sunProgress * 180).toFixed(1)}deg`);
+            style.setProperty('--ground-brightness', (0.6 + intensity * 0.4).toFixed(3));
+            style.setProperty('--haze-opacity', (1 - Math.sin(sunProgress * Math.PI)).toFixed(3));
         } else {
             style.setProperty('--sun-opacity', "0"); 
             style.setProperty('--sun-y', "120%");
             style.setProperty('--sun-intensity', "0");
+            style.setProperty('--ground-brightness', "0.3");
+            style.setProperty('--haze-opacity', "0");
         }
       }
 
