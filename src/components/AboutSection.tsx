@@ -1,17 +1,14 @@
 import { useTimeTheme } from '@/hooks/useTimeTheme';
-import { Card } from '@/components/ui/card';
 import portfolioData from '@/data/portfolio.json';
 import { VennDiagram } from '@/components/VennDiagram';
 
 export const AboutSection = () => {
   const {
     getTextClass,
-    isDayOrAfternoon,
     getTimeBasedClass
   } = useTimeTheme();
 
   const textClass = getTextClass();
-  const isLightMode = isDayOrAfternoon();
   const timeBasedClass = getTimeBasedClass();
 
   return (
@@ -21,21 +18,21 @@ export const AboutSection = () => {
           About Me
         </h2>
 
-        <Card className={`p-8 w-full transition-all duration-300 ${isLightMode ? 'bg-white/30 border-white/40 backdrop-blur-sm liquid-glass-card' : 'bg-white/10 border-white/20 backdrop-blur-sm liquid-glass-card'}`}>
-          <div className="flex flex-col lg:flex-row items-center justify-between gap-6 lg:gap-8">
-            <div className="space-y-6 flex-1">
-              {portfolioData.personal.about.map((paragraph, index) => (
-                <p key={index} className={`text-lg leading-relaxed text-justify transition-colors duration-300 ${textClass}`}>
-                  {paragraph}
-                </p>
-              ))}
-            </div>
-          
-            <div className="flex-1 w-full max-w-[350px] sm:max-w-[460px] lg:max-w-[520px] flex justify-center mt-8 lg:mt-0">
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-6 lg:gap-8 w-full transition-all duration-300">
+          <div className="space-y-6 flex-1">
+            {portfolioData.personal.about.map((paragraph, index) => (
+              <p key={index} className={`text-[15px] leading-relaxed text-justify transition-colors duration-300 ${textClass}`}>
+                {paragraph}
+              </p>
+            ))}
+          </div>
+        
+          <div className="flex-1 w-full flex justify-center mt-12 mb-8 lg:my-0">
+            <div className="w-full max-w-[400px] sm:max-w-[460px] lg:max-w-[580px] scale-[1.20] sm:scale-100 origin-center transition-transform duration-300">
               <VennDiagram />
             </div>
           </div>
-        </Card>
+        </div>
       </div>
     </section>
   );

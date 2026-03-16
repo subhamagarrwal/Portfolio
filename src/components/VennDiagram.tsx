@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTimeTheme } from '@/hooks/useTimeTheme';
-import VENN_JSON from '@/data/venn.json';
+import { VENN_JSON } from '@/data/venn';
 
 const Pill = ({ label, x, y, color, visible, delay }: any) => (
   <div

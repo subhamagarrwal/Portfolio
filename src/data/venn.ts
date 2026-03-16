@@ -1,4 +1,4 @@
-{
+export const VENN_JSON = {
   "user": {
     "title": "Frontend",
     "titleX": 25,
@@ -44,4 +44,4 @@
       { "label": "Data Architecture", "x": 50, "y": 88 }
     ]
   }
-}
+};
