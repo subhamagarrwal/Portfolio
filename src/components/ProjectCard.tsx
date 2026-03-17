@@ -138,30 +138,32 @@ export const ProjectCard = memo(({ project, index, totalProjects, isLightMode, t
       </div>
 
       <div className="p-6">
-        <h3 className={`text-xl font-bold mb-3 transition-colors duration-300 ${textClass}`}>
-          {project.title}
-        </h3>
+        <div className="flex justify-between items-center mb-3">
+          <h3 className={`text-xl font-bold transition-colors duration-300 ${textClass}`}>
+            {project.title}
+          </h3>
+          <div className="flex gap-3 items-center">
+            <a href={project.demo || project.github || '#'} target="_blank" rel="noopener noreferrer" className={`text-xs font-medium transition-colors hover:text-[var(--theme-color)] pointer-events-auto ${textClass} underline underline-offset-4 decoration-[var(--theme-color)] whitespace-nowrap`}>
+              Read more
+            </a>
+            {project.github && (
+               <a href={project.github} target="_blank" rel="noopener noreferrer" className="hover:text-[var(--theme-color)] transition-colors">
+                  <Github className="w-5 h-5 pointer-events-auto" />
+               </a>
+            )}
+            {project.demo ? (
+               <a href={project.demo} target="_blank" rel="noopener noreferrer" className="hover:text-[var(--theme-color)] transition-colors">
+                  <ExternalLink className="w-5 h-5 pointer-events-auto" />
+               </a>
+            ) : (
+               <ExternalLink className="w-5 h-5 text-gray-500 cursor-not-allowed" />
+            )}
+          </div>
+        </div>
 
         <p className={`text-sm mb-4 transition-colors duration-300 ${textClass}`}>
           {project.description}
         </p>
-
-        <div className="flex flex-wrap gap-2 mb-4">
-          {project.techStack.map((tech) => (
-            <span
-              key={tech}
-              className={`
-                px-2 py-1 text-xs rounded-full transition-all duration-300 font-medium
-                ${isLightMode
-                  ? 'bg-[var(--theme-color)]/10 text-white border border-[var(--theme-color)]/30 hover:bg-[var(--theme-color)] hover:shadow-lg'
-                  : 'bg-[var(--theme-color)]/20 text-white border border-[var(--theme-color)]/50  hover:bg-[var(--theme-color)] hover:shadow-[0_0_15px_var(--theme-color)]'
-                }
-              `}
-            >
-              {tech}
-            </span>
-          ))}
-        </div>
       </div>
     </Card>
   );

@@ -25,7 +25,7 @@ export const MobileProjectCarousel = ({ projects, isLightMode, textClass }: Mobi
   return (
     <div
       ref={containerRef}
-      className="block lg:hidden relative w-full pt-8"
+      className="block lg:hidden relative w-[100vw] left-1/2 -translate-x-1/2 pt-8"
       style={{ height: `calc(100vh + ${scrollDistance}vh)` }}
     >
       {/* 
@@ -41,7 +41,7 @@ export const MobileProjectCarousel = ({ projects, isLightMode, textClass }: Mobi
           Featured Projects
         </h2>
 
-        <div className="relative w-full max-w-[90%] md:max-w-[400px] h-[580px] pointer-events-auto mt-16">
+        <div className="relative w-[85vw] max-w-[800px] h-[420px] pointer-events-auto mt-16 pb-8">
           {projects.map((project, i) => (
             <MobileCard
               key={project.id}
@@ -76,7 +76,7 @@ const MobileCard = ({ project, index, total, progress, isLightMode, textClass }:
   const calculateY = (rp: number) => {
     if (rp > 0) {
       // Card is BELOW the active card.
-      const PEEK_POSITION = 520;
+      const PEEK_POSITION = 390;
       const STACK_SPACING = 20;
       return PEEK_POSITION * Math.min(rp, 1) + STACK_SPACING * Math.max(0, rp - 1);
     } else {
@@ -114,16 +114,16 @@ const MobileCard = ({ project, index, total, progress, isLightMode, textClass }:
 
   // Calculate exactly where the next card starts overlapping to cleanly clip out this card's background underneath!
   const visibleHeight = useTransform(relativeProgress, (rp) => {
-    if (index === total - 1) return 580; // The last card is never covered
-    
+    if (index === total - 1) return 420; // The last card is never covered
+
     const y1 = calculateY(rp);
     const y2 = calculateY(rp + 1); // where the next card is
     const diff = y2 - y1;
-    
-    return Math.min(580, Math.max(0, diff));
+
+    return Math.min(420, Math.max(0, diff));
   });
 
-  const clipPath = useTransform(visibleHeight, (h) => `inset(0px 0px calc(580px - ${h}px) 0px round 16px)`);
+  const clipPath = useTransform(visibleHeight, (h) => `inset(0px 0px calc(420px - ${h}px) 0px round 16px)`);
 
   return (
     <motion.div
@@ -141,7 +141,7 @@ const MobileCard = ({ project, index, total, progress, isLightMode, textClass }:
         clipPath,
         zIndex: index, // ensures active card sits exactly ON TOP of passed card
       }}
-      className="w-full h-[580px] shadow-2xl rounded-2xl"
+      className="w-full h-[420px] shadow-2xl rounded-2xl"
     >
       <ProjectCard
          project={project}
@@ -149,7 +149,7 @@ const MobileCard = ({ project, index, total, progress, isLightMode, textClass }:
          totalProjects={total}
          isLightMode={isLightMode}
          textClass={textClass}
-         className="h-[580px] w-full flex flex-col"
+         className="h-[420px] w-full flex flex-col"
       />
     </motion.div>
   );
