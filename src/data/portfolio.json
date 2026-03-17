@@ -28,6 +28,27 @@
       "featured": true
     },
     {
+      "id": "taskquest",
+      "title": "TaskQuest",
+      "description": "Turn team tasks into thrilling quests. Admins create tasks on the web dashboard, share bot links with team members, and track progress through an intelligent Telegram bot interface.",
+      "techStack": ["Node.js", "Firebase","MongoDB", "Express", "Telegraf", "GraphQL"],
+      "github": "https://github.com/subhamagarrwal/TaskQuest",
+      "demo": "https://taskquest.onrender.com/",
+      "image": "/photos/TaskQuest.png",
+      "featured": true
+    },
+        {
+      "id": "taskquest",
+      "title": "TaskQuest",
+      "description": "Turn team tasks into thrilling quests. Admins create tasks on the web dashboard, share bot links with team members, and track progress through an intelligent Telegram bot interface.",
+      "techStack": ["Node.js", "Firebase","MongoDB", "Express", "Telegraf", "GraphQL"],
+      "github": "https://github.com/subhamagarrwal/TaskQuest",
+      "demo": "https://taskquest.onrender.com/",
+      "image": "/photos/TaskQuest.png",
+      "featured": true
+    },
+    
+    {
       "id": "fintellect",
       "title": "FinTellect",
       "description": "An intelligent personal finance management platform with AI-powered insights through RAG-based chat interactions, helping beginners understand how stock markets work.",

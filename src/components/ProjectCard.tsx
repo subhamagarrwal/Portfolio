@@ -17,15 +17,17 @@ interface ProjectCardProps {
   totalProjects: number;
   isLightMode: boolean;
   textClass: string;
+  className?: string; // Add className prop for custom sizing like fixed height 
 }
 
-export const ProjectCard = memo(({ project, index, totalProjects, isLightMode, textClass }: ProjectCardProps) => {
+export const ProjectCard = memo(({ project, index, totalProjects, isLightMode, textClass, className = '' }: ProjectCardProps) => {
   const [isOverlayVisible, setIsOverlayVisible] = useState(false);
 
   return (
     <Card
       key={project.id}
       className={`
+        ${className}
         group overflow-hidden transition-all duration-500 ${!isLightMode ? '' : ''}
         ${isLightMode
             ? 'bg-white/25 border-white/40 liquid-glass-card'
