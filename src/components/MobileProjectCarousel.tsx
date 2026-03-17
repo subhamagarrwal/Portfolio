@@ -37,11 +37,11 @@ export const MobileProjectCarousel = ({ projects, isLightMode, textClass }: Mobi
       <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center pointer-events-none">
         
         {/* We place the title inside the sticky section so it stays fixed too, just like the user requested! */}
-        <h2 className={`text-4xl font-bold text-center mb-8 pointer-events-auto transition-colors duration-300 ${!isLightMode ? '' : ''} ${textClass}`}>
+        <h2 className={`text-4xl font-bold text-center mb-2 pointer-events-auto transition-colors duration-300 ${!isLightMode ? '' : ''} ${textClass}`}>
           Featured Projects
         </h2>
 
-        <div className="relative w-full max-w-[90%] md:max-w-[400px] h-[520px] pointer-events-auto">
+        <div className="relative w-full max-w-[90%] md:max-w-[400px] h-[520px] pointer-events-auto mt-16">
           {projects.map((project, i) => (
             <MobileCard
               key={project.id}
@@ -83,8 +83,8 @@ const MobileCard = ({ project, index, total, progress, isLightMode, textClass }:
     } else {
       // Card is PASSED.
       const boundedProgress = Math.max(rp, -3);
-      // Push up by 60px per unit to guarantee the stacks at the top are clearly visible
-      const pushUpFactor = 60;
+      // Small pushUpFactor so they tuck neatly into the margin above without hitting the title
+      const pushUpFactor = 20;
       return boundedProgress * pushUpFactor;
     }
   });
@@ -99,14 +99,7 @@ const MobileCard = ({ project, index, total, progress, isLightMode, textClass }:
     }
   });
 
-  const opacity = useTransform(relativeProgress, (rp) => {
-    if (rp > 0) {
-      return 1;
-    } else {
-      const boundedProgress = Math.max(rp, -3);
-      return Math.max(1 + (boundedProgress * 0.4), 0);
-    }
-  });
+  const opacity = useTransform(relativeProgress, () => 1);
 
   return (
     <motion.div
