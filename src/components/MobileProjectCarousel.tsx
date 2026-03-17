@@ -41,7 +41,7 @@ export const MobileProjectCarousel = ({ projects, isLightMode, textClass }: Mobi
           Featured Projects
         </h2>
 
-        <div className="relative w-full max-w-[90%] md:max-w-[400px] h-[520px] pointer-events-auto mt-16">
+        <div className="relative w-full max-w-[90%] md:max-w-[400px] h-[580px] pointer-events-auto mt-16">
           {projects.map((project, i) => (
             <MobileCard
               key={project.id}
@@ -73,21 +73,21 @@ const MobileCard = ({ project, index, total, progress, isLightMode, textClass }:
   const expandedProgress = useTransform(progress, (p) => p * (total - 1));
   const relativeProgress = useTransform(expandedProgress, (p) => index - p);
 
-  const translateY = useTransform(relativeProgress, (rp) => {
+  const calculateY = (rp: number) => {
     if (rp > 0) {
       // Card is BELOW the active card.
-      // We set height to 520px. Peeking at 460px leaves exactly 60px of spacing for tag visibility!
-      const PEEK_POSITION = 460;
+      const PEEK_POSITION = 520;
       const STACK_SPACING = 20;
       return PEEK_POSITION * Math.min(rp, 1) + STACK_SPACING * Math.max(0, rp - 1);
     } else {
       // Card is PASSED.
       const boundedProgress = Math.max(rp, -3);
-      // Small pushUpFactor so they tuck neatly into the margin above without hitting the title
       const pushUpFactor = 20;
       return boundedProgress * pushUpFactor;
     }
-  });
+  };
+
+  const translateY = useTransform(relativeProgress, calculateY);
 
   const scale = useTransform(relativeProgress, (rp) => {
     if (rp > 0) {
@@ -99,7 +99,31 @@ const MobileCard = ({ project, index, total, progress, isLightMode, textClass }:
     }
   });
 
-  const opacity = useTransform(relativeProgress, () => 1);
+  const opacity = useTransform(relativeProgress, (rp) => {
+    // Keep fully visible for the first few stacked cards, then gently fade out deeply passed ones
+    if (rp >= -1.5) return 1;
+    return Math.max(0, 1 + (rp + 1.5)); 
+  });
+
+  // Dynamically dim the older cards so their backgrounds don't multiply brightness and blind the user!
+  const filter = useTransform(relativeProgress, (rp) => {
+    if (rp >= 0) return "brightness(1)";
+    const dimFactor = Math.max(0.4, 1 + rp * 0.25);
+    return `brightness(${dimFactor})`;
+  });
+
+  // Calculate exactly where the next card starts overlapping to cleanly clip out this card's background underneath!
+  const visibleHeight = useTransform(relativeProgress, (rp) => {
+    if (index === total - 1) return 580; // The last card is never covered
+    
+    const y1 = calculateY(rp);
+    const y2 = calculateY(rp + 1); // where the next card is
+    const diff = y2 - y1;
+    
+    return Math.min(580, Math.max(0, diff));
+  });
+
+  const clipPath = useTransform(visibleHeight, (h) => `inset(0px 0px calc(580px - ${h}px) 0px round 16px)`);
 
   return (
     <motion.div
@@ -113,9 +137,11 @@ const MobileCard = ({ project, index, total, progress, isLightMode, textClass }:
         y: translateY,
         scale,
         opacity,
+        filter,
+        clipPath,
         zIndex: index, // ensures active card sits exactly ON TOP of passed card
       }}
-      className="w-full h-[520px] shadow-2xl rounded-2xl"
+      className="w-full h-[580px] shadow-2xl rounded-2xl"
     >
       <ProjectCard
          project={project}
@@ -123,7 +149,7 @@ const MobileCard = ({ project, index, total, progress, isLightMode, textClass }:
          totalProjects={total}
          isLightMode={isLightMode}
          textClass={textClass}
-         className="h-[520px] w-full flex flex-col"
+         className="h-[580px] w-full flex flex-col"
       />
     </motion.div>
   );
