@@ -42,7 +42,8 @@ export const GlassDock = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [iconSize, setIconSize] = useState(20); // Start with mobile-friendly default
   const [isClient, setIsClient] = useState(false);
-  
+  const dockContainerRef = useRef<HTMLDivElement>(null);
+
   // Client-side mounting detection - no loading states
   useEffect(() => {
     setIsClient(true);
@@ -245,7 +246,32 @@ export const GlassDock = () => {
           />
           
           {/* Dock items container with overflow scrolling */}
-          <div className="glass-dock-scroll relative flex items-center gap-1 justify-center overflow-x-auto overflow-y-hidden max-w-full w-full h-full">
+          <div 
+            className="glass-dock-scroll relative flex items-center gap-1 justify-center overflow-x-auto overflow-y-hidden max-w-full w-full h-full"
+            onTouchMove={(e) => {
+              const touch = e.touches[0];
+              const element = document.elementFromPoint(touch.clientX, touch.clientY);
+              if (element) {
+                const dockItem = element.closest('[data-dock-id]');
+                if (dockItem) {
+                  const id = dockItem.getAttribute('data-dock-id');
+                  if (id) {
+                    setHoveredItem(id);
+                    setHoveredRect(dockItem.getBoundingClientRect());
+                  }
+                } else {
+                  setHoveredItem(null);
+                  setHoveredRect(null);
+                }
+              }
+            }}
+            onTouchEnd={() => {
+              setTimeout(() => {
+                setHoveredItem(null);
+                setHoveredRect(null);
+              }, 500); // give them a moment before it disappears
+            }}
+          >
             {dockItems.map((item, index) => {
               const isHovered = hoveredItem === item.id;
               const isActive = activeSection === item.id;
@@ -254,13 +280,12 @@ export const GlassDock = () => {
               return (
               <div
                 key={item.id}
+                data-dock-id={item.id}
                 className="relative flex-shrink-0"
                 onMouseEnter={(e) => {
-                  // Only show tooltips on non-touch devices
-                  if (isClient && window.matchMedia('(hover: hover)').matches) {
-                    setHoveredItem(item.id);
-                    setHoveredRect(e.currentTarget.getBoundingClientRect());
-                  }
+                  // Show tooltips
+                  setHoveredItem(item.id);
+                  setHoveredRect(e.currentTarget.getBoundingClientRect());
                 }}
                 onMouseLeave={() => {
                   setHoveredItem(null);
@@ -270,10 +295,6 @@ export const GlassDock = () => {
                   // Brief haptic feedback simulation for touch
                   setHoveredItem(item.id);
                   setHoveredRect(e.currentTarget.getBoundingClientRect());
-                  setTimeout(() => {
-                    setHoveredItem(null);
-                    setHoveredRect(null);
-                  }, 1500);
                 }}
               >
                 {/* Tooltip rendered outside to avoid clipping in scrollable dock */}
