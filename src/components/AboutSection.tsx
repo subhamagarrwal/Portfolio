@@ -1,38 +1,37 @@
 import { useTimeTheme } from '@/hooks/useTimeTheme';
 import portfolioData from '@/data/portfolio.json';
-import { VennDiagram } from '@/components/VennDiagram';
 
 export const AboutSection = () => {
   const {
     effectiveTheme,
     getTextClass,
-    getTimeBasedClass
+    getTimeBasedClass,
+    isDayOrAfternoon
   } = useTimeTheme();
 
   const textClass = getTextClass();
   const timeBasedClass = getTimeBasedClass();
+  const isLightMode = isDayOrAfternoon();
 
   return (
-    <section id="about" className={`py-8 sm:py-12 px-6 ${timeBasedClass}`}>
-      <div className="container mx-auto max-w-6xl">
-        <h2 className={`text-3xl sm:text-4xl font-bold text-center mb-8 transition-colors duration-300 ${textClass}`}>
+    <section id="about" className={`py-8 sm:py-12 px-6 ${timeBasedClass} relative z-10`}>
+      <div className="container mx-auto max-w-4xl">
+        <h2 className={`text-3xl sm:text-4xl font-bold text-center mb-8 transition-colors duration-300 ${textClass} ${!isLightMode ? '[text-shadow:_0_4px_8px_rgba(0,0,0,0.8)]' : ''}`}>
           About Me
         </h2>
 
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-6 lg:gap-8 w-full transition-all duration-300">
-          <div className="space-y-6 flex-1">
-            {portfolioData.personal.about.map((paragraph, index) => (
-              <p key={index} className={`text-[15px] leading-relaxed text-justify transition-colors duration-300 ${effectiveTheme === 'sunset' ? 'text-white' : textClass}`}>
-                {paragraph}
-              </p>
-            ))}
-          </div>
-        
-          <div className="flex-1 w-full flex justify-center mt-12 mb-8 lg:my-0">
-            <div className="w-full max-w-[400px] sm:max-w-[460px] lg:max-w-[580px] scale-[1.20] sm:scale-100 origin-center transition-transform duration-300">
-              <VennDiagram />
-            </div>
-          </div>
+        <div className={`space-y-6 p-6 md:p-10 rounded-2xl transition-all duration-500 relative overflow-hidden
+          ${isLightMode 
+            ? '' 
+            : 'bg-black/40 backdrop-blur-lg border border-white/10 shadow-[0_0_40px_rgba(0,0,0,0.5)]'}
+        `}>
+          {portfolioData.personal.about.map((paragraph, index) => (
+            <p key={index} className={`text-[15px] md:text-base leading-relaxed text-center transition-colors duration-300 relative z-10 
+              ${effectiveTheme === 'sunset' ? 'text-white' : textClass} 
+              ${!isLightMode ? 'font-medium [text-shadow:_0_2px_4px_rgba(0,0,0,0.8)] tracking-wide' : ''}`}>
+              {paragraph}
+            </p>
+          ))}
         </div>
       </div>
     </section>

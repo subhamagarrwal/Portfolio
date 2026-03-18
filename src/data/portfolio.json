@@ -20,7 +20,7 @@
     {
       "id": "taskquest",
       "title": "TaskQuest",
-      "description": "Turn team tasks into thrilling quests. Admins create tasks on the web dashboard, share bot links with team members, and track progress through an intelligent Telegram bot interface.",
+      "description": "Admins create tasks on the web dashboard, and the team members can interact and update progress on assigned tasks through an intelligent Telegram bot interface.",
       "techStack": ["Node.js", "Firebase","MongoDB", "Express", "Telegraf", "GraphQL"],
       "github": "https://github.com/subhamagarrwal/TaskQuest",
       "demo": "https://taskquest.onrender.com/",
@@ -31,7 +31,7 @@
     {
       "id": "fintellect",
       "title": "FinTellect",
-      "description": "An intelligent personal finance management platform with AI-powered insights through RAG-based chat interactions, helping beginners understand how stock markets work.",
+      "description": "Users can search for a stock ticker and get clear, natural-language insights about the company's financials alongside correlating performance with news and macroeconomic trends, all powered by AI.",
       "techStack": ["Next.js", "TypeScript", "PostgreSQL", "ChromaDB", "LangChain"],
       "github": "https://github.com/subhamagarrwal/FinTellect",
       "demo": "https://fintellect-app.vercel.app",
@@ -64,7 +64,20 @@
         "Optimized application performance resulting in 30% faster load times",
         "Participated in code reviews and maintained high code quality standards"
       ]
-    }
+    },
+    {
+      "id": "sih",
+      "company": "Smart India Hackathon 2024",
+      "position": "Software Developer Intern",
+      "duration": "Mar 2024 - May 2024",
+      "location": "Remote",
+      "description": "Worked on a government-sponsored project to develop innovative software solutions addressing real-world problems.",
+      "achievements": [
+        "Designed and implemented a scalable software solution for the given problem statement",
+        "Collaborated with a team of developers, designers, and domain experts",
+        "Presented the project to a panel of judges and received positive feedback for innovation and impact"
+      ]
+    }    
   ],
   "education": [
     {
@@ -76,7 +89,8 @@
       "description": "Final year Computer Science student with a focus on problem-solving and software development.",
       "achievements": [
         "Member of IEEE-VIT under technical leadership",
-        "Participated in multiple hackathons and technical symposiums"
+        "Member of my college's debating club, enhancing communication and critical thinking skills",
+        "CGPA: 8.26/10"
       ]
     }
   ],
