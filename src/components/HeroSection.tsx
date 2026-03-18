@@ -49,7 +49,7 @@ export const HeroSection = () => {
     };
     
     fetchSpotify();
-    const interval = setInterval(fetchSpotify, 20000);
+    const interval = setInterval(fetchSpotify, 2000);
     return () => clearInterval(interval);
   }, []);
 
