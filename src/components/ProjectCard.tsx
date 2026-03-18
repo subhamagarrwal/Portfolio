@@ -40,7 +40,7 @@ export const ProjectCard = memo(({ project, index, totalProjects, isLightMode, t
       `}
       style={{ animationDelay: `${index * 0.2}s` }}
     >
-      <div 
+      <div
         className={`
           h-48 bg-gradient-to-br transition-all duration-300 relative overflow-hidden
           ${isLightMode
@@ -48,9 +48,10 @@ export const ProjectCard = memo(({ project, index, totalProjects, isLightMode, t
             : 'from-blue-500/20 to-purple-500/20'
           }
         `}
-        onMouseEnter={() => setIsOverlayVisible(true)}
-        onMouseLeave={() => setIsOverlayVisible(false)}
-        onClick={() => setIsOverlayVisible(!isOverlayVisible)}
+        onPointerEnter={() => setIsOverlayVisible(true)}
+        onPointerLeave={() => setIsOverlayVisible(false)}
+        onPointerDown={() => setIsOverlayVisible(!isOverlayVisible)}
+        onPointerCancel={() => setIsOverlayVisible(false)}
       >
         <div className={`absolute inset-0 bg-black/70 transition-opacity duration-300 flex items-center justify-center gap-4 z-20 ${isOverlayVisible ? 'opacity-100' : 'opacity-0'}`}>
           {project.github ? (
@@ -60,7 +61,7 @@ export const ProjectCard = memo(({ project, index, totalProjects, isLightMode, t
               size="sm"
               className={`
                 transition-all duration-300 pointer-events-auto
-                bg-transparent border-2 border-[var(--theme-color)] text-white hover:bg-[var(--theme-color)] hover:text-white
+                bg-transparent border-2 border-[var(--theme-color)] text-white hover:bg-[var(--theme-color)] hover:text-[var(--btn-text-color)]
                 ${!isLightMode ? 'hover:shadow-[0_0_15px_var(--theme-color)]' : ''}
               `}
               onClick={(e) => e.stopPropagation()}
@@ -88,7 +89,7 @@ export const ProjectCard = memo(({ project, index, totalProjects, isLightMode, t
               size="sm"
               className={`
                 transition-all duration-300 pointer-events-auto
-                bg-[var(--theme-color)] hover:opacity-80 text-white border-2 border-[var(--theme-color)]
+                bg-[var(--theme-color)] hover:opacity-80 text-[var(--btn-text-color)] border-2 border-[var(--theme-color)]
                 ${!isLightMode ? 'shadow-[0_0_10px_var(--theme-color)]' : ''}
               `}
             >
@@ -143,7 +144,7 @@ export const ProjectCard = memo(({ project, index, totalProjects, isLightMode, t
             {project.title}
           </h3>
           <div className="flex gap-3 items-center">
-            <a href={project.demo || project.github || '#'} target="_blank" rel="noopener noreferrer" className={`text-xs font-medium transition-colors hover:text-[var(--theme-color)] pointer-events-auto ${textClass} underline underline-offset-4 decoration-[var(--theme-color)] whitespace-nowrap`}>
+            <a href={project.demo || project.github || '#'} target="_blank" rel="noopener noreferrer" className={`text-xs font-medium transition-colors hover:text-[var(--theme-color)] pointer-events-auto ${textClass} relative after:absolute after:bottom-[-4px] after:left-0 after:h-[2px] after:w-full after:origin-left after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300 after:bg-[var(--theme-color)] whitespace-nowrap`}>
               Read more
             </a>
             {project.github && (

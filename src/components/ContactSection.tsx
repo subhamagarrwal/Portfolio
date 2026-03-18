@@ -34,11 +34,11 @@ export const ContactSection = () => {
   const getThemePrimaryColor = () => {
     switch (effectiveTheme) {
       case 'dawn':
-      case 'preDawn': return palettes.preDawn.bottom;
+      case 'preDawn': return '#a78bfa';
       case 'sunrise': return palettes.sunrise.bottom;
       case 'morning':
       case 'bright_day':
-      case 'day': return palettes.morning.top;
+      case 'day': return '#1d4ed8';
       case 'noon':
       case 'warm_day': return palettes.noon.top;
       case 'afternoon': return palettes.afternoon.top;

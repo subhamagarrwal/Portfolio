@@ -282,20 +282,22 @@ export const GlassDock = () => {
                 key={item.id}
                 data-dock-id={item.id}
                 className="relative flex-shrink-0"
-                onMouseEnter={(e) => {
+                onPointerEnter={(e) => {
                   // Show tooltips
                   setHoveredItem(item.id);
                   setHoveredRect(e.currentTarget.getBoundingClientRect());
                 }}
-                onMouseLeave={() => {
+                onPointerLeave={() => {
                   setHoveredItem(null);
                   setHoveredRect(null);
                 }}
-                onTouchStart={(e) => {
+                onPointerDown={(e) => {
                   // Brief haptic feedback simulation for touch
                   setHoveredItem(item.id);
                   setHoveredRect(e.currentTarget.getBoundingClientRect());
                 }}
+                onPointerUp={() => setHoveredItem(null)}
+                onPointerCancel={() => setHoveredItem(null)}
               >
                 {/* Tooltip rendered outside to avoid clipping in scrollable dock */}
                 

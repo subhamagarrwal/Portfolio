@@ -59,46 +59,32 @@ export const useTimeDialDrag = (
     window.dispatchEvent(new CustomEvent('manualTimeChange', { detail: hours }));
   };
 
-  const onMouseMove = (e: MouseEvent) => {
+  const onPointerMove = (e: PointerEvent) => {
     if (isDraggingRef.current) handleDrag(e.clientX, e.clientY);
   };
 
-  const onTouchMove = (e: TouchEvent) => {
-    if (isDraggingRef.current && e.touches.length > 0) {
-      e.preventDefault(); 
-      handleDrag(e.touches[0].clientX, e.touches[0].clientY);
-    }
-  };
-
   useEffect(() => {
-    const onMouseUp = () => setDragging(false);
-    const onTouchEnd = () => setDragging(false);
+    const onPointerUp = () => setDragging(false);
 
     if (isDragging) {
-      document.addEventListener('mousemove', onMouseMove);
-      document.addEventListener('mouseup', onMouseUp);
-      document.addEventListener('touchmove', onTouchMove, { passive: false });
-      document.addEventListener('touchend', onTouchEnd);
+      document.addEventListener('pointermove', onPointerMove);
+      document.addEventListener('pointerup', onPointerUp);
+      document.addEventListener('pointercancel', onPointerUp);
     }
 
     return () => {
-      document.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('mouseup', onMouseUp);
-      document.removeEventListener('touchmove', onTouchMove);
-      document.removeEventListener('touchend', onTouchEnd);
+      document.removeEventListener('pointermove', onPointerMove);
+      document.removeEventListener('pointerup', onPointerUp);
+      document.removeEventListener('pointercancel', onPointerUp);
     };
   }, [isDragging]);
 
-  const onMouseDown = (e: React.MouseEvent) => {
+  const onPointerDown = (e: React.PointerEvent) => {
     e.preventDefault();
+    e.currentTarget.setPointerCapture(e.pointerId);
     setDragging(true);
     handleDrag(e.clientX, e.clientY);
   };
 
-  const onTouchStart = (e: React.TouchEvent) => {
-    setDragging(true);
-    handleDrag(e.touches[0].clientX, e.touches[0].clientY);
-  };
-
-  return { timeState, onMouseDown, onTouchStart };
+  return { timeState, onPointerDown };
 };

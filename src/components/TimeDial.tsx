@@ -12,7 +12,7 @@ export const TimeDial: React.FC<TimeDialProps> = ({ onClose, isDarkModeOverride 
   const { currentHour } = useTimeTheme();
   const dialRef = useRef<HTMLDivElement>(null);
   
-  const { timeState, onMouseDown, onTouchStart } = useTimeDialDrag(dialRef, currentHour);
+  const { timeState, onPointerDown } = useTimeDialDrag(dialRef, currentHour);
 
   const degrees = ((timeState.hours + 12) % 24) / 24 * 360;
 
@@ -23,7 +23,7 @@ export const TimeDial: React.FC<TimeDialProps> = ({ onClose, isDarkModeOverride 
     mins = 0;
   }
   if (hrs >= 24) hrs = 0;
-  
+
   const displayHrs = hrs === 0 ? 12 : (hrs > 12 ? hrs - 12 : hrs);
   const displayMins = mins.toString().padStart(2, '0');
   const ampm = hrs >= 12 && hrs < 24 ? 'PM' : 'AM';
@@ -31,8 +31,8 @@ export const TimeDial: React.FC<TimeDialProps> = ({ onClose, isDarkModeOverride 
   return (
     <div className="glass-dock-container flex flex-col items-center">
       <div className="time-dial-controls" ref={dialRef}
-           onMouseDown={onMouseDown}
-           onTouchStart={onTouchStart}>
+           style={{ touchAction: 'none' }}
+           onPointerDown={onPointerDown}>
         <div className="time-dial-ring">
             <div className="time-dial-knob-wrapper" style={{ transform: `rotate(${degrees}deg)` }}>
                 <div className="time-dial-knob"></div>

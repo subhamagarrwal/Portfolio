@@ -4,6 +4,7 @@ import { VennDiagram } from '@/components/VennDiagram';
 
 export const AboutSection = () => {
   const {
+    effectiveTheme,
     getTextClass,
     getTimeBasedClass
   } = useTimeTheme();
@@ -21,7 +22,7 @@ export const AboutSection = () => {
         <div className="flex flex-col lg:flex-row items-center justify-between gap-6 lg:gap-8 w-full transition-all duration-300">
           <div className="space-y-6 flex-1">
             {portfolioData.personal.about.map((paragraph, index) => (
-              <p key={index} className={`text-[15px] leading-relaxed text-justify transition-colors duration-300 ${textClass}`}>
+              <p key={index} className={`text-[15px] leading-relaxed text-justify transition-colors duration-300 ${effectiveTheme === 'sunset' ? 'text-white' : textClass}`}>
                 {paragraph}
               </p>
             ))}

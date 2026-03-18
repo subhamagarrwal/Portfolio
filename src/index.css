@@ -541,3 +541,17 @@ main, footer, .glass-dock-scroll {
     overflow-x: clip;
   }
 }
+
+/* Overrides for text color in specific interactive elements (Tabs/Buttons) inside forced color modes */
+[data-state='active'].btn-text-override,
+.btn-text-override[data-state='active'] {
+  color: var(--btn-text-color, #000) !important;
+  -webkit-text-fill-color: var(--btn-text-color, #000) !important;
+}
+.text-dark-mode.btn-text-override[data-state='active'],
+.text-light-mode.btn-text-override[data-state='active'],
+.text-regular.btn-text-override[data-state='active'] {
+  color: var(--btn-text-color, #000) !important;
+  -webkit-text-fill-color: var(--btn-text-color, #000) !important;
+}
+

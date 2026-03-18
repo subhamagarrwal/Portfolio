@@ -47,11 +47,11 @@ export const HeroSection = () => {
   const getThemePrimaryColor = () => {
     switch (effectiveTheme) {
       case 'dawn':
-      case 'preDawn': return palettes.preDawn.bottom; // #3a2845
+      case 'preDawn': return '#a78bfa'; // #3a2845
       case 'sunrise': return palettes.sunrise.bottom; // #e07b53
       case 'morning':
       case 'bright_day':
-      case 'day': return palettes.morning.top; // #4f83c4
+      case 'day': return '#1d4ed8'; // #4f83c4
       case 'noon':
       case 'warm_day': return palettes.noon.top; // #2074d4
       case 'afternoon': return palettes.afternoon.top; // #3876be
@@ -59,7 +59,7 @@ export const HeroSection = () => {
       case 'dusk':
       case 'twilight': return palettes.dusk.bottom; // #6e2030
       case 'night':
-      default: return '#7c3aed'; // Violet fallback
+      default: return '#ffffff'; // White fallback
     }
   };
 
@@ -108,14 +108,19 @@ export const HeroSection = () => {
         <FadeIn delay={0.4}>
           <div 
             className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12"
-            style={{ '--theme-color': primaryColor } as React.CSSProperties}
+            style={{ 
+              '--theme-color': primaryColor,
+              '--btn-text-color': primaryColor === '#ffffff' ? '#000000' : '#ffffff'
+            } as React.CSSProperties}
           >
             <Button
               onClick={() => scrollToSection('projects')}
               className={`
-                px-8 py-3 rounded-full font-semibold transition-all duration-300 
-                bg-[var(--theme-color)] hover:opacity-80 text-white border-2 border-[var(--theme-color)]
-                ${!isLightMode ? 'shadow-[0_0_10px_var(--theme-color)]' : ''}
+                px-8 py-3 rounded-full font-semibold transition-all duration-300
+                ${primaryColor === '#ffffff'
+                  ? 'bg-transparent text-white border-2 border-white hover:bg-white hover:text-black shadow-[0_0_10px_rgba(255,255,255,0.5)] shadow-white/30'
+                  : `bg-[var(--theme-color)] hover:opacity-80 text-[var(--btn-text-color)] border-2 border-[var(--theme-color)] ${!isLightMode ? 'shadow-[0_0_10px_var(--theme-color)]' : ''}`
+                }
               `}
             >
               View My Work
@@ -124,8 +129,10 @@ export const HeroSection = () => {
               onClick={downloadResume}
               className={`
                 px-8 py-3 rounded-full font-semibold transition-all duration-300 flex items-center gap-2
-                bg-transparent border-2 border-[var(--theme-color)] text-white hover:bg-[var(--theme-color)] hover:text-white
-                ${!isLightMode ? 'hover:shadow-[0_0_15px_var(--theme-color)]' : ''}
+                ${primaryColor === '#ffffff'
+                  ? 'bg-transparent border-2 border-white text-white hover:bg-white hover:text-black hover:shadow-[0_0_15px_rgba(255,255,255,0.5)]'
+                  : `bg-transparent border-2 border-[var(--theme-color)] text-white hover:bg-[var(--theme-color)] hover:text-[var(--btn-text-color)] ${!isLightMode ? 'hover:shadow-[0_0_15px_var(--theme-color)]' : ''}`
+                }
               `}
             >
               <Download className="w-4 h-4" />
