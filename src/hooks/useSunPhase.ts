@@ -1,5 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
-import SunCalc from 'suncalc';
+import { useMemo } from 'react';
 import { palettes, Palette } from '@/constants/palettes';
 
 export interface Keyframe {
@@ -10,42 +9,12 @@ export interface Keyframe {
 }
 
 export const useSunPhase = (currentHour: number | null, latitude: number | null, longitude: number | null) => {
-  const [times, setTimes] = useState({ sunriseTime: 6.0, sunsetTime: 18.25 });
-
-  useEffect(() => {
-    if (latitude !== null && longitude !== null) {
-      let calcDate = new Date();
-      if (currentHour !== null) {
-        calcDate.setHours(Math.floor(currentHour), Math.round((currentHour % 1) * 60), 0, 0);
-      }
-
-      const scTimes = SunCalc.getTimes(calcDate, latitude, longitude);
-      const sRise = scTimes.sunrise;
-      const sSet = scTimes.sunsetStart;
-
-      let rTime = 6.0;
-      let sTime = 18.25;
-
-      if (sRise && !isNaN(sRise.getTime())) {
-          rTime = sRise.getHours() + (sRise.getMinutes() / 60);
-      }
-      if (sSet && !isNaN(sSet.getTime())) {
-          sTime = sSet.getHours() + (sSet.getMinutes() / 60);
-      }
-
-      setTimes({
-        sunriseTime: rTime,
-        sunsetTime: sTime
-      });
-    }
-  }, [latitude, longitude, currentHour]);
+  const times = { sunriseTime: 6.0, sunsetTime: 18.25 };
 
   const keyframes = useMemo<Keyframe[]>(() => {
     const { sunriseTime, sunsetTime } = times;
     const daylight = sunsetTime - sunriseTime;
 
-    // Ensure the keyframes cover realistic daylight periods
-    // Morning stretches longer, Afternoon lasts till golden hour (sunset - 1.0)
     const frames: Keyframe[] = [
       { time: 0,                                   name: "Deep Night",     colors: palettes.night,     stars: 1 },
       { time: sunriseTime - 1.0,                   name: "Pre-Dawn",       colors: palettes.preDawn,   stars: 0.8 },
@@ -59,9 +28,9 @@ export const useSunPhase = (currentHour: number | null, latitude: number | null,
       { time: sunsetTime + 1.5,                    name: "Deep Night",     colors: palettes.night,     stars: 1 },
       { time: 24,                                  name: "Deep Night",     colors: palettes.night,     stars: 1 }
     ];
-    
+
     return frames;
-  }, [times]);
+  }, []);
 
   return { keyframes, times };
 };

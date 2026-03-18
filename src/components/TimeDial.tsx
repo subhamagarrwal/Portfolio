@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import './DynamicBackground.css';
 import { useTimeTheme } from '@/hooks/useTimeTheme';
+import { useSunPhase } from '@/hooks/useSunPhase';
 import { useTimeDialDrag } from '@/hooks/useTimeDialDrag';
 
 interface TimeDialProps {
@@ -10,11 +11,20 @@ interface TimeDialProps {
 
 export const TimeDial: React.FC<TimeDialProps> = ({ onClose, isDarkModeOverride }) => {
   const { currentHour } = useTimeTheme();
+  const { keyframes } = useSunPhase(currentHour, null, null);
   const dialRef = useRef<HTMLDivElement>(null);
   
   const { timeState, onPointerDown } = useTimeDialDrag(dialRef, currentHour);
 
   const degrees = ((timeState.hours + 12) % 24) / 24 * 360;
+
+  let phaseName = 'Syncing...';
+  for (let i = 0; i < keyframes.length - 1; i++) {
+    if (timeState.hours >= keyframes[i].time && timeState.hours <= keyframes[i+1].time) {
+      phaseName = keyframes[i].name;
+      break;
+    }
+  }
 
   let hrs = Math.floor(timeState.hours);
   let mins = Math.round((timeState.hours - hrs) * 60);
@@ -40,7 +50,7 @@ export const TimeDial: React.FC<TimeDialProps> = ({ onClose, isDarkModeOverride 
         </div>
         <div className="time-clock-display">
             <div className="time-clock-time">{`${displayHrs}:${displayMins} ${ampm}`}</div>
-            <div className="time-clock-period">{timeState.name}</div>
+            <div className="time-clock-period">{phaseName}</div>
         </div>
       </div>
       <button
@@ -57,3 +67,4 @@ export const TimeDial: React.FC<TimeDialProps> = ({ onClose, isDarkModeOverride 
     </div>
   );
 };
+
