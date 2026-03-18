@@ -9,9 +9,9 @@
     "spotify": "https://open.spotify.com/user/syfg3okbqewd4hooz7nhbjz6y?si=01c5ea0d664e4f9a",
     "resume": "https://drive.google.com/file/d/1UUhanEkOicXr9qcF9t0ar-28-U-n9ngQ/view?usp=sharing",
     "about": [
-     "I am a full-stack developer who enjoys building things from the ground up. I like understanding how systems actually work — from the logic behind the backend to the way an interface feels when someone interacts with it.",
+     "Currently in my final year of Computer Science at Vellore Institute of Technology, I enjoy understanding how systems actually works- from backend logic to frontend interactions.",
 
-"Most of what I build sits at the intersection of web systems, data, and AI. I’m drawn to problems where there’s a lot of information but very little clarity, and the challenge is turning that complexity into something simple and intuitive.",
+"My prior internship experiences gave me oppertunity to work on real-world projects and collaborate with cross-functional teams, which helped me grow as a developer and a team player.",
 
 "Right now I’m working on FinTellect, a project that lets users search a stock ticker and understand what’s happening with the company through clear natural-language insights instead of raw financial data."
     ]
@@ -81,9 +81,9 @@
     }
   ],
   "skills": {
-    "languages": ["JavaScript", "TypeScript", "Python", "Java", "C++", "HTML/CSS"],
-    "frameworks": ["React", "Next.js", "Node.js", "Express", "Tailwind CSS", "Vue.js","Bootstrap"],
-    "tools": ["Git", "Docker", "AWS", "MongoDB", "PostgreSQL", "ChromaDB", "Firebase", "Figma"]
+    "languages": ["JavaScript", "TypeScript", "Python", "Java", "C++"],
+    "frameworks": ["React", "Next.js", "Node.js", "Express", "Tailwind CSS","Bootstrap"],
+    "tools": ["Git", "Docker", "n8n", "MongoDB", "PostgreSQL", "ChromaDB", "Firebase", "Figma","Supabase"]
   },
   "extracurriculars": [
     {
