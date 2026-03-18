@@ -270,6 +270,10 @@ html.lenis, html.lenis body {
     -webkit-backdrop-filter: blur(20px) saturate(180%);
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    /* Forcing a new stacking context helps prevent backdrop-blur glitches on scroll over complex backgrounds */
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    isolation: isolate;
 }
 
 .liquid-glass-button {
@@ -555,3 +559,10 @@ main, footer, .glass-dock-scroll {
   -webkit-text-fill-color: var(--btn-text-color, #000) !important;
 }
 
+
+/* Fix for backdrop-blur scroll glitches */
+[class*="backdrop-blur"] {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  isolation: isolate;
+}

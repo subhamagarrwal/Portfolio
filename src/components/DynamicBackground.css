@@ -30,6 +30,9 @@
   transition: background 0.1s linear;
   z-index: 0;
   pointer-events: none;
+  /* Separate stacking context for the background itself to solve backdrop-blur glitches on foreground */
+  transform: translateZ(0);
+  will-change: transform;
 }
 
 .scene-stars {
