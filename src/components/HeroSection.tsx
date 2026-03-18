@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Github, Linkedin, Mail, Download, MapPin } from 'lucide-react';
 import { FadeIn } from '@/components/ui/FadeIn';
 import { Card } from '@/components/ui/card';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import portfolioData from '@/data/portfolio.json';
 import { palettes } from '@/constants/palettes';
 
@@ -34,15 +35,25 @@ export const HeroSection = () => {
   const timeBasedClass = getTimeBasedClass();
   const { personal } = portfolioData;
 
-  // Mock state for music playing detection
-  // In a real scenario, this could be tied to the Spotify API, Lanyard API, or a Web Audio API listener
-  const [isMusicPlaying, setIsMusicPlaying] = useState(false);
+  const [spotifyData, setSpotifyData] = useState<{ isPlaying: boolean; title?: string; artist?: string; albumImageUrl?: string; songUrl?: string } | null>(null);
 
   useEffect(() => {
-    // For demonstration, simulating music playing detection after 3 seconds
-    const timer = setTimeout(() => setIsMusicPlaying(true), 3000);
-    return () => clearTimeout(timer);
+    const fetchSpotify = async () => {
+      try {
+        const res = await fetch('/api/spotify/now-playing');
+        const data = await res.json();
+        setSpotifyData(data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    
+    fetchSpotify();
+    const interval = setInterval(fetchSpotify, 20000);
+    return () => clearInterval(interval);
   }, []);
+
+  const isMusicPlaying = spotifyData?.isPlaying;
 
   const getThemePrimaryColor = () => {
     switch (effectiveTheme) {
@@ -176,18 +187,39 @@ export const HeroSection = () => {
             >
               <Mail className="w-6 h-6" />
             </a>
-            {personal.spotify && (
+            {personal.spotify && isMusicPlaying ? (
+              <Popover>
+                <PopoverTrigger asChild>
+                  <button className={`group p-3 rounded-full transition-all duration-300 text-[var(--theme-color)] hover:opacity-80`}>
+                    <div className="animate-[spin_4s_linear_infinite]">
+                      <SpotifyIcon className="w-6 h-6" />
+                    </div>
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent className="w-64 p-0 border-white/10 bg-[#121212]/90 backdrop-blur-xl rounded-2xl overflow-hidden shadow-2xl mb-4 border" sideOffset={12}>
+                  <a href={spotifyData.songUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 p-3 hover:bg-white/5 transition-colors">
+                    {spotifyData?.albumImageUrl && (
+                      <img src={spotifyData.albumImageUrl} alt={spotifyData?.album} className="w-14 h-14 rounded-md object-cover shadow-sm" />
+                    )}
+                    <div className="flex flex-col flex-1 min-w-0">
+                      <p className="text-sm font-bold text-white truncate">{spotifyData?.title}</p>
+                      <p className="text-xs text-gray-400 truncate">{spotifyData?.artist}</p>
+                    </div>
+                  </a>
+                </PopoverContent>
+              </Popover>
+            ) : personal.spotify ? (
               <a
                 href={personal.spotify}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={`group p-3 rounded-full transition-all duration-300 text-[var(--theme-color)] hover:opacity-80`}
               >
-                <div className={`${isMusicPlaying ? 'animate-[spin_4s_linear_infinite]' : ''}`}>
+                <div>
                   <SpotifyIcon className="w-6 h-6" />
                 </div>
               </a>
-            )}
+            ) : null}
           </div>
         </FadeIn>
       </div>
