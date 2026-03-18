@@ -26,7 +26,15 @@ export const useTimeDialDrag = (
 
   const onPointerDown = (e: React.PointerEvent) => {
     setDragging(true);
-    e.target.setPointerCapture(e.pointerId);
+    if (dialRef.current) {
+      try {
+        dialRef.current.setPointerCapture(e.pointerId);
+      } catch (err) {}
+    } else {
+      try {
+        (e.target as Element).setPointerCapture(e.pointerId);
+      } catch (err) {}
+    }
     handleDrag(e.clientX, e.clientY);
   };
 
@@ -37,7 +45,8 @@ export const useTimeDialDrag = (
     const cx = rect.left + rect.width / 2;
     const cy = rect.top + rect.height / 2;
     
-    const angle = Math.atan2(clientY - cy, clientX - cx);
+    let angle = Math.atan2(clientY - cy, clientX - cx) + Math.PI / 2;
+    if (angle < 0) angle += 2 * Math.PI;
     let hours = ((angle / (2 * Math.PI)) * 24 + 12) % 24;
     
     setTimeState({ hours });
@@ -54,7 +63,9 @@ export const useTimeDialDrag = (
     const onPointerUp = (e: PointerEvent) => {
       if (isDraggingRef.current) {
         setDragging(false);
-        if (e.target instanceof Element) {
+        if (dialRef.current) {
+          try { dialRef.current.releasePointerCapture(e.pointerId); } catch(err) {}
+        } else if (e.target instanceof Element) {
           try { e.target.releasePointerCapture(e.pointerId); } catch(err) {}
         }
       }

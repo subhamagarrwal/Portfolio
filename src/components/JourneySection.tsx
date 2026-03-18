@@ -69,12 +69,12 @@ export const JourneySection = () => {
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="education" className="mt-8">
-            <div className={`w-[85vw] max-w-[800px] lg:w-full mx-auto p-4 md:p-10 rounded-[2.5rem] backdrop-blur-md border shadow-2xl transition-all duration-500
-              ${isLightMode ? 'bg-white/30 border-white/40' : 'bg-black/20 border-white/10'}
+          <TabsContent value="education" className="mt-8 relative z-10">
+            <div className={`w-[85vw] max-w-[800px] lg:w-full mx-auto p-4 md:p-8 rounded-xl backdrop-blur-md shadow-sm transition-all duration-500 border overflow-hidden
+              ${isLightMode ? 'bg-white/25 border-white/40 liquid-glass-card' : 'bg-white/15 border-white/25 liquid-glass-card'}
               ${!isLightMode ? 'synthwave-glow' : ''}
             `}>
-              <div className="flex flex-col">
+              <div className="flex flex-col relative z-20">
                 {education.map((edu, index) => (
                   <div key={edu.id} className={`relative pb-8 mb-8 border-b ${isLightMode ? 'border-black/10' : 'border-white/10'} last:border-0 last:pb-0 last:mb-0`} style={{ animationDelay: `${index * 0.1}s` }}>
                     <div className="mb-4">
@@ -116,12 +116,12 @@ export const JourneySection = () => {
             </div>
           </TabsContent>
 
-          <TabsContent value="experience" className="mt-8">
-            <div className={`w-[85vw] max-w-[800px] lg:w-full mx-auto p-4 md:p-10 rounded-[2.5rem] backdrop-blur-md border shadow-2xl transition-all duration-500
-              ${isLightMode ? 'bg-white/30 border-white/40' : 'bg-black/20 border-white/10'}
+          <TabsContent value="experience" className="mt-8 relative z-10">
+            <div className={`w-[85vw] max-w-[800px] lg:w-full mx-auto p-4 md:p-8 rounded-xl backdrop-blur-md shadow-sm transition-all duration-500 border overflow-hidden
+              ${isLightMode ? 'bg-white/25 border-white/40 liquid-glass-card' : 'bg-white/15 border-white/25 liquid-glass-card'}
               ${!isLightMode ? 'synthwave-glow' : ''}
             `}>
-              <div className="flex flex-col">
+              <div className="flex flex-col relative z-20">
                 {experience.map((exp, index) => (
                   <div key={exp.id} className={`relative pb-8 mb-8 border-b ${isLightMode ? 'border-black/10' : 'border-white/10'} last:border-0 last:pb-0 last:mb-0`} style={{ animationDelay: `${index * 0.1}s` }}>
                     <div className="mb-4">
@@ -161,12 +161,12 @@ export const JourneySection = () => {
             </div>
           </TabsContent>
 
-          <TabsContent value="volunteering" className="mt-8">
-            <div className={`w-[85vw] max-w-[800px] lg:w-full mx-auto p-4 md:p-10 rounded-[2.5rem] backdrop-blur-md border shadow-2xl transition-all duration-500
-              ${isLightMode ? 'bg-white/30 border-white/40' : 'bg-black/20 border-white/10'}
+          <TabsContent value="volunteering" className="mt-8 relative z-10">
+            <div className={`w-[85vw] max-w-[800px] lg:w-full mx-auto p-4 md:p-8 rounded-xl backdrop-blur-md shadow-sm transition-all duration-500 border overflow-hidden
+              ${isLightMode ? 'bg-white/25 border-white/40 liquid-glass-card' : 'bg-white/15 border-white/25 liquid-glass-card'}
               ${!isLightMode ? 'synthwave-glow' : ''}
             `}>
-              <div className="flex flex-col">
+              <div className="flex flex-col relative z-20">
                 {extracurriculars.map((activity, index) => (
                   <div key={activity.id} className={`relative pb-8 mb-8 border-b ${isLightMode ? 'border-black/10' : 'border-white/10'} last:border-0 last:pb-0 last:mb-0`} style={{ animationDelay: `${index * 0.1}s` }}>
                     <div className="mb-4">

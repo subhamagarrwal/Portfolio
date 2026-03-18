@@ -96,8 +96,8 @@ export const SkillsSection = () => {
   ], [skills]);
 
   return (
-    <section id="skills" className={`py-20 px-6 ${timeBasedClass}`}>
-      <div 
+    <section id="skills" className={`pt-12 pb-6 md:py-20 px-6 ${timeBasedClass}`}>
+      <div
         className="container mx-auto max-w-4xl"
         style={{ 
           '--theme-color': primaryColor,

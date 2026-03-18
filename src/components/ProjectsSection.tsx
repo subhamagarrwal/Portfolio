@@ -84,8 +84,8 @@ export const ProjectsSection = () => {
   }, [effectiveTheme]);
 
   return (
-    <section id="projects" className={`py-20 px-6 ${!isLightMode ? timeBasedClass : ''}`}>
-      <div 
+    <section id="projects" className={`pt-6 pb-12 md:py-20 px-6 ${!isLightMode ? timeBasedClass : ''}`}>
+      <div
         className="container mx-auto max-w-6xl"
         style={{ 
           '--theme-color': primaryColor,
