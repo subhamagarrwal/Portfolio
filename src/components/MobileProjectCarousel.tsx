@@ -1,9 +1,19 @@
-import { useRef } from 'react';
+import React, { useRef } from 'react';
 import { motion, useScroll, useTransform, MotionValue } from 'framer-motion';
 import { ProjectCard } from './ProjectCard';
 
+export interface ProjectDataType {
+  id: string;
+  title: string;
+  description: string;
+  image: string;
+  techStack: string[];
+  github?: string;
+  demo?: string;
+}
+
 interface MobileProjectCarouselProps {
-  projects: any[];
+  projects: ProjectDataType[];
   isLightMode: boolean;
   textClass: string;
 }
@@ -13,7 +23,7 @@ export const MobileProjectCarousel = ({ projects, isLightMode, textClass }: Mobi
   const numCards = projects.length;
 
   // Each card transitions over 100vh of scroll depth, so it feels natural and un-rushed
-  const scrollDistance = (numCards - 1) * 100;
+  const scrollDistance = React.useMemo(() => (numCards - 1) * 100, [numCards]);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -61,7 +71,7 @@ export const MobileProjectCarousel = ({ projects, isLightMode, textClass }: Mobi
 };
 
 interface MobileCardProps {
-  project: any;
+  project: ProjectDataType;
   index: number;
   total: number;
   progress: MotionValue<number>;
@@ -73,7 +83,9 @@ const MobileCard = ({ project, index, total, progress, isLightMode, textClass }:
   const expandedProgress = useTransform(progress, (p) => p * (total - 1));
   const relativeProgress = useTransform(expandedProgress, (p) => index - p);
 
-  const calculateY = (rp: number) => {
+  // useMemo / useCallback is perfect here to stop garbage collection thrashing 
+  // on every single scroll frame tick in mobile!
+  const calculateY = React.useCallback((rp: number) => {
     if (rp > 0) {
       // Card is BELOW the active card.
       const PEEK_POSITION = 390;
@@ -85,7 +97,7 @@ const MobileCard = ({ project, index, total, progress, isLightMode, textClass }:
       const pushUpFactor = 20;
       return boundedProgress * pushUpFactor;
     }
-  };
+  }, []);
 
   const translateY = useTransform(relativeProgress, calculateY);
 
@@ -100,30 +112,11 @@ const MobileCard = ({ project, index, total, progress, isLightMode, textClass }:
   });
 
   const opacity = useTransform(relativeProgress, (rp) => {
-    // Keep fully visible for the first few stacked cards, then gently fade out deeply passed ones
-    if (rp >= -1.5) return 1;
-    return Math.max(0, 1 + (rp + 1.5)); 
+    // Keep fully visible for the active card.
+    // Gently fade out deeply passed ones to avoid massive stacking calculations
+    if (rp >= -0.5) return 1;
+    return Math.max(0, 1 + (rp + 0.5) * 2); // fades to 0 as it hits -1.0
   });
-
-  // Dynamically dim the older cards so their backgrounds don't multiply brightness and blind the user!
-  const filter = useTransform(relativeProgress, (rp) => {
-    if (rp >= 0) return "brightness(1)";
-    const dimFactor = Math.max(0.4, 1 + rp * 0.25);
-    return `brightness(${dimFactor})`;
-  });
-
-  // Calculate exactly where the next card starts overlapping to cleanly clip out this card's background underneath!
-  const visibleHeight = useTransform(relativeProgress, (rp) => {
-    if (index === total - 1) return 420; // The last card is never covered
-
-    const y1 = calculateY(rp);
-    const y2 = calculateY(rp + 1); // where the next card is
-    const diff = y2 - y1;
-
-    return Math.min(420, Math.max(0, diff));
-  });
-
-  const clipPath = useTransform(visibleHeight, (h) => `inset(0px 0px calc(420px - ${h}px) 0px round 16px)`);
 
   return (
     <motion.div
@@ -137,9 +130,9 @@ const MobileCard = ({ project, index, total, progress, isLightMode, textClass }:
         y: translateY,
         scale,
         opacity,
-        filter,
-        clipPath,
         zIndex: index, // ensures active card sits exactly ON TOP of passed card
+        willChange: 'transform, opacity',
+        transform: 'translateZ(0)',
       }}
       className="w-full h-[420px] shadow-2xl rounded-2xl"
     >

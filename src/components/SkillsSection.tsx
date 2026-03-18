@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useTimeTheme } from '@/hooks/useTimeTheme';
 import { Card } from '@/components/ui/card';
 import portfolioData from '@/data/portfolio.json';
@@ -70,7 +70,7 @@ export const SkillsSection = () => {
   const isLightMode = isDayOrAfternoon();
   const timeBasedClass = getTimeBasedClass();
 
-  const getThemePrimaryColor = () => {
+  const primaryColor = useMemo(() => {
     switch (effectiveTheme) {
       case 'dawn':
       case 'preDawn': return '#a78bfa';
@@ -87,15 +87,13 @@ export const SkillsSection = () => {
       case 'night':
       default: return '#ffffff';
     }
-  };
+  }, [effectiveTheme]);
 
-  const primaryColor = getThemePrimaryColor();
-
-  const skillCategories = [
+  const skillCategories = useMemo(() => [
     { title: 'Languages', skills: skills.languages },
     { title: 'Frameworks', skills: skills.frameworks },
     { title: 'Tools & Technologies', skills: skills.tools },
-  ];
+  ], [skills]);
 
   return (
     <section id="skills" className={`py-20 px-6 ${timeBasedClass}`}>
@@ -119,9 +117,9 @@ export const SkillsSection = () => {
                 </h3>
               </div>
 
-              <div 
+              <div
                 className="flex flex-wrap gap-3 group/skill-list"
-                style={{ touchAction: 'none' }} // Prevents mobile from scrolling when dragging across the pill lists
+                style={{ touchAction: 'pan-y' }} // Allows mobile to scroll vertically while dragging horizontally
               >
                 {category.skills.map((skill) => {
                   const isHighlighted = dragCategory === category.title && draggedSkills.has(skill);
@@ -132,7 +130,6 @@ export const SkillsSection = () => {
                       data-skill={skill}
                       data-category={category.title}
                       onPointerDown={(e) => {
-                        e.preventDefault(); // Prevents selection
                         handlePointerDown(category.title, skill);
                       }}
                       className={`liquid-glass-card px-4 py-2 rounded-full !text-black text-sm font-medium transition-all duration-300 select-none ${

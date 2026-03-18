@@ -1,4 +1,4 @@
-﻿import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
 import SunCalc from 'suncalc';
 
 import { useGeolocation } from '@/hooks/useGeolocation';
@@ -37,10 +37,15 @@ interface TimeThemeProviderProps {
 }
 
 export const TimeThemeProvider: React.FC<TimeThemeProviderProps> = ({ children }) => {
-  const [theme, setTheme] = useState<TimeTheme>('bright_day');
+  const [isDarkModeOverride, setIsDarkModeOverride] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('portfolio-dark-mode-override') === 'true';
+    }
+    return false;
+  });
   const [isManualMode, setIsManualMode] = useState(false);
   const [manualTheme, setManualTheme] = useState<TimeTheme>('night');
-  const [isDarkModeOverride, setIsDarkModeOverride] = useState(false);
+  const [theme, setTheme] = useState<TimeTheme>('bright_day');
   const [currentHour, setCurrentHour] = useState<number>(new Date().getHours());
   const [manualTimeOverride, setManualTimeOverride] = useState<number | null>(null);
   
@@ -127,12 +132,6 @@ export const TimeThemeProvider: React.FC<TimeThemeProviderProps> = ({ children }
 
   useEffect(() => {
     // Ignore legacy manual mode to prevent getting stuck at 11:00 PM
-    const savedDarkMode = localStorage.getItem('portfolio-dark-mode-override');
-
-    if (savedDarkMode === 'true') {
-      setIsDarkModeOverride(true);
-    }
-
     setTheme(getTimeBasedTheme());
   }, [getTimeBasedTheme]);
 
@@ -143,7 +142,7 @@ export const TimeThemeProvider: React.FC<TimeThemeProviderProps> = ({ children }
         setCurrentHour(newHour);
         setTheme(getTimeBasedTheme());
         if (latitude !== null && longitude !== null) {
-          let calcDate = new Date();
+          const calcDate = new Date();
           if (manualTimeOverride !== null) {
             calcDate.setHours(Math.floor(manualTimeOverride), Math.round((manualTimeOverride % 1) * 60), 0, 0);
           }
@@ -157,7 +156,7 @@ export const TimeThemeProvider: React.FC<TimeThemeProviderProps> = ({ children }
     } else {
       // Manual mode syncing SunData
         if (latitude !== null && longitude !== null) {
-          let calcDate = new Date();
+          const calcDate = new Date();
           const overrideHour = getRepresentativeHour(manualTheme);
           calcDate.setHours(overrideHour, 0, 0, 0);
           setSunData(calculateSunData(calcDate, latitude, longitude));
@@ -274,6 +273,7 @@ export const TimeThemeProvider: React.FC<TimeThemeProviderProps> = ({ children }
   );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useTimeTheme = (): TimeThemeContextType => {
   const context = useContext(TimeThemeContext);
   if (context === undefined) {

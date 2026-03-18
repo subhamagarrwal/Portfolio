@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useTimeTheme } from '@/hooks/useTimeTheme';
 import { Button } from '@/components/ui/button';
 import portfolioData from '@/data/portfolio.json';
@@ -64,7 +64,7 @@ export const ProjectsSection = () => {
     };
   }, []);
 
-  const getThemePrimaryColor = () => {
+  const primaryColor = useMemo(() => {
     switch (effectiveTheme) {
       case 'dawn':
       case 'preDawn': return '#a78bfa';
@@ -81,9 +81,7 @@ export const ProjectsSection = () => {
       case 'night':
       default: return '#ffffff';
     }
-  };
-
-  const primaryColor = getThemePrimaryColor();
+  }, [effectiveTheme]);
 
   return (
     <section id="projects" className={`py-20 px-6 ${!isLightMode ? timeBasedClass : ''}`}>
@@ -116,7 +114,7 @@ export const ProjectsSection = () => {
         </div>
 
         {/* Mobile/Tablet View Carousel */}
-        <MobileProjectCarousel
+        <MobileProjectCarouselWrapper
           projects={projects}
           isLightMode={isLightMode}
           textClass={textClass}
@@ -157,4 +155,31 @@ export const ProjectsSection = () => {
       </div>
     </section>
   );
+};
+
+// Wrapper handles the double RAF delayed mounting technique
+const MobileProjectCarouselWrapper = (props: React.ComponentProps<typeof MobileProjectCarousel>) => {
+  const [shouldMount, setShouldMount] = useState(false);
+
+  useEffect(() => {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        setShouldMount(true);
+      });
+    });
+  }, []);
+
+  if (!shouldMount) {
+    const numCards = props.projects.length;
+    const scrollDistance = (numCards - 1) * 100;
+    // Reserve exact space to prevent layout shift during initial load
+    return (
+      <div 
+        className="block lg:hidden relative w-[100vw] left-1/2 -translate-x-1/2 pt-8"
+        style={{ height: `calc(100vh + ${scrollDistance}vh)` }} 
+      />
+    );
+  }
+
+  return <MobileProjectCarousel {...props} />;
 };

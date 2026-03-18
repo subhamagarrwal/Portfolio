@@ -18,12 +18,16 @@ const AppContent = () => {
   const timeBasedClass = getTimeBasedClass();
   
   useEffect(() => {
+    // Disable smooth scrolling on mobile/touch devices for native performance
+    const isMobile = window.innerWidth < 1024 || 'ontouchstart' in window;
+    
+    if (isMobile) return;
+
     // Making Lenis snappier like standard Next.js / Vercel sites
     const lenis = new Lenis({
-      lerp: 0.15, // controls the friction/snappiness (higher = more snappy)
+      lerp: 0.15, // controls the friction/snappiness (higher = more snappy)    
       smoothWheel: true,
       wheelMultiplier: 1.1,
-      touchMultiplier: 2,
     });
 
     let rafId: number;
