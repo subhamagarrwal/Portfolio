@@ -136,8 +136,11 @@
 .scene-mountain {
   position: absolute;
   bottom: 0;
-  width: 100%;
+  width: 104vw; /* Account for browser zoom cutting right edge */
+  left: -2vw;
   transition: background 0.1s linear;
+  transform: translateZ(0); /* Force layer allocation for zooming */
+  will-change: transform;
 }
 
 .scene-mountain::after {
@@ -167,7 +170,8 @@
 .scene-ground-area {
   position: absolute;
   bottom: 0;
-  width: 100%;
+  width: 104vw;
+  left: -2vw;
   height: 15%;
   background: var(--ground);
   z-index: 5;
