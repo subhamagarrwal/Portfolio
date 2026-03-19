@@ -134,8 +134,8 @@
 .scene-mountain {
   position: absolute;
   bottom: 0;
-  width: 200vw; /* Account for browser zoom cutting right edge */
-  left: -50vw;
+  width: 100%; 
+  left: 0;
   transition: background 0.1s linear;
 }
 
@@ -166,8 +166,8 @@
 .scene-ground-area {
   position: absolute;
   bottom: 0;
-  width: 200vw;
-  left: -50vw;
+  width: 100%;
+  left: 0;
   height: 15%;
   background: var(--ground);
   z-index: 5;

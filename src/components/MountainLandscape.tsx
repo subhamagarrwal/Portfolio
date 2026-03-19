@@ -42,7 +42,8 @@ const MountainLandscape = () => {
         // THE SUN
         let sunProgress = (hours - sunriseTime) / daylightHours;
         if (sunProgress >= -0.1 && sunProgress <= 1.1) {
-            style.setProperty('--sun-x', `${sunProgress * 100}%`);
+            // using calc() to map progress 0-1 across the visible viewport (inside the -20vw to 120vw scene-wrapper space)
+            style.setProperty('--sun-x', `calc(20vw + ${sunProgress * 100}vw)`);
             style.setProperty('--sun-y', `${100 - Math.sin(sunProgress * Math.PI) * 85}%`);
             style.setProperty('--sun-opacity', "1");
 
@@ -64,7 +65,7 @@ const MountainLandscape = () => {
         let moonProgress = moonTime / nightHours;
 
         if (moonProgress >= -0.1 && moonProgress <= 1.1) {
-            style.setProperty('--moon-x', `${moonProgress * 100}%`);
+            style.setProperty('--moon-x', `calc(20vw + ${moonProgress * 100}vw)`);
             style.setProperty('--moon-y', `${100 - Math.sin(moonProgress * Math.PI) * 85}%`);
             style.setProperty('--moon-opacity', "1");
         } else {

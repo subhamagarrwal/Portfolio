@@ -161,6 +161,7 @@ export const HeroSection = () => {
               href={personal.twitter}
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="X (Twitter) Profile"
               className={`group p-3 rounded-full transition-all duration-300 text-[var(--theme-color)] hover:opacity-80`}
             >
               <XIcon className="w-6 h-6" />
@@ -169,6 +170,7 @@ export const HeroSection = () => {
               href={personal.github}
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="GitHub Profile"
               className={`group p-3 rounded-full transition-all duration-300 text-[var(--theme-color)] hover:opacity-80`}
             >
               <Github className="w-6 h-6" />
@@ -177,12 +179,14 @@ export const HeroSection = () => {
               href={personal.linkedin}
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="LinkedIn Profile"
               className={`group p-3 rounded-full transition-all duration-300 text-[var(--theme-color)] hover:opacity-80`}
             >
               <Linkedin className="w-6 h-6" />
             </a>
             <a
               href={`mailto:${personal.email}`}
+              aria-label="Send an Email"
               className={`group p-3 rounded-full transition-all duration-300 text-[var(--theme-color)] hover:opacity-80`}
             >
               <Mail className="w-6 h-6" />
@@ -190,14 +194,14 @@ export const HeroSection = () => {
             {personal.spotify && isMusicPlaying ? (
               <Popover>
                 <PopoverTrigger asChild>
-                  <button className={`group p-3 rounded-full transition-all duration-300 text-[var(--theme-color)] hover:opacity-80`}>
+                  <button aria-label="Spotify Now Playing" className={`group p-3 rounded-full transition-all duration-300 text-[var(--theme-color)] hover:opacity-80`}>
                     <div className="animate-[spin_4s_linear_infinite]">
                       <SpotifyIcon className="w-6 h-6" />
                     </div>
                   </button>
                 </PopoverTrigger>
                 <PopoverContent className="w-64 p-0 border-white/10 bg-[#121212]/90 backdrop-blur-xl rounded-2xl overflow-hidden shadow-2xl mb-4 border" sideOffset={12}>
-                  <a href={spotifyData.songUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 p-3 hover:bg-white/5 transition-colors">
+                  <a href={spotifyData.songUrl} target="_blank" rel="noopener noreferrer" aria-label="Listen on Spotify" className="flex items-center gap-4 p-3 hover:bg-white/5 transition-colors">
                     {spotifyData?.albumImageUrl && (
                       <img src={spotifyData.albumImageUrl} alt={spotifyData?.album} className="w-14 h-14 rounded-md object-cover shadow-sm" />
                     )}
@@ -213,6 +217,7 @@ export const HeroSection = () => {
                 href={personal.spotify}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="Spotify Profile"
                 className={`group p-3 rounded-full transition-all duration-300 text-[var(--theme-color)] hover:opacity-80`}
               >
                 <div>

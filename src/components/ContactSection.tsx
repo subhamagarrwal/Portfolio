@@ -71,6 +71,7 @@ export const ContactSection = () => {
               href={personal.twitter}
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="X (Twitter) Profile"
               className={`group p-3 md:p-6 rounded-full transition-all duration-300 text-[var(--theme-color)] hover:opacity-80 hover:scale-110 drop-shadow-md`}
             >
               <XIcon className="w-8 h-8 md:w-12 md:h-12" />
@@ -81,6 +82,7 @@ export const ContactSection = () => {
               href={personal.github}
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="GitHub Profile"
               className={`group p-3 md:p-6 rounded-full transition-all duration-300 text-[var(--theme-color)] hover:opacity-80 hover:scale-110 drop-shadow-md`}
             >
               <Github className="w-8 h-8 md:w-12 md:h-12" />
@@ -91,6 +93,7 @@ export const ContactSection = () => {
               href={personal.linkedin}
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="LinkedIn Profile"
               className={`group p-3 md:p-6 rounded-full transition-all duration-300 text-[var(--theme-color)] hover:opacity-80 hover:scale-110 drop-shadow-md`}
             >
               <Linkedin className="w-8 h-8 md:w-12 md:h-12" />
@@ -99,6 +102,7 @@ export const ContactSection = () => {
           {personal.email && (
             <a
               href={`mailto:${personal.email}`}
+              aria-label="Send an Email"
               className={`group p-3 md:p-6 rounded-full transition-all duration-300 text-[var(--theme-color)] hover:opacity-80 hover:scale-110 drop-shadow-md`}
             >
               <Mail className="w-8 h-8 md:w-12 md:h-12" />
@@ -109,6 +113,7 @@ export const ContactSection = () => {
               href={personal.spotify}
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="Spotify Profile"
               className={`group p-3 md:p-6 rounded-full transition-all duration-300 text-[var(--theme-color)] hover:opacity-80 hover:scale-110 drop-shadow-md`}
             >
               <div className={`${isMusicPlaying ? 'animate-[spin_4s_linear_infinite]' : ''}`}>

@@ -150,16 +150,16 @@ export const ProjectCard = memo(({ project, index, totalProjects, isLightMode, t
               {project.title}
             </h3>
             <div className="flex gap-3 items-center">
-              <a href={project.demo || project.github || '#'} target="_blank" rel="noopener noreferrer" className={`text-xs font-medium transition-colors hover:text-[var(--theme-color)] pointer-events-auto ${textClass} relative after:absolute after:bottom-[-4px] after:left-0 after:h-[2px] after:w-full after:origin-left after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300 after:bg-[var(--theme-color)] whitespace-nowrap`}>
+              <a href={project.demo || project.github || '#'} target="_blank" rel="noopener noreferrer" aria-label={`Read more about ${project.title}`} className={`text-xs font-medium transition-colors hover:text-[var(--theme-color)] pointer-events-auto ${textClass} relative after:absolute after:bottom-[-4px] after:left-0 after:h-[2px] after:w-full after:origin-left after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300 after:bg-[var(--theme-color)] whitespace-nowrap`}>
                 Read more
               </a>
               {project.github && (
-                 <a href={project.github} target="_blank" rel="noopener noreferrer" className={`transition-colors ${forceWhiteIcons ? 'text-white hover:text-gray-300' : 'hover:text-[var(--theme-color)]'}`}>
+                 <a href={project.github} target="_blank" rel="noopener noreferrer" aria-label={`GitHub repository for ${project.title}`} className={`transition-colors ${forceWhiteIcons ? 'text-white hover:text-gray-300' : 'hover:text-[var(--theme-color)]'}`}>
                     <Github className="w-5 h-5 pointer-events-auto" />
                  </a>
               )}
               {project.demo ? (
-                 <a href={project.demo} target="_blank" rel="noopener noreferrer" className={`transition-colors ${forceWhiteIcons ? 'text-white hover:text-gray-300' : 'hover:text-[var(--theme-color)]'}`}>
+                 <a href={project.demo} target="_blank" rel="noopener noreferrer" aria-label={`Live demo for ${project.title}`} className={`transition-colors ${forceWhiteIcons ? 'text-white hover:text-gray-300' : 'hover:text-[var(--theme-color)]'}`}>
                     <ExternalLink className="w-5 h-5 pointer-events-auto" />
                  </a>
               ) : (
