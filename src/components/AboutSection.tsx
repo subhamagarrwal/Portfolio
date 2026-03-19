@@ -123,7 +123,7 @@ export const AboutSection = () => {
             </div>
             
             <div
-              className="flex flex-wrap gap-3 group/skill-list"
+              className="flex flex-wrap items-center justify-start gap-2 sm:gap-3 group/skill-list"
               style={{ touchAction: 'pan-y' }}
             >
               {allSkills.map((skill) => {
@@ -134,7 +134,7 @@ export const AboutSection = () => {
                     key={skill}
                     data-skill={skill}
                     onPointerDown={() => handlePointerDown(skill)}
-                    className={`liquid-glass-card px-4 py-2 rounded-full !text-black text-[15px] font-medium transition-all duration-300 select-none cursor-default ${
+                    className={`liquid-glass-card flex-grow-0 flex-shrink-0 text-center basis-[calc(33.33%-0.4rem)] sm:basis-auto px-2 py-1.5 md:px-4 md:py-2 rounded-full !text-black text-[11px] sm:text-[13px] md:text-[15px] font-medium transition-all duration-300 select-none cursor-default ${
                       isHighlighted
                         ? '!opacity-100 scale-105 bg-[var(--theme-color)] !text-[var(--btn-text-color)] border-transparent'
                         : 'group-hover/skill-list:opacity-40 hover:!opacity-100 hover:scale-105 hover:bg-[var(--theme-color)] hover:!text-[var(--btn-text-color)] hover:border-transparent'

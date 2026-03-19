@@ -18,17 +18,27 @@
       "id": "taskquest",
       "title": "TaskQuest",
       "description": "Admins create tasks on the web dashboard, and the team members can interact and update progress on assigned tasks through an intelligent Telegram bot interface.",
+      "features": [
+        "Web dashboard for task creation and management",
+        "Intelligent Telegram bot interface for team members",
+        "Real-time progress updates on assigned tasks"
+      ],
       "techStack": ["Node.js", "Firebase","MongoDB", "Express", "Telegraf", "GraphQL"],
       "github": "https://github.com/subhamagarrwal/TaskQuest",
-      "demo": "https://taskquest.onrender.com/",
+      "demo": "",
       "image": "/photos/TaskQuest.png?v=2",
-      "featured": true
+      "featured": false
     },
-    
+
     {
       "id": "fintellect",
       "title": "FinTellect",
       "description": "Users can search for a stock ticker and get clear, natural-language insights about the company's financials alongside correlating performance with news and macroeconomic trends, all powered by AI.",
+      "features": [
+        "Natural-language financial insights via AI",
+        "Correlates performance with macroeconomic trends",
+        "Vector database integration for intelligent search"
+      ],
       "techStack": ["Next.js", "TypeScript", "PostgreSQL", "ChromaDB", "LangChain"],
       "github": "https://github.com/subhamagarrwal/FinTellect",
       "demo": "https://fintellect-app.vercel.app",
@@ -39,6 +49,11 @@
       "id": "fitfusion",
       "title": "FitFusion",
       "description": "A comprehensive gym management app that allows users to look into gyms and give reviews, where gym owners can register their gyms.",
+      "features": [
+        "Comprehensive gym management for owners",
+        "User reviews and discovery platform",
+        "Cross-platform mobile application"
+      ],
       "techStack": ["MongoDB", "Firebase", "Redux", "Node.js", "Express"],
       "github": "https://github.com/subhamagarrwal/fitfusion",
       "demo": "https://fitfusion-mobile.expo.dev",
@@ -95,7 +110,7 @@
   "skills": {
     "languages": ["TypeScript", "React"],
     "frameworks": ["Next.js", "Tailwind CSS","Python","FastAPI"],
-    "tools": ["Docker", "MongoDB", "MySQL", "ChromaDB","Neo4j","Redis","CI/CD"]
+    "tools": ["Docker", "MySQL", "ChromaDB","Neo4j","Redis","CI/CD"]
   },
   "extracurriculars": [
     {

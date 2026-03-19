@@ -3,7 +3,6 @@ import { useTimeTheme } from '@/hooks/useTimeTheme';
 import { Button } from '@/components/ui/button';
 import portfolioData from '@/data/portfolio.json';
 import { ProjectCard } from './ProjectCard';
-import { MobileProjectCarousel } from './MobileProjectCarousel';
 import { FadeIn } from '@/components/ui/FadeIn';
 import { palettes } from '@/constants/palettes';
 
@@ -92,33 +91,30 @@ export const ProjectsSection = () => {
           '--btn-text-color': primaryColor === '#ffffff' ? '#000000' : '#ffffff'
         } as React.CSSProperties}
       >
-        <FadeIn delay={0.2} className="hidden md:block">
-          <h2 className={`text-4xl font-bold text-center mb-12 transition-colors duration-300 ${!isLightMode ? '' : ''} ${textClass}`}>
+        <FadeIn delay={0.2} className="flex justify-center mb-12">
+          <h2 className={`text-4xl font-bold transition-colors duration-300 ${!isLightMode ? '' : ''} ${textClass}`}>
             Featured Projects
           </h2>
         </FadeIn>
 
-        {/* Desktop/Laptop View */}
-        <div className="hidden md:grid md:grid-cols-2 gap-8">
-          {projects.map((project, index) => (
-            <FadeIn key={project.id} delay={0.3 + index * 0.1}>
-              <ProjectCard
-                project={project}
-                index={index}
-                totalProjects={projects.length}
-                isLightMode={isLightMode}
-                textClass={textClass}
-              />
-            </FadeIn>
-          ))}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {projects.map((project, index) => {
+            return (
+              <FadeIn
+                key={project.id}
+                delay={0.3 + index * 0.1}
+              >
+                <ProjectCard
+                  project={project}
+                  index={index}
+                  totalProjects={projects.length}
+                  isLightMode={isLightMode}
+                  textClass={textClass}
+                />
+              </FadeIn>
+            );
+          })}
         </div>
-
-        {/* Mobile/Tablet View Carousel */}
-        <MobileProjectCarouselWrapper
-          projects={projects}
-          isLightMode={isLightMode}
-          textClass={textClass}
-        />
 
         <FadeIn delay={0.8} className="text-center mt-12">
           <div className="relative inline-block group">
@@ -157,29 +153,3 @@ export const ProjectsSection = () => {
   );
 };
 
-// Wrapper handles the double RAF delayed mounting technique
-const MobileProjectCarouselWrapper = (props: React.ComponentProps<typeof MobileProjectCarousel>) => {
-  const [shouldMount, setShouldMount] = useState(false);
-
-  useEffect(() => {
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        setShouldMount(true);
-      });
-    });
-  }, []);
-
-  if (!shouldMount) {
-    const numCards = props.projects.length;
-    const scrollDistance = (numCards - 1) * 100;
-    // Reserve exact space to prevent layout shift during initial load
-    return (
-      <div 
-        className="block md:hidden relative w-[100vw] left-1/2 -translate-x-1/2 pt-8"
-        style={{ height: `calc(100vh + ${scrollDistance}vh)` }} 
-      />
-    );
-  }
-
-  return <MobileProjectCarousel {...props} />;
-};

@@ -1,8 +1,9 @@
-import { memo, useState } from 'react';
+import { memo } from 'react';
 import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Github, ExternalLink } from 'lucide-react';
 import { useTimeTheme } from '@/hooks/useTimeTheme';
+import { ProjectDetailsModal } from './ProjectDetailsModal';
+import { motion } from 'framer-motion';
 
 interface ProjectCardProps {
   project: {
@@ -22,7 +23,6 @@ interface ProjectCardProps {
 }
 
 export const ProjectCard = memo(({ project, index, totalProjects, isLightMode, textClass, className = '' }: ProjectCardProps) => {
-  const [isOverlayVisible, setIsOverlayVisible] = useState(false);
   const { effectiveTheme } = useTimeTheme();
   
   // Decide if we should force icons to be strictly white instead of using the custom theme color
@@ -38,10 +38,6 @@ export const ProjectCard = memo(({ project, index, totalProjects, isLightMode, t
             ? 'bg-white/25 border border-white/40 liquid-glass-card shadow-[0_8px_30px_rgba(0,0,0,0.12)]'
             : 'bg-black/75  border border-white/10 shadow-[0_0_40px_rgba(0,0,0,0.5)]'
         }
-        ${totalProjects % 2 !== 0 && index === totalProjects - 1
-          ? 'md:col-span-2'
-          : ''
-        }
       `}
       style={{ animationDelay: `${index * 0.2}s` }}
     >
@@ -53,70 +49,10 @@ export const ProjectCard = memo(({ project, index, totalProjects, isLightMode, t
             : 'from-blue-500/20 to-purple-500/20'
           }
         `}
-        onPointerEnter={() => setIsOverlayVisible(true)}
-        onPointerLeave={() => setIsOverlayVisible(false)}
-        onPointerDown={() => setIsOverlayVisible(!isOverlayVisible)}
-        onPointerCancel={() => setIsOverlayVisible(false)}
       >
-        <div className={`absolute inset-0 bg-black/70 transition-opacity duration-300 flex items-center justify-center gap-4 z-20 ${isOverlayVisible ? 'opacity-100' : 'opacity-0'}`}>
-          {project.github ? (
-            <Button
-              asChild
-              variant="outline"
-              size="sm"
-              className={`
-                transition-all duration-300 pointer-events-auto
-                bg-transparent border-2 border-[var(--theme-color)] text-white hover:bg-[var(--theme-color)] hover:text-[var(--btn-text-color)]
-                ${!isLightMode ? 'hover:shadow-[0_0_15px_var(--theme-color)]' : ''}
-              `}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <a href={project.github} target="_blank" rel="noopener noreferrer">
-                <Github className="w-4 h-4 mr-2" />
-                Code
-              </a>
-            </Button>
-          ) : (
-            <Button
-              variant="outline"
-              size="sm"
-              disabled
-              className="transition-all duration-300 bg-transparent border-2 border-gray-500 text-gray-400 cursor-not-allowed pointer-events-auto"
-            >
-              <Github className="w-4 h-4 mr-2" />
-              Code
-            </Button>
-          )}
-
-          {project.demo ? (
-            <Button
-              asChild
-              size="sm"
-              className={`
-                transition-all duration-300 pointer-events-auto
-                bg-[var(--theme-color)] hover:opacity-80 text-[var(--btn-text-color)] border-2 border-[var(--theme-color)]
-                ${!isLightMode ? 'shadow-[0_0_10px_var(--theme-color)]' : ''}
-              `}
-            >
-              <a href={project.demo} target="_blank" rel="noopener noreferrer">
-                <ExternalLink className="w-4 h-4 mr-2" />
-                Demo
-              </a>
-            </Button>
-          ) : (
-            <Button
-              size="sm"
-              disabled
-              className="bg-gray-600 border-2 border-gray-600 text-gray-300 cursor-not-allowed opacity-80 pointer-events-auto"
-            >
-              <ExternalLink className="w-4 h-4 mr-2" />
-              Demo
-            </Button>
-          )}
-        </div>
-
         <div className="h-full flex items-center justify-center">
-          <img
+          <motion.img
+            layoutId={`project-image-${project.id}`}
             src={project.image}
             alt={`${project.title} preview`}
             className="w-full h-full object-cover"
@@ -126,7 +62,7 @@ export const ProjectCard = memo(({ project, index, totalProjects, isLightMode, t
             height="192"
             onError={(e) => {
               // Fallback to letter if image fails to load
-              e.currentTarget.style.display = 'none';
+              (e.currentTarget as HTMLImageElement).style.display = 'none';
               const fallback = e.currentTarget.nextElementSibling as HTMLElement;
               if (fallback) fallback.style.display = 'flex';
             }}
@@ -150,20 +86,20 @@ export const ProjectCard = memo(({ project, index, totalProjects, isLightMode, t
               {project.title}
             </h3>
             <div className="flex gap-3 items-center">
-              <a href={project.demo || project.github || '#'} target="_blank" rel="noopener noreferrer" aria-label={`Read more about ${project.title}`} className={`text-xs font-medium transition-colors hover:text-[var(--theme-color)] pointer-events-auto ${textClass} relative after:absolute after:bottom-[-4px] after:left-0 after:h-[2px] after:w-full after:origin-left after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300 after:bg-[var(--theme-color)] whitespace-nowrap`}>
-                Read more
-              </a>
+              <ProjectDetailsModal project={project} isLightMode={isLightMode} textClass={textClass}>
+                <button aria-label={`Read more about ${project.title}`} className={`text-xs font-medium cursor-pointer transition-colors hover:text-[var(--theme-color)] pointer-events-auto ${textClass} relative after:absolute after:bottom-[-4px] after:left-0 after:h-[2px] after:w-full after:origin-left after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300 after:bg-[var(--theme-color)] whitespace-nowrap`}>
+                  Read more
+                </button>
+              </ProjectDetailsModal>
               {project.github && (
                  <a href={project.github} target="_blank" rel="noopener noreferrer" aria-label={`GitHub repository for ${project.title}`} className={`transition-colors ${forceWhiteIcons ? 'text-white hover:text-gray-300' : 'hover:text-[var(--theme-color)]'}`}>
                     <Github className="w-5 h-5 pointer-events-auto" />
                  </a>
               )}
-              {project.demo ? (
+              {project.demo && (
                  <a href={project.demo} target="_blank" rel="noopener noreferrer" aria-label={`Live demo for ${project.title}`} className={`transition-colors ${forceWhiteIcons ? 'text-white hover:text-gray-300' : 'hover:text-[var(--theme-color)]'}`}>
                     <ExternalLink className="w-5 h-5 pointer-events-auto" />
                  </a>
-              ) : (
-                 <ExternalLink className="w-5 h-5 text-gray-500 cursor-not-allowed" />
               )}
             </div>
           </div>
