@@ -48,7 +48,7 @@ export const JourneySection = () => {
         </h2>
 
         <Tabs defaultValue="education" className="w-full">
-          <TabsList className="grid grid-cols-3 w-[85vw] max-w-[800px] lg:w-full mb-8 bg-transparent gap-1 sm:gap-2 p-1 border rounded-full backdrop-blur-sm shadow-inner overflow-hidden mx-auto h-auto" style={{ borderColor: isLightMode ? 'rgba(255,255,255,0.5)' : 'rgba(255,255,255,0.1)', background: isLightMode ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)' }}>
+          <TabsList className="grid grid-cols-3 w-[85vw] max-w-[800px] lg:w-full mb-8 bg-transparent gap-1 sm:gap-2 p-1 border rounded-full backdrop-blur-sm shadow-inner overflow-hidden mx-auto h-auto" style={{ borderColor: isLightMode ? 'rgba(255,255,255,0.5)' : 'rgba(255,255,255,0.1)', background: isLightMode ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.4)' }}>
             <TabsTrigger
               value="education"
               className={`rounded-full flex-1 w-full flex items-center justify-center text-[10.5px] xs:text-[11px] sm:text-sm whitespace-nowrap px-0 sm:px-3 py-2 md:py-2.5 h-full data-[state=active]:bg-[var(--theme-color)] data-[state=active]:text-[var(--btn-text-color)] transition-all duration-300 ${textClass} btn-text-override`}
@@ -71,7 +71,8 @@ export const JourneySection = () => {
 
           <TabsContent value="education" className="mt-8 relative z-10">
             <div className={`w-[85vw] max-w-[800px] lg:w-full mx-auto p-4 md:p-8 rounded-xl backdrop-blur-md shadow-sm transition-all duration-500 border overflow-hidden
-              ${isLightMode ? 'bg-white/25 border-white/40 liquid-glass-card' : 'bg-white/15 border-white/25 liquid-glass-card'}
+              ${isLightMode ? 'bg-white/25 border border-white/40 liquid-glass-card shadow-[0_8px_30px_rgba(0,0,0,0.12)]'
+            : 'bg-black/40 backdrop-blur-lg border border-white/10 shadow-[0_0_40px_rgba(0,0,0,0.5)] [transform:translate3d(0,0,0)]'}
               ${!isLightMode ? 'synthwave-glow' : ''}
             `}>
               <div className="flex flex-col relative z-20">
@@ -118,7 +119,8 @@ export const JourneySection = () => {
 
           <TabsContent value="experience" className="mt-8 relative z-10">
             <div className={`w-[85vw] max-w-[800px] lg:w-full mx-auto p-4 md:p-8 rounded-xl backdrop-blur-md shadow-sm transition-all duration-500 border overflow-hidden
-              ${isLightMode ? 'bg-white/25 border-white/40 liquid-glass-card' : 'bg-white/15 border-white/25 liquid-glass-card'}
+              ${isLightMode ? 'bg-white/25 border border-white/40 liquid-glass-card shadow-[0_8px_30px_rgba(0,0,0,0.12)]'
+            : 'bg-black/40 backdrop-blur-lg border border-white/10 shadow-[0_0_40px_rgba(0,0,0,0.5)] [transform:translate3d(0,0,0)]'}
               ${!isLightMode ? 'synthwave-glow' : ''}
             `}>
               <div className="flex flex-col relative z-20">
@@ -163,7 +165,8 @@ export const JourneySection = () => {
 
           <TabsContent value="volunteering" className="mt-8 relative z-10">
             <div className={`w-[85vw] max-w-[800px] lg:w-full mx-auto p-4 md:p-8 rounded-xl backdrop-blur-md shadow-sm transition-all duration-500 border overflow-hidden
-              ${isLightMode ? 'bg-white/25 border-white/40 liquid-glass-card' : 'bg-white/15 border-white/25 liquid-glass-card'}
+              ${isLightMode ? 'bg-white/25 border border-white/40 liquid-glass-card shadow-[0_8px_30px_rgba(0,0,0,0.12)]'
+            : 'bg-black/40 backdrop-blur-lg border border-white/10 shadow-[0_0_40px_rgba(0,0,0,0.5)] [transform:translate3d(0,0,0)]'}
               ${!isLightMode ? 'synthwave-glow' : ''}
             `}>
               <div className="flex flex-col relative z-20">

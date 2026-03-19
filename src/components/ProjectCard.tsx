@@ -30,8 +30,8 @@ export const ProjectCard = memo(({ project, index, totalProjects, isLightMode, t
         ${className}
         group overflow-hidden transition-all duration-500 ${!isLightMode ? '' : ''}
         ${isLightMode
-            ? 'bg-white/25 border-white/40 liquid-glass-card'
-            : 'bg-white/15 border-white/25 liquid-glass-card'
+            ? 'bg-white/25 border border-white/40 liquid-glass-card shadow-[0_8px_30px_rgba(0,0,0,0.12)]'
+            : 'bg-black/40 backdrop-blur-lg border border-white/10 shadow-[0_0_40px_rgba(0,0,0,0.5)] [transform:translate3d(0,0,0)]'
         }
         ${totalProjects % 2 !== 0 && index === totalProjects - 1
           ? 'md:col-span-2'

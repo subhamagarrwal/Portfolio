@@ -9,11 +9,10 @@
     "spotify": "https://open.spotify.com/user/syfg3okbqewd4hooz7nhbjz6y?si=01c5ea0d664e4f9a",
     "resume": "https://drive.google.com/file/d/1UUhanEkOicXr9qcF9t0ar-28-U-n9ngQ/view?usp=sharing",
     "about": [
-     "Currently in my final year of Computer Science at Vellore Institute of Technology, I enjoy understanding how systems actually works- from backend logic to frontend interactions.",
+     "Graduate in Computer Science from Vellore Institute of Technology with two internship experiences across two early-stage startups, where i worked across frontend visualization and backend integration.", 
+     "I specialize in full-stack development and have proficiency in TypeScript,Next.js with strong hands-on experience with cloud, databases and RAG architectures.",
 
-"My prior internship experiences gave me oppertunity to work on real-world projects and collaborate with cross-functional teams, which helped me grow as a developer.",
-
-"Right now I’m working on FinTellect, a project that lets users search a stock ticker and understand what’s happening with the company through clear natural-language insights instead of raw financial data."
+"Right now I’m working on FinTellect, a project that lets users search a stock ticker and understand what’s happening with the company through clear natural-language insights instead of raw financial data.   Currently with data ingestion complete,  progressing on the finetuned model for signal extraction and Neo4j for knowledge graph construction."
     ]
   },
   "projects": [
