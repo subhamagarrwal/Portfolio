@@ -2,7 +2,6 @@ import { ThemeProvider } from '@/components/ThemeProvider';
 import { StructuredData } from '@/components/StructuredData';
 import { HeroSection } from '@/components/HeroSection';
 import { AboutSection } from '@/components/AboutSection';
-import { SkillsSection } from '@/components/SkillsSection';
 import { ProjectsSection } from '@/components/ProjectsSection';
 import { JourneySection } from '@/components/JourneySection';
 import { ContactSection } from '@/components/ContactSection';
@@ -17,13 +16,12 @@ const Index = () => {
           <HeroSection />
           <AboutSection />
           <JourneySection />
-          <SkillsSection />
           <ProjectsSection />
           <ContactSection />
         </main>
 
         <footer className="py-8 text-center opacity-70">
-          <p className='text-white'>© Subham Agarwal, {new Date().getFullYear()}.</p>
+          <p className='text-white'>ï¿½ Subham Agarwal, {new Date().getFullYear()}.</p>
         </footer>
 
         {/* Glass Dock - Apple-inspired navigation */}

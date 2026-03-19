@@ -10,9 +10,7 @@
     "resume": "https://drive.google.com/file/d/1UUhanEkOicXr9qcF9t0ar-28-U-n9ngQ/view?usp=sharing",
     "about": [
      "Graduate in Computer Science from Vellore Institute of Technology with two internship experiences across two early-stage startups, where i worked across frontend visualization and backend integration.", 
-     "I specialize in full-stack development and have proficiency in TypeScript,Next.js with strong hands-on experience with cloud, databases and RAG architectures.",
-
-"Right now I’m working on FinTellect, a project that lets users search a stock ticker and understand what’s happening with the company through clear natural-language insights instead of raw financial data.   Currently with data ingestion complete,  progressing on the finetuned model for signal extraction and Neo4j for knowledge graph construction."
+     "I specialize in full-stack development and have proficiency in TypeScript,Next.js with strong hands-on experience with cloud, databases and RAG architectures."
     ]
   },
   "projects": [
@@ -95,9 +93,9 @@
     }
   ],
   "skills": {
-    "languages": ["JavaScript", "TypeScript", "Python", "Java", "C++"],
-    "frameworks": ["React", "Next.js", "Node.js", "Express", "Tailwind CSS","Bootstrap"],
-    "tools": ["Git", "Docker", "n8n", "MongoDB", "PostgreSQL", "ChromaDB", "Firebase", "Figma","Supabase"]
+    "languages": ["TypeScript", "React"],
+    "frameworks": ["Next.js", "Tailwind CSS","Python","FastAPI"],
+    "tools": ["Docker", "MongoDB", "MySQL", "ChromaDB","Neo4j","Redis","CI/CD"]
   },
   "extracurriculars": [
     {

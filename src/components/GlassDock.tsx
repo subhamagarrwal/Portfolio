@@ -53,7 +53,7 @@ export const GlassDock = () => {
     if (!isClient) return;
     
     // Intersection Observer for scroll spy
-    const sections = ['home', 'journey', 'skills', 'projects'];
+    const sections = ['home', 'about', 'journey', 'projects'];
     
     const observerOptions = {
       root: null,
@@ -174,16 +174,16 @@ export const GlassDock = () => {
       onClick: () => scrollToSection('home'),
     },
     {
+      id: 'about',
+      icon: <Users size={getSafeIconSize()} />,
+      label: 'About',
+      onClick: () => scrollToSection('about'),
+    },
+    {
       id: 'journey',
       icon: <Briefcase size={getSafeIconSize()} />,
       label: 'Journey',
       onClick: () => scrollToSection('journey'),
-    },
-    {
-      id: 'skills',
-      icon: <Code2 size={getSafeIconSize()} />,
-      label: 'Skills',
-      onClick: () => scrollToSection('skills'),
     },
     {
       id: 'projects',
