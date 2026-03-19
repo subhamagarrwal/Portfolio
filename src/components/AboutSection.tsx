@@ -22,11 +22,11 @@ export const AboutSection = () => {
 
         <div className={`space-y-6 p-6 md:p-10 rounded-2xl transition-all duration-500 relative overflow-hidden
           ${isLightMode 
-            ? '' 
+            ? 'bg-white/25 border border-white/40 liquid-glass-card shadow-[0_8px_30px_rgba(0,0,0,0.12)]' 
             : 'bg-black/40 backdrop-blur-lg border border-white/10 shadow-[0_0_40px_rgba(0,0,0,0.5)]'}
         `}>
           {portfolioData.personal.about.map((paragraph, index) => (
-            <p key={index} className={`text-[15px] md:text-base leading-relaxed text-center transition-colors duration-300 relative z-10 
+            <p key={index} className={`text-[15px] md:text-base leading-relaxed text-justify transition-colors duration-300 relative z-10 
               ${effectiveTheme === 'sunset' ? 'text-white' : textClass} 
               ${!isLightMode ? 'font-medium [text-shadow:_0_2px_4px_rgba(0,0,0,0.8)] tracking-wide' : ''}`}>
               {paragraph}
