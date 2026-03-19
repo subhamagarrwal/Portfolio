@@ -92,14 +92,14 @@ export const ProjectsSection = () => {
           '--btn-text-color': primaryColor === '#ffffff' ? '#000000' : '#ffffff'
         } as React.CSSProperties}
       >
-        <FadeIn delay={0.2} className="hidden lg:block">
+        <FadeIn delay={0.2} className="hidden md:block">
           <h2 className={`text-4xl font-bold text-center mb-12 transition-colors duration-300 ${!isLightMode ? '' : ''} ${textClass}`}>
             Featured Projects
           </h2>
         </FadeIn>
 
         {/* Desktop/Laptop View */}
-        <div className="hidden lg:grid lg:grid-cols-2 gap-8">
+        <div className="hidden md:grid md:grid-cols-2 gap-8">
           {projects.map((project, index) => (
             <FadeIn key={project.id} delay={0.3 + index * 0.1}>
               <ProjectCard
@@ -175,7 +175,7 @@ const MobileProjectCarouselWrapper = (props: React.ComponentProps<typeof MobileP
     // Reserve exact space to prevent layout shift during initial load
     return (
       <div 
-        className="block lg:hidden relative w-[100vw] left-1/2 -translate-x-1/2 pt-8"
+        className="block md:hidden relative w-[100vw] left-1/2 -translate-x-1/2 pt-8"
         style={{ height: `calc(100vh + ${scrollDistance}vh)` }} 
       />
     );

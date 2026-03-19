@@ -34,7 +34,7 @@ export const ProjectCard = memo(({ project, index, totalProjects, isLightMode, t
             : 'bg-white/15 border-white/25 liquid-glass-card'
         }
         ${totalProjects % 2 !== 0 && index === totalProjects - 1
-          ? 'lg:col-span-2'
+          ? 'md:col-span-2'
           : ''
         }
       `}
@@ -138,33 +138,35 @@ export const ProjectCard = memo(({ project, index, totalProjects, isLightMode, t
         </div>
       </div>
 
-      <div className="p-6">
-        <div className="flex justify-between items-center mb-3">
-          <h3 className={`text-xl font-bold transition-colors duration-300 ${textClass}`}>
-            {project.title}
-          </h3>
-          <div className="flex gap-3 items-center">
-            <a href={project.demo || project.github || '#'} target="_blank" rel="noopener noreferrer" className={`text-xs font-medium transition-colors hover:text-[var(--theme-color)] pointer-events-auto ${textClass} relative after:absolute after:bottom-[-4px] after:left-0 after:h-[2px] after:w-full after:origin-left after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300 after:bg-[var(--theme-color)] whitespace-nowrap`}>
-              Read more
-            </a>
-            {project.github && (
-               <a href={project.github} target="_blank" rel="noopener noreferrer" className="hover:text-[var(--theme-color)] transition-colors">
-                  <Github className="w-5 h-5 pointer-events-auto" />
-               </a>
-            )}
-            {project.demo ? (
-               <a href={project.demo} target="_blank" rel="noopener noreferrer" className="hover:text-[var(--theme-color)] transition-colors">
-                  <ExternalLink className="w-5 h-5 pointer-events-auto" />
-               </a>
-            ) : (
-               <ExternalLink className="w-5 h-5 text-gray-500 cursor-not-allowed" />
-            )}
+      <div className="p-6 flex flex-col items-start w-full">
+        <div className="w-full max-w-xl">
+          <div className="flex justify-between items-center mb-3">
+            <h3 className={`text-xl font-bold transition-colors duration-300 ${textClass}`}>
+              {project.title}
+            </h3>
+            <div className="flex gap-3 items-center">
+              <a href={project.demo || project.github || '#'} target="_blank" rel="noopener noreferrer" className={`text-xs font-medium transition-colors hover:text-[var(--theme-color)] pointer-events-auto ${textClass} relative after:absolute after:bottom-[-4px] after:left-0 after:h-[2px] after:w-full after:origin-left after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300 after:bg-[var(--theme-color)] whitespace-nowrap`}>
+                Read more
+              </a>
+              {project.github && (
+                 <a href={project.github} target="_blank" rel="noopener noreferrer" className="hover:text-[var(--theme-color)] transition-colors">
+                    <Github className="w-5 h-5 pointer-events-auto" />
+                 </a>
+              )}
+              {project.demo ? (
+                 <a href={project.demo} target="_blank" rel="noopener noreferrer" className="hover:text-[var(--theme-color)] transition-colors">
+                    <ExternalLink className="w-5 h-5 pointer-events-auto" />
+                 </a>
+              ) : (
+                 <ExternalLink className="w-5 h-5 text-gray-500 cursor-not-allowed" />
+              )}
+            </div>
           </div>
-        </div>
 
-        <p className={`text-sm mb-4 transition-colors duration-300 ${textClass}`}>
-          {project.description}
-        </p>
+          <p className={`text-sm mb-4 transition-colors duration-300 ${textClass}`}>
+            {project.description}
+          </p>
+        </div>
       </div>
     </Card>
   );

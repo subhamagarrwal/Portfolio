@@ -35,7 +35,7 @@ export const MobileProjectCarousel = ({ projects, isLightMode, textClass }: Mobi
   return (
     <div
       ref={containerRef}
-      className="block lg:hidden relative w-[100vw] left-1/2 -translate-x-1/2 pt-8"
+      className="block md:hidden relative w-[100vw] left-1/2 -translate-x-1/2 pt-8"
       style={{ height: `calc(100vh + ${scrollDistance}vh)` }}
     >
       {/* 
