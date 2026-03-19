@@ -362,7 +362,7 @@ export const GlassDock = () => {
                       absolute
                       -bottom-1 left-1/2 transform -translate-x-1/2
                       w-1 h-1 rounded-full transition-all duration-300
-                      ${isDarkTheme ? 'bg-white/60' : 'bg-black/40'}
+                      ${isDarkTheme ? 'bg-white/60' : 'bg-black/75'}
                     `}
                   />
                 )}
@@ -387,7 +387,7 @@ export const GlassDock = () => {
         <div 
           className={`
             fixed z-[60] px-3 py-1.5 rounded-lg text-xs font-medium
-            backdrop-blur-md border tooltip-enter pointer-events-none transition-all
+             border tooltip-enter pointer-events-none transition-all
             ${isDarkTheme 
               ? 'bg-black/60 text-white border-white/20' 
               : 'bg-white/80 text-black border-black/10'

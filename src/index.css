@@ -266,29 +266,23 @@ html.lenis, html.lenis body {
 .liquid-glass-card {
     --c-glass: #ffffff;
     background: color-mix(in srgb, var(--c-glass) 20%, transparent);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    transform: translate3d(0, 0, 0); /* Create strict stacking context for backdrop without triggering composite tiling bugs */
+    /* backdrop-filter removed to stop chromium zoom artifacts */
 }
 
 .liquid-glass-button {
-  background: linear-gradient(135deg, 
+  background: linear-gradient(135deg,
     rgba(255, 255, 255, 0.3) 0%,
     rgba(255, 255, 255, 0.2) 50%,
     rgba(255, 255, 255, 0.3) 100%
   );
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.4);
   transition: all 0.3s ease;
-  box-shadow: 
+  box-shadow:
     0 4px 16px rgba(0, 0, 0, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.3);
-}
-
-.liquid-glass-button:hover {
+  /* backdrop-filter removed to stop chromium zoom artifacts */
   background: linear-gradient(135deg, 
     rgba(255, 255, 255, 0.4) 0%,
     rgba(255, 255, 255, 0.3) 50%,
@@ -538,6 +532,7 @@ main, footer, .glass-dock-scroll {
 
   body {
     @apply bg-background text-foreground font-sans;
+    background-color: #080b18;
     min-height: 100vh;
     overflow-x: clip;
   }

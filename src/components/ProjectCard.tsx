@@ -2,6 +2,7 @@ import { memo, useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Github, ExternalLink } from 'lucide-react';
+import { useTimeTheme } from '@/hooks/useTimeTheme';
 
 interface ProjectCardProps {
   project: {
@@ -22,6 +23,10 @@ interface ProjectCardProps {
 
 export const ProjectCard = memo(({ project, index, totalProjects, isLightMode, textClass, className = '' }: ProjectCardProps) => {
   const [isOverlayVisible, setIsOverlayVisible] = useState(false);
+  const { effectiveTheme } = useTimeTheme();
+  
+  // Decide if we should force icons to be strictly white instead of using the custom theme color
+  const forceWhiteIcons = effectiveTheme === 'twilight' || effectiveTheme === 'night' || effectiveTheme === 'sunset' || effectiveTheme === 'preDawn' || effectiveTheme === 'dawn';
 
   return (
     <Card
@@ -31,7 +36,7 @@ export const ProjectCard = memo(({ project, index, totalProjects, isLightMode, t
         group overflow-hidden transition-all duration-500 ${!isLightMode ? '' : ''}
         ${isLightMode
             ? 'bg-white/25 border border-white/40 liquid-glass-card shadow-[0_8px_30px_rgba(0,0,0,0.12)]'
-            : 'bg-black/40 backdrop-blur-lg border border-white/10 shadow-[0_0_40px_rgba(0,0,0,0.5)] [transform:translate3d(0,0,0)]'
+            : 'bg-black/75  border border-white/10 shadow-[0_0_40px_rgba(0,0,0,0.5)]'
         }
         ${totalProjects % 2 !== 0 && index === totalProjects - 1
           ? 'md:col-span-2'
@@ -149,12 +154,12 @@ export const ProjectCard = memo(({ project, index, totalProjects, isLightMode, t
                 Read more
               </a>
               {project.github && (
-                 <a href={project.github} target="_blank" rel="noopener noreferrer" className="hover:text-[var(--theme-color)] transition-colors">
+                 <a href={project.github} target="_blank" rel="noopener noreferrer" className={`transition-colors ${forceWhiteIcons ? 'text-white hover:text-gray-300' : 'hover:text-[var(--theme-color)]'}`}>
                     <Github className="w-5 h-5 pointer-events-auto" />
                  </a>
               )}
               {project.demo ? (
-                 <a href={project.demo} target="_blank" rel="noopener noreferrer" className="hover:text-[var(--theme-color)] transition-colors">
+                 <a href={project.demo} target="_blank" rel="noopener noreferrer" className={`transition-colors ${forceWhiteIcons ? 'text-white hover:text-gray-300' : 'hover:text-[var(--theme-color)]'}`}>
                     <ExternalLink className="w-5 h-5 pointer-events-auto" />
                  </a>
               ) : (

@@ -57,7 +57,7 @@ export const TimeDial: React.FC<TimeDialProps> = ({ onClose, isDarkModeOverride 
           onClick={onClose}
           className={`
             relative z-10 mt-6 px-4 py-1.5 rounded-lg text-xs font-medium text-white
-            bg-black/30 hover:bg-black/40 backdrop-blur-md border border-white/20
+            bg-black/30 hover:bg-black/75  border border-white/20
             shadow-lg
             transition-all duration-200 touch-manipulation
           `}

@@ -29,7 +29,7 @@ export const ExtracurricularsSection = () => {
                 p-6 transition-all duration-500 hover:scale-105 ${!isLightMode ? '' : ''}
                 ${isLightMode
                     ? 'bg-white/25 border border-white/40 liquid-glass-card shadow-[0_8px_30px_rgba(0,0,0,0.12)]'
-                    : 'bg-black/40 backdrop-blur-lg border border-white/10 shadow-[0_0_40px_rgba(0,0,0,0.5)] [transform:translate3d(0,0,0)]'
+                    : 'bg-black/75  border border-white/10 shadow-[0_0_40px_rgba(0,0,0,0.5)]'
                 }
               `}
               style={{ animationDelay: `${index * 0.2}s` }}
