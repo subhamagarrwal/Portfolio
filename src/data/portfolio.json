@@ -47,6 +47,44 @@
       "image": "/photos/FinTellect.webp",
       "featured": true
     },
+        {
+      "id": "dualsync",
+      "heading": "Bidirectional sync between Google Sheets and MySQL",
+      "title": "DualSync",
+      "description": "Full Stack application for bidirectional sync between Google Sheets and MySQL",
+      "features":[
+      "Utilized Redis through Upstash free tier and a free 1GB- storage MySQL database through Aiven free tier, Google sheet access through Google Sheets API",
+      "Since Google Sheets API doesnt provide native API for read/write operations, implemented a polling mechanism that checks for updates every 5 sec, and update the platform",
+      "A snapshot of the entire sheet info is taken once and stored in Redis database. In case of updation of sheet, the poller working in a 3s interval detects it,checks against the snapshot and eventually updates the snapshot and then the MySQL database.",
+        "In case of updatio of sheet through DB, if user executes INSERT/ UPDATE query, a Redis lock is set for 10s, the poller checks if there is a lock before updating the sheet",
+        "In case of 429 error(API limit exceeded), exponential backoff strategy implemented for retries",
+        "BullMQ queue implemented for task management, each task carries the job from either ends alongside the cell location ",
+        "To prevent multiple updates to same cell, locking mechanism implemented using Redis locks, having 10s TTL, before updating the sheet, the poller checks if there is a lock for that cell, if there is it retries (5s->10s->20s) until the lock is released and then updates the sheet",
+        "In case of backend downtime-(MySQL/Sheet downtime), offline queue implemented, which stores updates in localStorage, and implements them once the connection is re-established"
+  ],
+      "techStack": ["TypeScript", "Redis", "MySQL", "Google Sheets API", "BullMQ"],
+      "github": "https://github.com/subhamagarrwal/DualSync",
+      "demo": "https://superjoin-assignment-one.vercel.app/",
+      "image":"/photos/dualsync.webp",
+      "featured": true
+    },
+    {
+      "id": "ai_chat_citation",
+      "heading": "AI-PDF summarizer with citation provider",
+      "title": "AI Chat Citation Provider",
+      "description": "An AI chat interface where users can upload PDFs, and ask questions related to the content, the model provides answers supported by citations, alongside vizualizations of charts and tables.",
+      "features": [
+        "Users can upload PDF documents and query documents using natural language, receiving real time streaming responses supported by citations from the pdfs themselves",
+        "Frontend is built using Next.js and Tailwind CSS, while backend is a FASTAPI server which handles the uploading of docs, RAG,LLM and vector db handling, as well as generating vizualizations(charts, tables etc.) using Vercel SDK",
+        "Using PymuPDF, pdfs are broken down into chunks and stored in ChromaDB vector db,with metadata like page no and source. During query, query is sent in queue as calls are made to SSE endpoint, and top 5 relevant chunks are retrived and sent for answer generation.",
+        "For generation of vizualizations, the LLM extracts relevant numerical data and feeds it to ui components through prop drilling. "
+      ],
+      "techStack": ["Next.js", "Tailwind CSS", "FastAPI", "PymuPDF", "ChromaDB", "Vercel SDK"],
+      "github": "https://github.com/subhamagarrwal/Calquity_assignment",
+      "demo": "",
+      "image": "/photos/ai_chat.webp",
+      "featured": false
+    },
     {
       "id": "fitfusion",
       "heading": "Comprehensive Gym Management Platform",
@@ -61,38 +99,56 @@
       "github": "https://github.com/subhamagarrwal/fitfusion",
       "demo": "https://fitfusion-mobile.expo.dev",
       "image": "/photos/FitFusion.webp",
-      "featured": true
+      "featured": false
+    },
+    
+    {
+      "id": "convergence",
+      "heading": "All-in-one collection of user bookmarks/watch later",
+      "title": "Convergence",
+      "description": "[IN PROGRESS] A platform where users can access bookmarks and to read/watch later items from different platforms- Reddit, X,Chrome bookmarks, Youtube etc. in one place, available to users through searching in natural language",
+      "features":[
+        "Used Playwright to scrape user-watch later videos from Youtube, ingested into a PostgreSQL database",
+        "Extracted user-saved Reddit bookmarks by polling the Reddit bookmark RSS feed",
+        "[IN PROGRESS]- Scraping X bookmarks and Instagram reel bookmarked using Chrome bookmarks- and working on a cron-job to update for new saved items"
+      ],
+      "techStack": ["SpringBoot", "JPA Hibernate","PostgreSQL","Frontend pending"],
+      "demo": "",
+      "github": "https://github.com/subhamagarrwal/Convergence",
+      "image": "/photos/convergence.webp",
+      "featured": false
     }
+
   ],
+
   "experience": [
+        {
+      "id": "floxient",
+      "company": "Floxient",
+      "position": "Intern",
+      "duration": "Jun 2025 - Aug 2025",
+      "location": "Remote",
+      "description": "Worked on creating an all-in-one web interface for vizualizing DICOM files",
+      "achievements": [
+        "Worked on the ",
+        "Collaborated with a team of developers, designers, and domain experts",
+        "Presented the project to a panel of judges and received positive feedback for innovation and impact"
+      ]
+    },   
     {
       "id": "xlancr",
       "company": "Xlancr",
       "position": "Software Development Intern",
-      "duration": "Jun 2024 - Aug 2024",
-      "location": "Remote",
+      "duration": "Feb 2024 - May 2024",
+      "location": "Onsite",
       "description": "Contributed to full-stack development projects with focus on modern web technologies and user experience optimization.",
       "achievements": [
-        "Developed responsive web applications using React and TypeScript",
-        "Implemented RESTful APIs and database integration solutions",
-        "Collaborated with cross-functional teams in an agile environment",
-        "Optimized application performance resulting in 30% faster load times",
-        "Participated in code reviews and maintained high code quality standards"
+        "Worked with Next.JS and Tailwind CSS throughout the period",
+        "Worked on the earlier version of the landing page which featured a dynamic FAQ section",
+        "Gained experience with TanStack Query and state management using Redux Toolkit, and learnt about optimizing frontend performance and best practises."
       ]
-    },
-    {
-      "id": "sih",
-      "company": "Smart India Hackathon 2024",
-      "position": "Software Developer Intern",
-      "duration": "Mar 2024 - May 2024",
-      "location": "Remote",
-      "description": "Worked on a government-sponsored project to develop innovative software solutions addressing real-world problems.",
-      "achievements": [
-        "Designed and implemented a scalable software solution for the given problem statement",
-        "Collaborated with a team of developers, designers, and domain experts",
-        "Presented the project to a panel of judges and received positive feedback for innovation and impact"
-      ]
-    }    
+    }
+ 
   ],
   "education": [
     {
@@ -112,21 +168,20 @@
   ],
   "skills": {
     "languages": ["TypeScript", "React"],
-    "frameworks": ["Next.js", "Tailwind CSS","Python","FastAPI"],
-    "tools": ["Docker", "MySQL", "ChromaDB","Neo4j","Redis","CI/CD"]
+    "frameworks": ["Next.js", "Tailwind CSS","Python","FastAPI","Java"],
+    "tools": ["Docker", "MySQL", "ChromaDB","Redis"]
   },
   "extracurriculars": [
     {
       "id": "ieee-devrel",
       "organization": "IEEE-VIT",
       "position": "DevRel Lead",
-      "duration": "2023 - Present",
-      "description": "Leading developer relations initiatives, organizing technical workshops, and fostering community engagement among 500+ student developers.",
+      "duration": "2023 - 2025",
+      "description": "Leading developer relations initiatives, organizing technical workshops, and worked on marketing and outreach activities within the college community.",
       "achievements": [
         "Organized 15+ technical workshops and hackathons",
         "Increased community engagement by 40%",
-        "Mentored 50+ junior developers",
-        "Built partnerships with tech companies for student opportunities"
+        "Mentored 50+ junior developers"
       ]
     },
     {
@@ -137,9 +192,7 @@
       "description": "Contributed to the organization and execution of a major technical conference, handling logistics and participant coordination.",
       "achievements": [
         "Coordinated logistics for 200+ conference attendees",
-        "Managed registration and participant communication systems",
-        "Supported technical setup for workshops and presentations",
-        "Facilitated networking sessions between industry professionals and students"
+        "Managed registration and participant communication systems"
       ]
     }
   ]
