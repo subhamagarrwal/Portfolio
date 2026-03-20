@@ -1,6 +1,7 @@
 import { memo } from 'react';
 import { Card } from '@/components/ui/card';
-import { Github, ExternalLink } from 'lucide-react';
+import Github from 'lucide-react/dist/esm/icons/github';
+import ExternalLink from 'lucide-react/dist/esm/icons/external-link';
 import { useTimeTheme } from '@/hooks/useTimeTheme';
 import { ProjectDetailsModal } from './ProjectDetailsModal';
 import { motion } from 'framer-motion';

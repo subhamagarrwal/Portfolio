@@ -1,16 +1,14 @@
 import { useState, useRef, useEffect } from 'react';
-import { 
-  Code2, 
-  FolderOpen, 
-  Briefcase, 
-  Users, 
-  Sun,
-  Moon,
-  Home,
-  Clock,
-  Settings,
-  ArrowLeft
-} from 'lucide-react';
+import Code2 from 'lucide-react/dist/esm/icons/code2';
+import FolderOpen from 'lucide-react/dist/esm/icons/folder-open';
+import Briefcase from 'lucide-react/dist/esm/icons/briefcase';
+import Users from 'lucide-react/dist/esm/icons/users';
+import Sun from 'lucide-react/dist/esm/icons/sun';
+import Moon from 'lucide-react/dist/esm/icons/moon';
+import Home from 'lucide-react/dist/esm/icons/home';
+import Clock from 'lucide-react/dist/esm/icons/clock';
+import Settings from 'lucide-react/dist/esm/icons/settings';
+import ArrowLeft from 'lucide-react/dist/esm/icons/arrow-left';
 import { useTimeTheme } from '@/hooks/useTimeTheme';
 import { TimeDial } from './TimeDial';
 import './GlassDock.css';

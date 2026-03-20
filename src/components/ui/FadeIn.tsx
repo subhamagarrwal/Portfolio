@@ -1,5 +1,4 @@
-import { motion } from "framer-motion";
-import { ReactNode, useState, useEffect } from "react";
+import { ReactNode, useState, useEffect, useRef } from "react";
 
 interface FadeInProps {
   children: ReactNode;
@@ -15,6 +14,8 @@ const getIsFirstVisit = () => {
 
 export const FadeIn = ({ children, delay = 0, direction = "up", className = "" }: FadeInProps) => {
   const [isFirstVisit] = useState(getIsFirstVisit);
+  const [isVisible, setIsVisible] = useState(!isFirstVisit);
+  const domRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (isFirstVisit) {
@@ -22,27 +23,51 @@ export const FadeIn = ({ children, delay = 0, direction = "up", className = "" }
     }
   }, [isFirstVisit]);
 
-  const directions = {
-    up: { y: 40, x: 0 },
-    down: { y: -40, x: 0 },
-    left: { x: 40, y: 0 },
-    right: { x: -40, y: 0 },
-    none: { x: 0, y: 0 },
+  useEffect(() => {
+    if (!isFirstVisit) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+            if (domRef.current) observer.unobserve(domRef.current);
+          }
+        });
+      },
+      { rootMargin: "-100px" }
+    );
+
+    if (domRef.current) observer.observe(domRef.current);
+
+    return () => {
+      if (domRef.current) observer.unobserve(domRef.current);
+    };
+  }, [isFirstVisit]);
+
+  const getTransform = () => {
+    if (isVisible) return "translate(0, 0)";
+    switch (direction) {
+      case "up": return "translateY(40px)";
+      case "down": return "translateY(-40px)";
+      case "left": return "translateX(40px)";
+      case "right": return "translateX(-40px)";
+      default: return "translate(0, 0)";
+    }
   };
 
-  const initialProps = isFirstVisit 
-    ? { opacity: 0, ...directions[direction] } 
-    : { opacity: 1, x: 0, y: 0 };
-
   return (
-    <motion.div
-      initial={initialProps}
-      whileInView={{ opacity: 1, x: 0, y: 0 }}
-      viewport={{ once: true, margin: "-100px" }}
-      transition={{ duration: 0.7, delay: isFirstVisit ? delay : 0, ease: "easeOut" }}
+    <div
+      ref={domRef}
       className={className}
+      style={{
+        opacity: isVisible ? 1 : 0,
+        transform: getTransform(),
+        transition: `opacity 0.7s ease-out, transform 0.7s ease-out`,
+        transitionDelay: isFirstVisit && isVisible ? `${delay}s` : '0s'
+      }}
     >
       {children}
-    </motion.div>
+    </div>
   );
 };

@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useTimeTheme } from '@/hooks/useTimeTheme';
-import { Github, Linkedin, Mail } from 'lucide-react';
+import Github from 'lucide-react/dist/esm/icons/github';
+import Linkedin from 'lucide-react/dist/esm/icons/linkedin';
+import Mail from 'lucide-react/dist/esm/icons/mail';
 import portfolioData from '@/data/portfolio.json';
 import { palettes } from '@/constants/palettes';
 

@@ -27,7 +27,7 @@
       "techStack": ["Node.js", "Firebase","MongoDB", "Express", "Telegraf", "GraphQL"],
       "github": "https://github.com/subhamagarrwal/TaskQuest",
       "demo": "",
-      "image": "/photos/TaskQuest.png?v=2",
+      "image": "/photos/TaskQuest.webp",
       "featured": false
     },
 
@@ -44,7 +44,7 @@
       "techStack": ["Next.js", "TypeScript", "PostgreSQL", "ChromaDB", "LangChain"],
       "github": "https://github.com/subhamagarrwal/FinTellect",
       "demo": "https://fintellect-app.vercel.app",
-      "image": "/photos/FinTellect.png?v=2",
+      "image": "/photos/FinTellect.webp",
       "featured": true
     },
     {
@@ -60,7 +60,7 @@
       "techStack": ["MongoDB", "Firebase", "Redux", "Node.js", "Express"],
       "github": "https://github.com/subhamagarrwal/fitfusion",
       "demo": "https://fitfusion-mobile.expo.dev",
-      "image": "/photos/FitFusion.png?v=2",
+      "image": "/photos/FitFusion.webp",
       "featured": true
     }
   ],

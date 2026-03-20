@@ -1,7 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useTimeTheme } from '@/hooks/useTimeTheme';
 import { Button } from '@/components/ui/button';
-import { Github, Linkedin, Mail, Download, MapPin } from 'lucide-react';
+import Github from 'lucide-react/dist/esm/icons/github';
+import Linkedin from 'lucide-react/dist/esm/icons/linkedin';
+import Mail from 'lucide-react/dist/esm/icons/mail';
+import Download from 'lucide-react/dist/esm/icons/download';
+import MapPin from 'lucide-react/dist/esm/icons/map-pin';
 import { FadeIn } from '@/components/ui/FadeIn';
 import { Card } from '@/components/ui/card';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -38,19 +42,33 @@ export const HeroSection = () => {
   const [spotifyData, setSpotifyData] = useState<{ isPlaying: boolean; title?: string; artist?: string; albumImageUrl?: string; songUrl?: string } | null>(null);
 
   useEffect(() => {
-    const fetchSpotify = async () => {
-      try {
-        const res = await fetch('/api/spotify/now-playing');
-        const data = await res.json();
-        setSpotifyData(data);
-      } catch (err) {
-        console.error(err);
-      }
-    };
+    let interval: NodeJS.Timeout;
     
-    fetchSpotify();
-    const interval = setInterval(fetchSpotify, 2000);
-    return () => clearInterval(interval);
+    // Defer the Spotify fetch until after the page has fully loaded to not block LCP
+    const initSpotify = () => {
+      const fetchSpotify = async () => {
+        try {
+          const res = await fetch('/api/spotify/now-playing');
+          const data = await res.json();
+          setSpotifyData(data);
+        } catch (err) {
+          console.error(err);
+        }
+      };
+
+      fetchSpotify();
+      interval = setInterval(fetchSpotify, 20000); // Also reduced ping rate from 2s to 20s to save CPU
+    };
+
+    if (document.readyState === 'complete') {
+      setTimeout(initSpotify, 1000);
+    } else {
+      window.addEventListener('load', () => setTimeout(initSpotify, 1000), { once: true });
+    }
+
+    return () => {
+      if (interval) clearInterval(interval);
+    };
   }, []);
 
   const isMusicPlaying = spotifyData?.isPlaying;
