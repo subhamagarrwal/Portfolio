@@ -17,35 +17,50 @@ const AppLayout = () => {
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
+
+    // Handle scroll position restoration
+    const savedScrollPos = sessionStorage.getItem('portfolio-scroll-pos');
+    if (savedScrollPos) {
+      window.scrollTo({ top: parseInt(savedScrollPos, 10), behavior: 'instant' });
+      sessionStorage.removeItem('portfolio-scroll-pos'); // clear after restoring
+    }
+
+    const handleBeforeUnload = () => {
+      sessionStorage.setItem('portfolio-scroll-pos', window.scrollY.toString());
+    };
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
     // Disable smooth scrolling on mobile/touch devices for native performance
     const isMobile = window.innerWidth < 1024 || 'ontouchstart' in window;
 
-    if (isMobile) return;
-
-    // Making Lenis snappier like standard Next.js / Vercel sites
-    const lenis = new Lenis({
-      lerp: 0.15, // controls the friction/snappiness (higher = more snappy)
-      smoothWheel: true,
-      wheelMultiplier: 1.1,
-    });
-
+    let lenis: Lenis | null = null;
     let rafId: number;
 
-    function raf(time: number) {
-      lenis.raf(time);
+    if (!isMobile) {
+      // Making Lenis snappier like standard Next.js / Vercel sites
+      lenis = new Lenis({
+        lerp: 0.15, // controls the friction/snappiness (higher = more snappy)
+        smoothWheel: true,
+        wheelMultiplier: 1.1,
+      });
+
+      function raf(time: number) {
+        if (lenis) lenis.raf(time);
+        rafId = requestAnimationFrame(raf);
+      }
+
       rafId = requestAnimationFrame(raf);
     }
 
-    rafId = requestAnimationFrame(raf);
-
     return () => {
-      cancelAnimationFrame(rafId);
-      lenis.destroy();
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      if (rafId) cancelAnimationFrame(rafId);
+      if (lenis) lenis.destroy();
     };
   }, []);
 
   return (
-    <div className={timeBasedClass}>
+    <div className={timeBasedClass} suppressHydrationWarning>
       {/* Time-based Mountain Landscape Background */}
       <MountainLandscape />
 

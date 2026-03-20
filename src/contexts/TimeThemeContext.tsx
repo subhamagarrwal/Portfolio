@@ -89,6 +89,12 @@ export const TimeThemeProvider: React.FC<TimeThemeProviderProps> = ({ children }
   }, [getTimeBasedTheme]);
 
   useEffect(() => {
+    try {
+      localStorage.setItem('portfolio-initial-class', getTimeBasedClass());
+    } catch (e) {}
+  }, [effectiveTheme, isDarkModeOverride]);
+
+  useEffect(() => {
     if (!isManualMode) {
       const updateTheme = () => {
         const newHour = manualTimeOverride !== null ? manualTimeOverride : new Date().getHours() + (new Date().getMinutes() / 60);

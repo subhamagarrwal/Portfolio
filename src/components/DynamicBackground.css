@@ -1,4 +1,4 @@
-.dynamic-bg-vars {
+:root {
   /* Dynamic variables updated by JS */
   --sky-top: #080b18;
   --sky-bottom: #12162d;

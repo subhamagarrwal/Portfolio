@@ -66,5 +66,31 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      (function() {
+        try {
+          var bgVars = localStorage.getItem('portfolio-bg-colors');
+          if (bgVars) {
+            var parsed = JSON.parse(bgVars);
+            for (var key in parsed) {
+              document.documentElement.style.setProperty(key, parsed[key]);
+            }
+          }
+          
+          var initClass = localStorage.getItem('portfolio-initial-class');
+          if (initClass) {
+            var rootDiv = document.querySelector('#root > div');
+            if (rootDiv && !rootDiv.className.includes(initClass)) {
+              // Extract non-theme classes and append the saved theme class
+              var existingClasses = rootDiv.className.split(' ').filter(function(c) {
+                return !c.startsWith('theme-');
+              });
+              existingClasses.push(initClass);
+              rootDiv.className = existingClasses.join(' ');
+            }
+          }
+        } catch(e) {}
+      })();
+    </script>
   </body>
 </html>

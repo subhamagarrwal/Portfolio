@@ -26,15 +26,25 @@ const MountainLandscape = () => {
       const duration = end.time - start.time;
       const factor = duration === 0 ? 0 : (hours - start.time) / duration;
 
+      // Write to both wrapper and documentElement to allow caching logic to work instantly on reload without flash
       if (wrapperRef.current) {
         const style = wrapperRef.current.style;
-        style.setProperty('--sky-top', interpolateColor(start.colors.top, end.colors.top, factor));
-        style.setProperty('--sky-bottom', interpolateColor(start.colors.bottom, end.colors.bottom, factor));
-        style.setProperty('--mountain-back', interpolateColor(start.colors.mBack, end.colors.mBack, factor));
-        style.setProperty('--mountain-front', interpolateColor(start.colors.mFront, end.colors.mFront, factor));
-        style.setProperty('--ground', interpolateColor(start.colors.ground, end.colors.ground, factor));
-        style.setProperty('--sun-glow', interpolateColor(start.colors.sunGlow, end.colors.sunGlow, factor));
-        style.setProperty('--stars-opacity', String(start.stars + factor * (end.stars - start.stars)));
+        const rootStyle = document.documentElement.style;
+        const varsToSave: Record<string, string> = {};
+
+        const setVar = (key: string, val: string) => {
+          style.setProperty(key, val);
+          rootStyle.setProperty(key, val);
+          varsToSave[key] = val;
+        };
+
+        setVar('--sky-top', interpolateColor(start.colors.top, end.colors.top, factor));
+        setVar('--sky-bottom', interpolateColor(start.colors.bottom, end.colors.bottom, factor));
+        setVar('--mountain-back', interpolateColor(start.colors.mBack, end.colors.mBack, factor));
+        setVar('--mountain-front', interpolateColor(start.colors.mFront, end.colors.mFront, factor));
+        setVar('--ground', interpolateColor(start.colors.ground, end.colors.ground, factor));
+        setVar('--sun-glow', interpolateColor(start.colors.sunGlow, end.colors.sunGlow, factor));
+        setVar('--stars-opacity', String(start.stars + factor * (end.stars - start.stars)));
 
         const { sunriseTime, sunsetTime } = times;
         const daylightHours = sunsetTime - sunriseTime;
@@ -43,22 +53,21 @@ const MountainLandscape = () => {
         // THE SUN
         let sunProgress = (hours - sunriseTime) / daylightHours;
         if (sunProgress >= -0.1 && sunProgress <= 1.1) {
-            // using calc() to map progress 0-1 across the visible viewport (inside the -20vw to 120vw scene-wrapper space)
-            style.setProperty('--sun-x', `calc(20vw + ${sunProgress * 100}vw)`);
-            style.setProperty('--sun-y', `${100 - Math.sin(sunProgress * Math.PI) * 85}%`);
-            style.setProperty('--sun-opacity', "1");
+            setVar('--sun-x', `calc(20vw + ${sunProgress * 100}vw)`);
+            setVar('--sun-y', `${100 - Math.sin(sunProgress * Math.PI) * 85}%`);
+            setVar('--sun-opacity', "1");
 
             let intensity = Math.max(0, Math.sin(sunProgress * Math.PI));
-            style.setProperty('--sun-intensity', intensity.toFixed(3));
-            style.setProperty('--sun-angle', `${(sunProgress * 180).toFixed(1)}deg`);
-            style.setProperty('--ground-brightness', (0.6 + intensity * 0.4).toFixed(3));
-            style.setProperty('--haze-opacity', (1 - Math.sin(sunProgress * Math.PI)).toFixed(3));
+            setVar('--sun-intensity', intensity.toFixed(3));
+            setVar('--sun-angle', `${(sunProgress * 180).toFixed(1)}deg`);
+            setVar('--ground-brightness', (0.6 + intensity * 0.4).toFixed(3));
+            setVar('--haze-opacity', (1 - Math.sin(sunProgress * Math.PI)).toFixed(3));
         } else {
-            style.setProperty('--sun-opacity', "0");
-            style.setProperty('--sun-y', "120%");
-            style.setProperty('--sun-intensity', "0");
-            style.setProperty('--ground-brightness', "0.3");
-            style.setProperty('--haze-opacity', "0");
+            setVar('--sun-opacity', "0");
+            setVar('--sun-y', "120%");
+            setVar('--sun-intensity', "0");
+            setVar('--ground-brightness', "0.3");
+            setVar('--haze-opacity', "0");
         }
 
         // THE MOON
@@ -66,13 +75,29 @@ const MountainLandscape = () => {
         let moonProgress = moonTime / nightHours;
 
         if (moonProgress >= -0.1 && moonProgress <= 1.1) {
-            style.setProperty('--moon-x', `calc(20vw + ${moonProgress * 100}vw)`);
-            style.setProperty('--moon-y', `${100 - Math.sin(moonProgress * Math.PI) * 85}%`);
-            style.setProperty('--moon-opacity', "1");
+            setVar('--moon-x', `calc(20vw + ${moonProgress * 100}vw)`);
+            setVar('--moon-y', `${100 - Math.sin(moonProgress * Math.PI) * 85}%`);
+            setVar('--moon-opacity', "1");
         } else {
-            style.setProperty('--moon-opacity', "0");
-            style.setProperty('--moon-y', "120%");
+            setVar('--moon-opacity', "0");
+            setVar('--moon-y', "120%");
         }
+
+        // FIREFLIES OPACITY
+        let fireflyOpacity = 1;
+        if (hours > sunriseTime - 2.5 && hours <= sunriseTime) {
+            // Fade out as morning comes
+            fireflyOpacity = Math.max(0, 1 - (hours - (sunriseTime - 2.5)) / 2.5);
+        } else if (hours > sunriseTime && hours < sunsetTime + 0.25) {
+            // Day time
+            fireflyOpacity = 0;
+        } else if (hours >= sunsetTime + 0.25 && hours < sunsetTime + 2) {
+            // Fade in as evening comes
+            fireflyOpacity = Math.min(1, Math.max(0, (hours - (sunsetTime + 0.25)) / 1.75));
+        }
+        setVar('--firefly-opacity', fireflyOpacity.toPrecision(3));
+
+        try { localStorage.setItem('portfolio-bg-colors', JSON.stringify(varsToSave)); } catch(e) {}
       }
     };
 
@@ -99,6 +124,7 @@ const MountainLandscape = () => {
 
     let animationFrameId: number;
     let grassBlades: GrassBlade[] = [];
+    let lastWidth = 0;
 
     class GrassBlade {
       x: number;
@@ -153,11 +179,14 @@ const MountainLandscape = () => {
     }
 
     const initGrass = () => {
-      grassBlades = [];
       const parent = canvas.parentElement;
       if (!parent) return;
-
-      canvas.width = parent.clientWidth;
+      
+      // Prevent wild redraws on mobile when scrolling triggers vertical resize
+      if (Math.abs(parent.clientWidth - lastWidth) < 15) return;
+      lastWidth = parent.clientWidth;
+      
+      grassBlades = [];
       canvas.height = 250; 
 
       const numBlades = Math.floor(canvas.width / 2);
@@ -204,7 +233,7 @@ const MountainLandscape = () => {
         <div className="scene-global-illumination"></div>
         <div className="scene-sun-rays"></div>
 
-        <div id="fireflies-container">
+        <div id="fireflies-container" style={{ opacity: "var(--firefly-opacity, 1)", transition: "opacity 2s linear" }}>
           {!isDayOrAfternoon() && fireflies.map((f, i) => (
             <div key={i} className="scene-firefly" style={{
               left: `${f.left}%`,
