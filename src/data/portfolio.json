@@ -16,6 +16,7 @@
   "projects": [
     {
       "id": "taskquest",
+      "heading": "Real-time Task Management System",
       "title": "TaskQuest",
       "description": "Admins create tasks on the web dashboard, and the team members can interact and update progress on assigned tasks through an intelligent Telegram bot interface.",
       "features": [
@@ -32,6 +33,7 @@
 
     {
       "id": "fintellect",
+      "heading": "AI-Powered Financial Insights",
       "title": "FinTellect",
       "description": "Users can search for a stock ticker and get clear, natural-language insights about the company's financials alongside correlating performance with news and macroeconomic trends, all powered by AI.",
       "features": [
@@ -47,6 +49,7 @@
     },
     {
       "id": "fitfusion",
+      "heading": "Comprehensive Gym Management Platform",
       "title": "FitFusion",
       "description": "A comprehensive gym management app that allows users to look into gyms and give reviews, where gym owners can register their gyms.",
       "features": [

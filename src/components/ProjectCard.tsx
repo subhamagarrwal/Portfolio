@@ -9,11 +9,14 @@ interface ProjectCardProps {
   project: {
     id: string;
     title: string;
+    heading: string;
     description: string;
     image: string;
     techStack: string[];
     github?: string;
     demo?: string;
+    featured?: boolean;
+    features?: string[];
   };
   index: number;
   totalProjects: number;
@@ -35,7 +38,7 @@ export const ProjectCard = memo(({ project, index, totalProjects, isLightMode, t
         ${className}
         group overflow-hidden transition-all duration-500 ${!isLightMode ? '' : ''}
         ${isLightMode
-            ? 'bg-white/25 border border-white/40 liquid-glass-card shadow-[0_8px_30px_rgba(0,0,0,0.12)]'
+            ? 'bg-white/40 border border-white/60 backdrop-blur-xl shadow-[0_8px_30px_rgba(0,0,0,0.12)]'
             : 'bg-black/75  border border-white/10 shadow-[0_0_40px_rgba(0,0,0,0.5)]'
         }
       `}
@@ -45,19 +48,16 @@ export const ProjectCard = memo(({ project, index, totalProjects, isLightMode, t
         className={`
           h-48 bg-gradient-to-br transition-all duration-300 relative overflow-hidden
           ${isLightMode
-            ? 'from-blue-500/20 to-purple-500/20'
-            : 'from-blue-500/20 to-purple-500/20'
+            ? 'from-[var(--theme-color)]/20 to-purple-500/20'
+            : 'from-[var(--theme-color)]/20 to-purple-500/20'
           }
         `}
       >
         <div className="h-full flex items-center justify-center">
           <motion.img
-            layoutId={`project-image-${project.id}`}
             src={project.image}
             alt={`${project.title} preview`}
             className="w-full h-full object-cover"
-            loading="lazy"
-            decoding="async"
             width="400"
             height="192"
             onError={(e) => {
@@ -114,3 +114,4 @@ export const ProjectCard = memo(({ project, index, totalProjects, isLightMode, t
 });
 
 ProjectCard.displayName = 'ProjectCard';
+

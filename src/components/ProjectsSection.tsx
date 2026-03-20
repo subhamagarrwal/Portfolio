@@ -5,6 +5,7 @@ import portfolioData from '@/data/portfolio.json';
 import { ProjectCard } from './ProjectCard';
 import { FadeIn } from '@/components/ui/FadeIn';
 import { palettes } from '@/constants/palettes';
+import { MobileProjectCarousel } from './MobileProjectCarousel';
 
 export const ProjectsSection = () => {
   const {
@@ -91,13 +92,14 @@ export const ProjectsSection = () => {
           '--btn-text-color': primaryColor === '#ffffff' ? '#000000' : '#ffffff'
         } as React.CSSProperties}
       >
-        <FadeIn delay={0.2} className="flex justify-center mb-12">
+        <FadeIn delay={0.2} className="flex justify-center mb-12 hidden md:flex">
           <h2 className={`text-4xl font-bold transition-colors duration-300 ${!isLightMode ? '' : ''} ${textClass}`}>
             Featured Projects
           </h2>
         </FadeIn>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {/* Desktop grid */}
+        <div className="hidden md:grid md:grid-cols-2 gap-8">
           {projects.map((project, index) => {
             return (
               <FadeIn
@@ -114,6 +116,15 @@ export const ProjectsSection = () => {
               </FadeIn>
             );
           })}
+        </div>
+        
+        {/* Mobile Carousel */}
+        <div className="md:hidden">
+            <MobileProjectCarousel
+              projects={projects}
+              isLightMode={isLightMode}
+              textClass={textClass}
+            />
         </div>
 
         <FadeIn delay={0.8} className="text-center mt-12">

@@ -94,7 +94,7 @@ export const AboutSection = () => {
 
         <div className={`w-[85vw] max-w-[800px] lg:w-full mx-auto space-y-6 p-6 md:p-10 rounded-2xl transition-all duration-500 relative overflow-hidden
           ${isLightMode
-            ? 'bg-white/25 border border-white/40 liquid-glass-card shadow-[0_8px_30px_rgba(0,0,0,0.12)]'
+            ? 'bg-white/40 border border-white/60 backdrop-blur-xl shadow-[0_8px_30px_rgba(0,0,0,0.12)]'
             : 'bg-black/75  border border-white/10 shadow-[0_0_40px_rgba(0,0,0,0.5)]'}
         `}
         style={{ 
@@ -151,3 +151,4 @@ export const AboutSection = () => {
     </section>
   );
 };
+

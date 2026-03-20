@@ -71,7 +71,7 @@ export const JourneySection = () => {
 
           <TabsContent value="education" className="mt-8 relative z-10">
             <div className={`w-[85vw] max-w-[800px] lg:w-full mx-auto p-4 md:p-8 rounded-xl  shadow-sm transition-all duration-500 border overflow-hidden
-              ${isLightMode ? 'bg-white/25 border border-white/40 liquid-glass-card shadow-[0_8px_30px_rgba(0,0,0,0.12)]'
+              ${isLightMode ? 'bg-white/40 border border-white/60 backdrop-blur-xl shadow-[0_8px_30px_rgba(0,0,0,0.12)]'
             : 'bg-black/75  border border-white/10 shadow-[0_0_40px_rgba(0,0,0,0.5)]'}
               ${!isLightMode ? 'synthwave-glow' : ''}
             `}>
@@ -119,7 +119,7 @@ export const JourneySection = () => {
 
           <TabsContent value="experience" className="mt-8 relative z-10">
             <div className={`w-[85vw] max-w-[800px] lg:w-full mx-auto p-4 md:p-8 rounded-xl  shadow-sm transition-all duration-500 border overflow-hidden
-              ${isLightMode ? 'bg-white/25 border border-white/40 liquid-glass-card shadow-[0_8px_30px_rgba(0,0,0,0.12)]'
+              ${isLightMode ? 'bg-white/40 border border-white/60 backdrop-blur-xl shadow-[0_8px_30px_rgba(0,0,0,0.12)]'
             : 'bg-black/75  border border-white/10 shadow-[0_0_40px_rgba(0,0,0,0.5)]'}
               ${!isLightMode ? 'synthwave-glow' : ''}
             `}>
@@ -165,7 +165,7 @@ export const JourneySection = () => {
 
           <TabsContent value="volunteering" className="mt-8 relative z-10">
             <div className={`w-[85vw] max-w-[800px] lg:w-full mx-auto p-4 md:p-8 rounded-xl  shadow-sm transition-all duration-500 border overflow-hidden
-              ${isLightMode ? 'bg-white/25 border border-white/40 liquid-glass-card shadow-[0_8px_30px_rgba(0,0,0,0.12)]'
+              ${isLightMode ? 'bg-white/40 border border-white/60 backdrop-blur-xl shadow-[0_8px_30px_rgba(0,0,0,0.12)]'
             : 'bg-black/75  border border-white/10 shadow-[0_0_40px_rgba(0,0,0,0.5)]'}
               ${!isLightMode ? 'synthwave-glow' : ''}
             `}>
@@ -211,3 +211,4 @@ export const JourneySection = () => {
     </section>
   );
 };
+

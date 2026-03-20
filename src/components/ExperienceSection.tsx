@@ -28,7 +28,7 @@ export const ExperienceSection = () => {
               className={`
                 transition-all duration-500 hover:scale-[1.02] ${!isLightMode ? '' : ''}
                 ${isLightMode
-                    ? 'bg-white/25 border border-white/40 liquid-glass-card shadow-[0_8px_30px_rgba(0,0,0,0.12)]'
+                    ? 'bg-white/40 border border-white/60 backdrop-blur-xl shadow-[0_8px_30px_rgba(0,0,0,0.12)]'
                     : 'bg-black/75  border border-white/10 shadow-[0_0_40px_rgba(0,0,0,0.5)]'
                 }
               `}
@@ -83,3 +83,4 @@ export const ExperienceSection = () => {
     </section>
   );
 };
+

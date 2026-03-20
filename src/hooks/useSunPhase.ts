@@ -17,7 +17,8 @@ export const useSunPhase = (currentHour: number | null, latitude: number | null,
 
     const frames: Keyframe[] = [
       { time: 0,                                   name: "Deep Night",     colors: palettes.night,     stars: 1 },
-      { time: sunriseTime - 1.0,                   name: "Pre-Dawn",       colors: palettes.preDawn,   stars: 0.8 },
+      { time: sunriseTime - 1.0,                   name: "Deep Night",     colors: palettes.night,     stars: 1 },
+      { time: sunriseTime - 0.5,                   name: "Pre-Dawn",       colors: palettes.preDawn,   stars: 0.8 },
       { time: sunriseTime + 0.0,                   name: "Sunrise",        colors: palettes.sunrise,   stars: 0.1 },
       { time: sunriseTime + daylight * 0.15,       name: "Morning",        colors: palettes.morning,   stars: 0 },
       { time: sunriseTime + daylight * 0.45,       name: "High Noon",      colors: palettes.noon,      stars: 0 },
