@@ -180,7 +180,10 @@ export function ProjectDetailsModal({ project, children, isLightMode, textClass 
         <DrawerTrigger asChild>
           {children}
         </DrawerTrigger>
-        <DrawerContent className={`border-t-[1px] p-0 overflow-hidden flex flex-col ${glassClass}`}>
+        <DrawerContent 
+          overlayClass={`backdrop-blur-sm ${isLightMode ? 'bg-white/20' : 'bg-black/60'}`}
+          className={`border-t-[1px] p-0 overflow-hidden flex flex-col rounded-t-[1.5rem] ${glassClass}`}
+        >
           <DrawerTitle className="sr-only">{project.title}</DrawerTitle>
           <DrawerDescription className="sr-only">{project.description}</DrawerDescription>
           {Content}
