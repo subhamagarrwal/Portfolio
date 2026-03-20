@@ -57,7 +57,7 @@ export const HeroSection = () => {
       };
 
       fetchSpotify();
-      interval = setInterval(fetchSpotify, 20000); // Also reduced ping rate from 2s to 20s to save CPU
+      interval = setInterval(fetchSpotify, 3000); // Poll every 3s for real-time updates
     };
 
     if (document.readyState === 'complete') {
