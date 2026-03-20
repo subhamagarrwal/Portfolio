@@ -45,7 +45,7 @@
       "github": "https://github.com/subhamagarrwal/FinTellect",
       "demo": "https://fintellect-app.vercel.app",
       "image": "/photos/FinTellect.webp",
-      "featured": true
+      "featured": false
     },
         {
       "id": "dualsync",
@@ -130,7 +130,7 @@
       "location": "Remote",
       "description": "Worked on creating an all-in-one web interface for vizualizing DICOM files",
       "achievements": [
-        "Worked on the ",
+        "Worked on vizualizing DICOM files in the browser using Marching Cubes algorithm and python",
         "Collaborated with a team of developers, designers, and domain experts",
         "Presented the project to a panel of judges and received positive feedback for innovation and impact"
       ]
